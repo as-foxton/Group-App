@@ -21,7 +21,10 @@ body {
 
 .tab {
     float: left;
-    
+    font-family: "Work Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .tab a {
@@ -40,3 +43,32 @@ body {
     background-color: #333;
     color: white;
 }
+
+.icon-text {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adjust to change spacing between icon and text */
+    font-family: "Work Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.large-button {
+    display: inline-block;
+    font-size: 20px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    color: #292929;
+    background-color: #fff; /* You can change this color */
+    border: none;
+    border-radius: 0px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width:150px;
+    height:100px;
+    line-height: 100px;
+}
+
+.large-button:hover {
+    text-decoration: underline;
+}
+
