@@ -1,2 +1,46 @@
 <h1>feedback.html</h1>
 <h2>Deze is toch echt van mij Minnie boi! You just got hacked!!! *signed Ronald</h2>
+
+<head>
+    <script>
+        function letsgo() {
+            fetch("http://localhost:8080/feedback/all")
+                .then(r => r.json())
+                .then(d => verwerkgegevens(d))
+        }
+
+        function verwerkgegevens(data) {
+            console.log(data)
+            // For fetching an array of entities
+            for (var i = 0; i < data.length; i++) {
+                document.getElementById("dediv").innerHTML += `<h1>${data[i].mening}</h1>)`
+            }
+
+            // For fetching a single entity
+            //document.getElementById("dediv").innerHTML += `<h1>${data.mening}</h1>)`
+        }
+    </script>
+</head>
+
+<body>
+    <button onclick="letsgo()">Klik Hier</button>
+    <div id="dediv">a</div>
+
+    <table>
+        <tr>
+            <th>Company</th>
+            <th>Contact</th>
+            <th>Country</th>
+        </tr>
+        <tr>
+            <td>Alfreds Futterkiste</td>
+            <td>Maria Anders</td>
+            <td>Germany</td>
+        </tr>
+        <tr>
+            <td>Centro comercial Moctezuma</td>
+            <td>Francisco Chang</td>
+            <td>Mexico</td>
+        </tr>
+    </table>
+</body>
