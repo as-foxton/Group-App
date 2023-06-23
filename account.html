@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function letsgo (){
+            fetch("http://localhost:8080/account/all")
+            .then( r => r.json() )
+            .then( d => verwerkGegevens(d))
+        }
+        function verwerkGegevens(data){
+
+            for (var x= 0; x<data.length; x++){
+                document.getElementById("dediv").innerHTML+=`<h1>${data[x].naam}</h1>`
+            }
+        }
+    </script>
+</head>
+<body>
+    <button onclick="letsgo()">Klik hier</button>
+    <div id="dediv">a</div>
+
+</body>
+</html>
