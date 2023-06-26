@@ -8,28 +8,31 @@
 <body>
     <h1>Alle CVs</h1>
     <h3 id="login-greeting">welkom anonieme gebruiker</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>id</th>
-                <th>omschrijving</th>
-                <th>werkhistorie</th>
-                <th>uitstroom</th>
-                <th>specialisatie</th>
-                <th>person id</th>
-                <th>update</th>
-                <th>delete</th>
-            </tr>
-        </thead>
-        <tbody id="cv-table"></tbody>
-    </table>
-
-    <input type="text" id="omschrijving">
-    <input type="text" id="werkHistorie">
-    <input type="text" id="uitstroomRichting">
-    <input type="text" id="specialiteit">
-    <input type="number" id="personId">
-    <button type="button" onclick="saveCV()">Save</button>
+    <h3 id="no_access">alleen trainees en accountmanagers mogen cv's bekijken</h3>
+    <div id="content" hidden>
+        <table>
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>omschrijving</th>
+                    <th>werkhistorie</th>
+                    <th>uitstroom</th>
+                    <th>specialisatie</th>
+                    <th>person id</th>
+                    <th>update</th>
+                    <th>delete</th>
+                </tr>
+            </thead>
+            <tbody id="cv-table"></tbody>
+        </table>
+    
+        <input type="text" id="omschrijving">
+        <input type="text" id="werkHistorie">
+        <input type="text" id="uitstroomRichting">
+        <input type="text" id="specialiteit">
+        <input type="number" id="personId">
+        <button type="button" onclick="saveCV()">Save</button>
+    </div>
 
     <script>
         function getCVs(){
@@ -109,6 +112,10 @@
         function setName(account){
             greetingspot = document.getElementById('login-greeting');
             greetingspot.innerHTML = `Welkom ${account.naam}`;
+            if(account.rol == 'trainee' || account.rol == 'accountmanager'){
+                document.getElementById('content').hidden = false;
+                document.getElementById('no_access').hidden = true;
+            }
         }
 
         checkLogin();
