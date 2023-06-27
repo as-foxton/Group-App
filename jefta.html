@@ -6,13 +6,13 @@
     <title>Document</title>
     <script>
         function letsgo(){
-            fetch("http://127.0.0.1:5000/felix/ALB")
+            fetch("http://127.0.0.1:5000/jefta/87990")
                 .then( r=>r.json())
                 .then( d=> verwerkgegevens(d))
         }
         function verwerkgegevens(data){
             for(var x=0;x<data.length;x++){
-                document.getElementById("dediv").innerHTML += `<h1>${data[x].CountryName}</h1>`
+                document.getElementById("dediv").innerHTML += `<h1>${data[x].JobID}</h1>`
             }
         }
     </script>
