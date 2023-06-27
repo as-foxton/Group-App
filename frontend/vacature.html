@@ -135,8 +135,6 @@ function createVacature() {
     .catch(error => {
         alert('Er is iets fouts gegaan');
     });
-
-    reload();
 }
 
 
@@ -172,8 +170,6 @@ function verwijderen(vacatureId){
     .then(response => {
         alert('Is verwijderd');
     })  
-
-    reload();
 }
 
 // Edit/update function
@@ -244,7 +240,7 @@ function aanpassen(vid){
         alert('Er is iets fouts gegaan');
     }); 
 
-    reload();
+    location.reload()
 }
 
 
@@ -277,11 +273,6 @@ function loadVacature(){
         }
 
         loadVacature();
-
-
-        function refresh(){
-            location.reload();
-        }
 
     </script>
 
