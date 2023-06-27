@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
+    <script>
+        function letsgo (){
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange= function(){
+                if(this.readyState ==4){
+                    console.log(this.responseText);
+                    var allAccounts = JSON.parse(this.responseText);
+                    var eindString="<table border=1><tr><td>Naam</td><td>Rol</td><td>Email</td><td>Bedrijf</td><td>Locatie</td><td>Edit</td><td>Delete</td></tr>";
+                        
+                    for (var x=0; x < allAccounts.length; x++){
+                        eindString+="<tr><td>"+allAccounts[x].naam+"</td><td>"+allAccounts[x].rol+"</td><td>"+allAccounts[x].email+"</td><td>"+allAccounts[x].bedrijf+"</td><td>"+allAccounts[x].locatie+"<td><button onclick=aanpassen()>Edit</button></td><td><button onclick=verwijderen("+allAccounts[x].persoons_nr+")>Delete</button></td></tr>";
+
+                    }
+                    eindString+="</table>"
+                    document.getElementById("alleAccountsTabel").innerHTML=eindString;
+                }
+                
+            }
+            xhr.open("GET", "http://localhost:8080/account/all", true);
+            xhr.send()
+
+        }
+        function toevoegen(){
+            var hetAccount ={};
+            hetAccount.naam=document.getElementById("naamGebruiker").value;
+            hetAccount.rol=document.getElementById("rolGebruiker").value;
+            hetAccount.email=document.getElementById("emailGebruiker").value;
+            hetAccount.bedrijf=document.getElementById("bedrijfGebruiker").value;
+            hetAccount.locatie=document.getElementById("locatieGebruiker").value;
+            var deJSON=JSON.stringify(hetAccount);
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange= function(){
+                if(this.readyState ==4){
+                    console.log("toevoegen gelukt");
+                    letsgo();
+                }
+                
+            }
+            xhr.open("POST", "http://localhost:8080/account/create", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(deJSON);
+            
+
+        }
+        function verwijderen(persoons_nr){
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange= function(){
+                if(this.readyState ==4){
+                    console.log("verwijderen gelukt "+persoons_nr);
+                    letsgo();
+                }
+                
+            }
+            xhr.open("GET", "http://localhost:8080/account/delete/"+persoons_nr, true);
+            xhr.send()
+            
+
+        }
+        function aanpassen(){
+            console.log("editen gelukt");
+        }
+
+    </script>
+</head>
+<body>
+    <div>Naam: <input id="naamGebruiker"></div>
+    <div>Rol: <input id="rolGebruiker"></div>
+    <div>Emailadres: <input id="emailGebruiker"></div>
+    <div>Bedrijf: <input id="bedrijfGebruiker"></div>
+    <div>Locatie: <input id="locatieGebruiker"></div>
+    <div><button onclick="toevoegen()">Voeg toe</button></div>
+    <div><button onclick="letsgo()">Toon alle accounts</button></div>
+    <div id="alleAccountsTabel">a</div>
+
+</body>
+</html>
