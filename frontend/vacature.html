@@ -12,6 +12,32 @@
         .tb { border-collapse: collapse; }
         .tb th, .tb td { padding: 5px; border: solid 1px #777; }
         .tb th { background-color: lightblue; }
+
+       /* Styling for the popup */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 9999;
+    }
+    .popup-content {
+      background-color: #fff;
+      width: 300px;
+      height: auto;
+      margin:  auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .close {
+      float: right;
+      cursor: pointer;
+    }
+
       </style>
 
     <h1>Vacatures:</h1>
@@ -52,7 +78,28 @@
         </tr>
     </table>
 
-    
+    <div id="popup" class="popup">
+        <div class="popup-content">
+          <span class="close" onclick="closePopup()">&times;</span>
+          <h2>Edit Form</h2>
+          <form id="editForm">
+            <label for="personid">Person ID number</label>
+            <input type="number" id="personid" required><br><br>
+            <label for="bedrijf">Bedrijf</label>
+            <input type="text" id="bedrijf"><br><br>
+            <label for="locatie">Locatie</label>
+            <input type="text" id="locatie"><br><br>
+            <label for="omschrijving">Omschrijving</label>
+            <input type="text" id="omschrijving"><br><br>
+            <label for="uitstroomrichting">Uitstroomrichting</label>
+            <input type="text" id="uitstroomrichting"><br><br>
+            <label for="functie">Functie</label>
+            <input type="text" id="functie"><br><br>
+            <input type="submit" value="Save" onclick="aanpassen()">
+          </form>
+        </div>
+      </div>
+ 
 <script>
 
 // Create Function
@@ -88,6 +135,8 @@ function createVacature() {
     .catch(error => {
         alert('Er is iets fouts gegaan');
     });
+
+    reload();
 }
 
 
@@ -123,22 +172,54 @@ function verwijderen(vacatureId){
     .then(response => {
         alert('Is verwijderd');
     })  
+
+    reload();
 }
 
 // Edit/update function
+// script for pop up
+var qqq;
+function openPopup(vid) {
+    qqq = vid;
+      document.getElementById('popup').style.display = 'block';
+    }
 
-function aanpassen(vacatureId){
-        console.log("Ik ben aan het aanpassening")
+    function closePopup() {
+      document.getElementById('popup').style.display = 'none';
+    }
+
+    // Handle form submission
+    document.getElementById('editForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      // Get the form values
+      var personid = document.getElementById('personid').value;
+      var bedrijf = document.getElementById('bedrijf').value;
+      var locatie = document.getElementById('locatie').value;
+      var omschrijving = document.getElementById('omschrijving').value;
+      var uitstroomrichting = document.getElementById('uitstroomrichting').value;
+      var omschrijving = document.getElementById('omschrijving').value;
+      var functie = document.getElementById('functie').value;
+
+      closePopup();
+    });
+
+
+function aanpassen(vid){
+       
     // Formulier uitlezen
-    let personidInvoer = document.getElementById('vacature-personid').value;
-    let bedrijfInvoer = document.getElementById('vacature-bedrijf').value;
-    let locatieInvoer = document.getElementById('vacature-locatie').value;
-    let omschrijvingInvoer = document.getElementById('vacature-omschrijving').value;
-    let uitstroomrichtingInvoer = document.getElementById('vacature-uitstroomrichting').value;
-    let functieInvoer = document.getElementById('vacature-functie').value;
+    // let vacatureIdInvoer = document.getElementById('vacature-vacatureid').value;
+    let personidInvoer = document.getElementById('personid').value;
+    let bedrijfInvoer = document.getElementById('bedrijf').value;
+    let locatieInvoer = document.getElementById('locatie').value;
+    let omschrijvingInvoer = document.getElementById('omschrijving').value;
+    let uitstroomrichtingInvoer = document.getElementById('uitstroomrichting').value;
+    let functieInvoer = document.getElementById('functie').value;
+
 
     // Make a java script object
     let editVacature = {
+        vacatureId: qqq,
         personid: personidInvoer,
         bedrijf: bedrijfInvoer,
         locatie: locatieInvoer,
@@ -147,7 +228,9 @@ function aanpassen(vacatureId){
         functie: functieInvoer,
     };
 
-    fetch("http://localhost:8080/vacature/update/" + vacatureId, {
+    console.log(editVacature)
+
+    fetch('http://localhost:8080/vacature/update/' + personidInvoer, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -160,6 +243,8 @@ function aanpassen(vacatureId){
     .catch(error => {
         alert('Er is iets fouts gegaan');
     }); 
+
+    reload();
 }
 
 
@@ -181,7 +266,7 @@ function loadVacature(){
                             <td>${vacature.omschrijving}</td>
                             <td>${vacature.uitstroomrichting}</td>
                             <td>${vacature.functie}</td>
-                            <td><button type="button">Aanpassen</button></td>
+                            <td><button type="button" onclick="openPopup(${vacature.vacatureId})">Aanpassen</button></td>
                             <td><button type="button" onclick="verwijderen(${vacature.vacatureId})">Delete</button></td>
                         </tr>
                         `
@@ -192,8 +277,11 @@ function loadVacature(){
         }
 
         loadVacature();
-       
 
+
+        function refresh(){
+            location.reload();
+        }
 
     </script>
 
