@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vacatures</title>
+    
+</head>
+<body>
+        
+    <style>
+        .tb { border-collapse: collapse; }
+        .tb th, .tb td { padding: 5px; border: solid 1px #777; }
+        .tb th { background-color: lightblue; }
+      </style>
+
+    <h1>Vacatures:</h1>
+
+    <table id="vacature-table" class="tb">
+            <tr>
+                <th> Person ID number:</th>
+                <th> Bedrijf </th>
+                <th> Locatie </th>
+                <th> Omschrijving </th>
+                <th> Uitstroomrichting </th>
+                <th> Functie</th> 
+                <th> Edit</th>
+                <th> Delete</th>
+
+            </tr>
+    </table>
+
+    
+    <table class="tb">
+        <thead><h2>Creëren een nieuw vacature</h2></th>
+        <tr>
+            <th> Person ID number:</th>
+            <th> Bedrijf </th>
+            <th> Locatie </th>
+            <th> Omschrijving </th>
+            <th> Uitstroomrichting </th>
+            <th> Functie</th> 
+        </tr>
+        <tr> 
+            <td><input type="number" id="vacature-personid"> </td>
+            <td><input type="text" id="vacature-bedrijf"></td>
+            <td><input type="text" id="vacature-locatie"></td>
+            <td><input type="text" id="vacature-omschrijving"></td>
+            <td><input type="text" id="vacature-uitstroomrichting"></td>
+            <td><input type="text" id="vacature-functie"></td>
+            <td><button type="button" onclick="createVacature()">Submit</button></td>
+        </tr>
+    </table>
+
+    
+<script>
+
+// Create Function
+function createVacature() {
+    // Formulier uitlezen
+    let personidInvoer = document.getElementById('vacature-personid').value;
+    let bedrijfInvoer = document.getElementById('vacature-bedrijf').value;
+    let locatieInvoer = document.getElementById('vacature-locatie').value;
+    let omschrijvingInvoer = document.getElementById('vacature-omschrijving').value;
+    let uitstroomrichtingInvoer = document.getElementById('vacature-uitstroomrichting').value;
+    let functieInvoer = document.getElementById('vacature-functie').value;
+
+    // Make a java script object
+    let newVacature = {
+        personid: personidInvoer,
+        bedrijf: bedrijfInvoer,
+        locatie: locatieInvoer,
+        omschrijving: omschrijvingInvoer,
+        uitstroomrichting: uitstroomrichtingInvoer,
+        functie: functieInvoer,
+    };
+
+    fetch("http://localhost:8080/vacature/create", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newVacature)
+    })
+    .then(response => {
+        alert('Is goedgegaan');
+    })
+    .catch(error => {
+        alert('Er is iets fouts gegaan');
+    });
+}
+
+
+// Delete Function
+
+function verwijderen(vacatureId){
+  // Formulier uitlezen
+    let personidInvoer = document.getElementById('vacature-personid').value;
+    let bedrijfInvoer = document.getElementById('vacature-bedrijf').value;
+    let locatieInvoer = document.getElementById('vacature-locatie').value;
+    let omschrijvingInvoer = document.getElementById('vacature-omschrijving').value;
+    let uitstroomrichtingInvoer = document.getElementById('vacature-uitstroomrichting').value;
+    let functieInvoer = document.getElementById('vacature-functie').value;
+
+    // Make a java script object
+    let removingVacature = {
+        personid: personidInvoer,
+        bedrijf: bedrijfInvoer,
+        locatie: locatieInvoer,
+        omschrijving: omschrijvingInvoer,
+        uitstroomrichting: uitstroomrichtingInvoer,
+        functie: functieInvoer,
+    };
+
+    fetch('http://localhost:8080/vacature/delete/' + vacatureId, {
+
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(removingVacature)
+    })
+    .then(response => {
+        alert('Is verwijderd');
+    })  
+}
+
+// Edit/update function
+
+function aanpassen(vacatureId){
+        console.log("Ik ben aan het aanpassening")
+    // Formulier uitlezen
+    let personidInvoer = document.getElementById('vacature-personid').value;
+    let bedrijfInvoer = document.getElementById('vacature-bedrijf').value;
+    let locatieInvoer = document.getElementById('vacature-locatie').value;
+    let omschrijvingInvoer = document.getElementById('vacature-omschrijving').value;
+    let uitstroomrichtingInvoer = document.getElementById('vacature-uitstroomrichting').value;
+    let functieInvoer = document.getElementById('vacature-functie').value;
+
+    // Make a java script object
+    let editVacature = {
+        personid: personidInvoer,
+        bedrijf: bedrijfInvoer,
+        locatie: locatieInvoer,
+        omschrijving: omschrijvingInvoer,
+        uitstroomrichting: uitstroomrichtingInvoer,
+        functie: functieInvoer,
+    };
+
+    fetch("http://localhost:8080/vacature/update/" + vacatureId, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(editVacature)
+    })
+    .then(response => {
+        alert('Informatie is aangepast');
+    })
+    .catch(error => {
+        alert('Er is iets fouts gegaan');
+    }); 
+}
+
+
+// Load data from data base to webpage
+function loadVacature(){
+            fetch('http://localhost:8080/vacature/all')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Data', data);
+
+                    let vacatureTableElement = document.getElementById('vacature-table');
+                    
+                    data.forEach(vacature => {
+                        vacatureTableElement.innerHTML += `
+                        <tr>
+                            <td>${vacature.personid}</td>
+                            <td>${vacature.bedrijf}</td>
+                            <td>${vacature.locatie}</td>    
+                            <td>${vacature.omschrijving}</td>
+                            <td>${vacature.uitstroomrichting}</td>
+                            <td>${vacature.functie}</td>
+                            <td><button type="button">Aanpassen</button></td>
+                            <td><button type="button" onclick="verwijderen(${vacature.vacatureId})">Delete</button></td>
+                        </tr>
+                        `
+                    });
+
+
+                    })
+        }
+
+        loadVacature();
+       
+
+
+    </script>
+
+</body>
+</html>
