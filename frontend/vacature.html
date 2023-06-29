@@ -58,7 +58,7 @@
 
     
     <table class="tb">
-        <thead><h2>Creëren een nieuw vacature</h2></th>
+        <thead><h2>Voeg een nieuwe vacature toe</h2></th>
         <tr>
             <th> Person ID number:</th>
             <th> Bedrijf </th>
@@ -74,7 +74,7 @@
             <td><input type="text" id="vacature-omschrijving"></td>
             <td><input type="text" id="vacature-uitstroomrichting"></td>
             <td><input type="text" id="vacature-functie"></td>
-            <td><button type="button" onclick="createVacature()">Submit</button></td>
+            <td><button type="button" onclick="createVacature()">Verzenden</button></td>
         </tr>
     </table>
 
@@ -95,7 +95,7 @@
             <input type="text" id="uitstroomrichting"><br><br>
             <label for="functie">Functie</label>
             <input type="text" id="functie"><br><br>
-            <input type="submit" value="Save" onclick="aanpassen()">
+            <input type="verzenden" value="Save" onclick="aanpassen()">
           </form>
         </div>
       </div>
@@ -185,7 +185,7 @@ function openPopup(vid) {
     }
 
     // Handle form submission
-    document.getElementById('editForm').addEventListener('submit', function(event) {
+    document.getElementById('editForm').addEventListener('verzenden', function(event) {
       event.preventDefault();
 
       // Get the form values
