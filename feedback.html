@@ -30,7 +30,7 @@
             document.getElementById("listItemFeedback").innerHTML = "";
 
             for (var i = 0; i < d.length; i++) {
-                document.getElementById("listItemFeedback").innerHTML += addRowFeedback(d[i].cv_nr, d[i]., d[i].mening);
+                document.getElementById("listItemFeedback").innerHTML += addRowFeedback(d[i].cv_nr, d[i].bedrijf, d[i].mening);
                 console.log("ROW: cv_id: " + d[i].cv_nr + "| persoon_nr: " + d[i].persoon_nr + "| bedrijf: " + d[i].bedrijf + "| mening: " + d[i].mening);
             }
         }
