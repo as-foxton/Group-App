@@ -6,6 +6,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="navbar.js"></script>
+    <script>
+        window.onload = tekenmenu;
+    </script>
     <script>
         function letsgo() {
 
@@ -14,10 +29,10 @@
                 if (this.readyState == 4) {
                     console.log(this.responseText);
                     var allAccounts = JSON.parse(this.responseText);
-                    var eindString = "<table border=1><tr><td>Naam</td><td>Rol</td><td>Email</td><td>Wachtwoord</td><td>Bedrijf</td><td>Locatie</td><td>Edit</td><td>Delete</td></tr>";
+                    var eindString = "<table class= table><thead><tr><td>Naam</td><td>Rol</td><td>Email</td><td>Wachtwoord</td><td>Bedrijf</td><td>Locatie</td><td>Edit</td><td>Delete</td></tr></thead>";
 
                     for (var x = 0; x < allAccounts.length; x++) {
-                        eindString += "<tr><td>" + allAccounts[x].naam + "</td><td>" + allAccounts[x].rol + "</td><td>" + allAccounts[x].email + "</td><td>" + allAccounts[x].wachtwoord + "</td><td>" + allAccounts[x].bedrijf + "</td><td>" + allAccounts[x].locatie + "<td><button onclick=sendTo(" + allAccounts[x].persoons_nr + ")>Edit</button></td><td><button onclick=verwijderen(" + allAccounts[x].persoons_nr + ")>Delete</button></td></tr>";
+                        eindString += "<tbody><tr><td>" + allAccounts[x].naam + "</td><td>" + allAccounts[x].rol + "</td><td>" + allAccounts[x].email + "</td><td>" + allAccounts[x].wachtwoord + "</td><td>" + allAccounts[x].bedrijf + "</td><td>" + allAccounts[x].locatie + "<td><button onclick=sendTo(" + allAccounts[x].persoons_nr + ")>Edit</button></td><td><button onclick=verwijderen(" + allAccounts[x].persoons_nr + ")>Delete</button></td></tr></tbody>";
 
                     }
                     eindString += "</table>"
@@ -74,13 +89,13 @@
                 if (this.readyState == 4) {
                     var theAccount = JSON.parse(this.responseText);
                     console.log(theAccount);
-                     document.getElementById("naamGebruiker").value = theAccount.naam;
-                     document.getElementById("rolGebruiker").value = theAccount.rol;
-                     document.getElementById("emailGebruiker").value = theAccount.email;
-                     document.getElementById("wachtwoordGebruiker").value = theAccount.wachtwoord;
-                     document.getElementById("bedrijfGebruiker").value = theAccount.bedrijf;
-                     document.getElementById("locatieGebruiker").value = theAccount.locatie;
-                    var buttonAanroep="<div><button onclick=aanpassen("+persoons_nr+") >Update</button></div>";
+                    document.getElementById("naamGebruiker").value = theAccount.naam;
+                    document.getElementById("rolGebruiker").value = theAccount.rol;
+                    document.getElementById("emailGebruiker").value = theAccount.email;
+                    document.getElementById("wachtwoordGebruiker").value = theAccount.wachtwoord;
+                    document.getElementById("bedrijfGebruiker").value = theAccount.bedrijf;
+                    document.getElementById("locatieGebruiker").value = theAccount.locatie;
+                    var buttonAanroep = "<div><button onclick=aanpassen(" + persoons_nr + ") >Update</button></div>";
                     document.getElementById("updatebutton").innerHTML = buttonAanroep;
                 }
 
@@ -117,16 +132,101 @@
 </head>
 
 <body>
-    <div>Naam: <input id="naamGebruiker"></div>
-    <div>Rol: <input id="rolGebruiker"></div>
-    <div>Emailadres: <input id="emailGebruiker"></div>
-    <div>Wachtwoord: <input id="wachtwoordGebruiker"></div>
-    <div>Bedrijf: <input id="bedrijfGebruiker"></div>
-    <div>Locatie: <input id="locatieGebruiker"></div>
-    <div><button onclick="toevoegen()">Voeg toe</button></div>
-    <div><button onclick="letsgo()">Toon alle accounts</button></div>
-    <div id="updatebutton"></div>
-    <div id="alleAccountsTabel"></div>
+    <nav class="navbar navbar-expand-sm bg-light justify-content-center customnavbar" id="menu">
+
+
+
+    </nav>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-3">
+            
+            <div class="form-group"> 
+                <label for="naamGebruiker">Naam:</label>
+                <input type="text" class="form-control" id="naamGebruiker">
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label for="rolGebruiker">Rol: </label>
+                <input type="text" class="form-control" id="rolGebruiker">
+            </div>
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label for="emailGebruiker">Emailadres: </label>
+                <input type="text" class="form-control" id="emailGebruiker">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label for="wachtwoordGebruiker">Wachtwoord: </label>
+                <input type="password" class="form-control" id="wachtwoordGebruiker">
+            </div>
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-3">
+            
+            <div class="form-group">
+                <label for="bedrijfGebruiker">Bedrijf:  </label>
+                <input type="text" class="form-control" id="bedrijfGebruiker">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <label for="locatieGebruiker">Locatie:  </label>
+                <input type="text" class="form-control" id="locatieGebruiker">
+            </div>
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-3">
+            
+            <div><button type="button" class="btn btn-secondary" onclick="toevoegen()">Voeg toe</button></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-3">
+            
+                <div><button type="button" class="btn btn-secondary" onclick="letsgo()">Toon alle accounts</button></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-3">
+            <div id="updatebutton"></div>
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-3">
+            <div id="alleAccountsTabel"></div>
+            
+        </div>
+    </div>
+    
+  
 
 </body>
 
