@@ -1,0 +1,56 @@
+.customnavbar {
+    /* display: flex; */
+    /* align-items: center; */
+    margin-bottom:30px;
+    height:80px;
+    padding-left:140px;
+    
+}
+
+#map {
+  position: absolute;
+  /* top: 10px; */
+  right: 40px;
+  /* bottom: 10px; */
+  /* width: calc(100% - 220px);  */
+  /* height: 400px;   */
+  width: 20%;  
+  aspect-ratio: 1;
+}
+
+.containermaplogo {
+  display: flex;
+  /* justify-content: flex-start; */
+  align-items: flex-start; 
+}
+
+h1 {
+  margin-left:20px;
+}
+
+/* #map { */
+  /* position: relative; */
+  /* top: 60px; */
+
+/* Set the size of the div element that contains the map */
+/* #map {
+  
+} */
+
+
+/* .navbar-logo {
+    height: 50px; 
+ 
+    object-fit: contain;
+    align-self:center;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-item {
+    height:100px;
+  }
+   */
