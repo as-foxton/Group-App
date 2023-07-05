@@ -95,7 +95,8 @@
             <input type="text" id="uitstroomrichting"><br><br>
             <label for="functie">Functie</label>
             <input type="text" id="functie"><br><br>
-            <input type="verzenden" value="Save" onclick="aanpassen()">
+            <input type="submit" value="Aanpassen2" onclick="aanpassen()">
+            <input type="text" id="abcd" hidden>
           </form>
         </div>
       </div>
@@ -135,6 +136,7 @@ function createVacature() {
     .catch(error => {
         alert('Er is iets fouts gegaan');
     });
+
 }
 
 
@@ -174,9 +176,10 @@ function verwijderen(vacatureId){
 
 // Edit/update function
 // script for pop up
-var qqq;
-function openPopup(vid) {
-    qqq = vid;
+
+function openPopup(qqq) {
+    document.getElementById('abcd').value = qqq;
+    console.log(qqq)
       document.getElementById('popup').style.display = 'block';
     }
 
@@ -185,63 +188,67 @@ function openPopup(vid) {
     }
 
     // Handle form submission
-    document.getElementById('editForm').addEventListener('verzenden', function(event) {
+    document.getElementById('editForm').addEventListener('submit', function(event) {
       event.preventDefault();
 
       // Get the form values
-      var personid = document.getElementById('personid').value;
-      var bedrijf = document.getElementById('bedrijf').value;
-      var locatie = document.getElementById('locatie').value;
-      var omschrijving = document.getElementById('omschrijving').value;
-      var uitstroomrichting = document.getElementById('uitstroomrichting').value;
-      var omschrijving = document.getElementById('omschrijving').value;
-      var functie = document.getElementById('functie').value;
+      // var vacatureId = document.getElementById(vacatureId).value;
+      var personid = document.getElementById('vacature-personid').value;
+      var bedrijf = document.getElementById('vacature-bedrijf').value;
+      var locatie = document.getElementById('vacature-locatie').value;
+      var omschrijving = document.getElementById('vacature-omschrijving').value;
+      var uitstroomrichting = document.getElementById('vacature-uitstroomrichting').value;
+      var omschrijving = document.getElementById('vacature-omschrijving').value;
+      var functie = document.getElementById('vacature-functie').value;
 
       closePopup();
     });
 
 
-function aanpassen(vid){
-       
-    // Formulier uitlezen
-    // let vacatureIdInvoer = document.getElementById('vacature-vacatureid').value;
-    let personidInvoer = document.getElementById('personid').value;
-    let bedrijfInvoer = document.getElementById('bedrijf').value;
-    let locatieInvoer = document.getElementById('locatie').value;
-    let omschrijvingInvoer = document.getElementById('omschrijving').value;
-    let uitstroomrichtingInvoer = document.getElementById('uitstroomrichting').value;
-    let functieInvoer = document.getElementById('functie').value;
+   
 
+    function aanpassen() {
+  let vacatureId = document.getElementById('abcd').value;
 
-    // Make a java script object
-    let editVacature = {
-        vacatureId: qqq,
-        personid: personidInvoer,
-        bedrijf: bedrijfInvoer,
-        locatie: locatieInvoer,
-        omschrijving: omschrijvingInvoer,
-        uitstroomrichting: uitstroomrichtingInvoer,
-        functie: functieInvoer,
-    };
+  // Formulier uitlezen
+  let personidInvoer = document.getElementById('personid').value;
+  let bedrijfInvoer = document.getElementById('bedrijf').value;
+  let locatieInvoer = document.getElementById('locatie').value;
+  let omschrijvingInvoer = document.getElementById('omschrijving').value;
+  let uitstroomrichtingInvoer = document.getElementById('uitstroomrichting').value;
+  let functieInvoer = document.getElementById('functie').value;
 
-    console.log(editVacature)
+  // Make a JavaScript object
+  let editVacature = {
+    personid: personidInvoer,
+    bedrijf: bedrijfInvoer,
+    locatie: locatieInvoer,
+    omschrijving: omschrijvingInvoer,
+    uitstroomrichting: uitstroomrichtingInvoer,
+    functie: functieInvoer,
+  };
 
-    fetch('http://localhost:8080/vacature/update/' + personidInvoer, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(editVacature)
-    })
+  fetch('http://localhost:8080/vacature/update/' + vacatureId, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(editVacature),
+  })
     .then(response => {
+      if (response.ok) {
         alert('Informatie is aangepast');
+      } else {
+        alert('Er is iets fout gegaan');
+      }
     })
     .catch(error => {
-        alert('Er is iets fouts gegaan');
-    }); 
-
-    location.reload()
+      console.error(error);
+      alert('Er is iets fout gegaan');
+    });
 }
+
+
 
 
 // Load data from data base to webpage
