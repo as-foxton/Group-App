@@ -15,58 +15,81 @@
         window.onload = init;
 
         function init() {
-            fetchTable();
+            fetchFeedbacks();
         }
 
-        function fetchTable() {
+        function fetchFeedbacks() {
             fetch("http://localhost:8080/feedback/all")
                 .then(r => r.json())
-                /*.then(d => RefreshFeedbackTable(d))*/
-                .then(d => fillList(d))
+                .then(d => {
+                    console.log("fetchFeedbacks() - List of Feedbacks: ", d)
+                    fillTable(d);
+                })
+                //.catch(e => console.log("fetchFeedbacks() - ", e))
         }
 
-        function fillList(d) {
-            /*document.getElementById("listItemFeedback").innerHTML = addRowFeedback(1, "Google", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");*/
+        function fetchAccount(id) {
+            let data = fetch("http://localhost:8080/feedback/findaccount/" + id)
+                .then(r => r.json())
+                .then(d => {
+                    console.log("fetchAccount() - Account from id returned", d);
+                    return new Promise(resolve => {
+                        console.debug(d);
+                        resolve(d);
+                    })
+                })
+                .catch(e => console.log("fetchAccount() - ", e))
+            return data;
+        }
+
+        async function fillTable(f) {
+            // Clear table
             document.getElementById("listItemFeedback").innerHTML = "";
 
-            for (var i = 0; i < d.length; i++) {
-                document.getElementById("listItemFeedback").innerHTML += addRowFeedback(d[i].cv_nr, d[i]., d[i].mening);
-                console.log("ROW: cv_id: " + d[i].cv_nr + "| persoon_nr: " + d[i].persoon_nr + "| bedrijf: " + d[i].bedrijf + "| mening: " + d[i].mening);
+            for (var i = 0; i < f.length; i++) {
+                account = await fetchAccount(f[i].persoon_nr);
+                console.log("Test Account: ", account);
+
+                //console.log("Naam Trainee: " + account.naam + "| persoon_nr: " + f[i].persoon_nr + "| bedrijf: " + f[i].bedrijf + "| aangenomen: " + f[i].aangenomen + "| mening: " + f[i].mening);
+                if (account) {
+                    document.getElementById("listItemFeedback").innerHTML += addRowFeedback(account.naam, account.bedrijf, f[i].aangenomen, f[i].mening);
+                }
             }
         }
 
-        function addRowFeedback(cvNr, bedrijf, mening) {
+        function addRowFeedback(accNaam, vacBedrijf, aangenomen, mening) {
             return `
-            <li class="list-group-item">
-                <!-- Feedback Object -->
-                <div class="d-flex flex-column">
-                <div class="row" style="height: 30px">
-                    <div class="col-lg-4 row">
-                        <div>CV ID:</div>
-                        <div>${cvNr}</div>
+                    <li class="list-group-item">
+                        <!-- Feedback Object -->
+                        <div class="d-flex flex-column" style="margin-left: 50px; margin-right: 50px">
+                        <div class="row">
+                            <div class="col-lg-3 row">
+                                <div>
+                                    <h5><b>Trainee</b></h5>
+                                    <h5>${accNaam}</h5>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 row">
+                                <div>
+                                    <h5><b>Reviewer Bedrijf</b></h5>    
+                                    <h5>${vacBedrijf}</h5>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 row" style="background-color: ${aangenomen == true ? 'rgb(81, 210, 92)' : 'rgb(227, 58, 58)'}">
+                                <div style="text-align: center"><b>${aangenomen == 1 ? 'Aangenomen' : 'Niet Aangenomen'}</b></div>
+                            </div>
+                            <div class="col-lg-4"></div>
+                        </div>
+                        <div class="row">
+                            <div class="container-fluid" placeholder="Mening Placeholder" style="background: rgb(227, 227, 233)">
+                                <!-- Feedback.mening -->
+                                ${mening}
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-lg-4 row">
-                        <div>Bedrijf:</div>
-                        <div>${bedrijf}</div>
-                    </div>
-                    <div class="col-lg-4"></div>
-                </div>
-                <div class="row">
-                    <div class="container-fluid" placeholder="Mening Placeholder" style="background: rgb(227, 227, 233)">
-                        <!-- Feedback.mening -->
-                        ${mening}
-                    </div>
-                </div>
-            </div>
-            </li>    
-            `
+                    </li>
+                    `
         }
-
-        //function letsgo() {
-        //    fetch("http://localhost:8080/feedback/all")
-        //        .then(r => r.json())
-        //        .then(d => verwerkgegevens(d))
-        //}
 
         function verwerkgegevens(data) {
             console.log(data)
@@ -82,14 +105,24 @@
         // Save entity to table
         function saveFeedback() {
             // Formulier uitlezen
+            let naamInput = document.getElementById('naamInput').value;
             let bedrijfInput = document.getElementById('bedrijfInput').value;
             let feedbackInput = document.getElementById('feedbackInput').value;
+            let aangenomenInput;
+
+            if (document.getElementById('aangenomenInput').value == "on") {
+                aangenomenInput = 1;
+            }
+            else {
+                aangenomenInput = 0;
+            }
 
             let newFeedback = {
                 cv_nr: 1, // <--- cv nummer ophalen van trainee voor wie de feedback is
-                persoon_nr: 1, // <--- trainee voor wie de feedback is
+                persoon_nr: naamInput,
                 bedrijf: bedrijfInput,
-                mening: feedbackInput
+                mening: feedbackInput,
+                aangenomen: aangenomenInput
             }
 
             fetch("http://localhost:8080/feedback/save", {
@@ -98,7 +131,7 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(newFeedback)
-            })
+                })
                 .then(response => {
                     alert('Saving Feedback: Is goedgegaan');
                 })
@@ -107,65 +140,24 @@
                 });
         }
 
-
-        function RefreshFeedbackTable(data) {
-            document.getElementById("feedbackTable").innerHTML =
-                `<tr>
-                    <th><strong>Persoon ID</strong></th>
-                    <th><strong>Cv ID</strong></th>
-                    <th><strong>Aangenomen</strong></th>
-                    <th><strong>Feedback</strong></th>
-            </tr>`
-
-            //console.log("TEST: ---Data: " + data);
-
-            for (var i = 0; i < data.length; i++) {
-                document.getElementById("feedbackTable").innerHTML +=
-                    `<tr>
-                    <td>${data[i].persoon_nr}</td>
-                    <td>${data[i].cv_nr}</td>
-                    <td>${data[i].aangenomen}</td>
-                    <td>${data[i].mening}</td>
-                </tr>`
-
-                console.log("TEST: PersoonNr: " + data[i].persoon_nr + "| CvNr: " + data[i].cv_nr + "| Add to table aangenomen: " + data[i].aangenomen + "| Add to table mening: " + data[i].mening);
-            }
-
-        }
-
-        function openPopup() {
-            var p = document.getElementById("formContainer");
-            //p.style.display = "block";
-            p.style.visibility = "visible";
-        }
-
-        function closePopup() {
-            var p = document.getElementById("formContainer");
-            //p.style.display = "none";
-            p.style.visibility = "hidden";
-        }
+        // Executed when modal is hidden
+        $(document).ready(function () {
+            $("#myModal").on('hidden.bs.modal', function () {
+                fetchFeedbacks();
+            });
+        });
 
     </script>
 
 </head>
 
 <body>
-    <h2>Feedback Pagina</h2>
-
-    <!--<button onclick="letsgo()">Klik Hier</button>-->
-    <button onclick="fetchTable()">Refresh Table</button>
+    <h1>Feedback Pagina</h1>
 
     <div id="feedbackTable">...</div>
 
-    <button class="button" onclick="openPopup()">Open Form</button>
-
-    <!-- Button to Open the Modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-        Mening Schrijven
-    </button>
-
     <!-- The Modal -->
-    <div class="modal" id="myModal">
+    <div class="modal fade" id="myModal">
         <div class="modal-dialog">
             <div class="modal-content">
 
@@ -180,8 +172,8 @@
                     <!-- Form body -->
                     <form action="/action_page.php">
                         <div class="form-group">
-                            <label for="email">CV nummer</label>
-                            <input type="text" class="form-control" placeholder="ID nummer van CV..." id="cvInput">
+                            <label for="email">ID van Trainee</label>
+                            <input type="text" class="form-control" placeholder="ID van trainee..." id="naamInput">
                         </div>
                         <div class="form-group">
                             <label for="email">Van welk bedrijf</label>
@@ -193,7 +185,7 @@
                         </div>
                         <div class="form-group form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox"> Aangenomen
+                                <input class="form-check-input" type="checkbox" id="aangenomenInput"> Aangenomen
                             </label>
                         </div>
                     </form>
@@ -201,7 +193,7 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="saveFeedback()">Versturen</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="saveFeedback(); fetchFeedbacks()">Versturen</button>
                 </div>
 
             </div>
@@ -210,8 +202,20 @@
 
 
     <!-- Feedback List Body -->
-    <h1>Feedbacks</h1>
     <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 row">
+                <h2>Feedbacks</h2>
+            </div>
+            <div class="col-lg-6 row"></div>
+            <div class="col-lg-3 row">
+                <!-- Button to Open the Modal -->
+                <button type="button" class="btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                    Mening Schrijven
+                </button>
+            </div>
+        </div>
+
         <!-- List of feedbacks -->
         <ul class="list-group" id="listItemFeedback">
             <li class="list-group-item">
@@ -224,40 +228,7 @@
     </div>>
 
 
-    <!-- Feedback Form (OLD)-->
-    <div class="container" id="formContainer">
-        <div class="title"><b>Feedback Form</b></div>
-        <form action="action_page.php" class="feedbackForm">
-            <div class="row">
-                <div class="col-25">
-                    <label for="bedrijfInput">Bedrijf</label>
-                </div>
-                <div class="col-75">
-                    <input type="text" id="bedrijfInput" name="firstname" placeholder="bedrijf">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-25">
-                    <label for="aangenomenInput">Aangenomen</label>
-                </div>
-                <div class="col-75">
-                    <input type="text" id="aangenomenInput" name="lastname" placeholder="...">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-25">
-                    <label for="meningInput">Mening</label>
-                </div>
-                <div class="col-75">
-                    <textarea id="meningInput" name="subject" placeholder="Feedback over de trainee..." style="height:200px"></textarea>
-                </div>
-            </div>
-            <div class="row">
-                <!--<input type="submit" value="Submit" onclick="closePopup()">-->
-                <button onclick="closePopup()">Close Form</button>
-            </div>
-        </form>
-    </div>
+
 
 </body>
 
@@ -276,21 +247,21 @@
         cursor: pointer;
     }
 
-    /* The actual popup (appears on top) */
-    .popup .popuptext {
-        visibility: hidden;
-        width: 160px;
-        background-color: #555;
-        color: #fff;
-        text-align: center;
-        border-radius: 6px;
-        padding: 8px 0;
-        position: absolute;
-        z-index: 1;
-        bottom: 125%;
-        left: 50%;
-        margin-left: -80px;
-    }
+        /* The actual popup (appears on top) */
+        .popup .popuptext {
+            visibility: hidden;
+            width: 160px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -80px;
+        }
 
     .container {
         visibility: hidden;
@@ -329,8 +300,87 @@
 </style>
 
 <script>
-    
+
 
 </script>
 
 </html>
+
+<!--function openPopup() {
+            var p = document.getElementById("formContainer");
+            //p.style.display = "block";
+            p.style.visibility = "visible";
+        }
+
+        function closePopup() {
+            var p = document.getElementById("formContainer");
+            //p.style.display = "none";
+            p.style.visibility = "hidden";
+        }-->
+
+<!--<button class="button" onclick="openPopup()">Open Form</button>-->
+<!--<button onclick="letsgo()">Klik Hier</button>-->
+<!--//function letsgo() {
+        //    fetch("http://localhost:8080/feedback/all")
+        //        .then(r => r.json())
+        //        .then(d => verwerkgegevens(d))
+        //}-->
+<!--<button onclick="fetchTable()">Refresh Table</button>-->
+<!--function RefreshFeedbackTable(data) {
+            document.getElementById("feedbackTable").innerHTML =
+                `<tr>
+    <th><strong>Persoon ID</strong></th>
+    <th><strong>Cv ID</strong></th>
+    <th><strong>Aangenomen</strong></th>
+    <th><strong>Feedback</strong></th>
+</tr>`
+
+            //console.log("TEST: ---Data: " + data);
+
+            for (var i = 0; i < data.length; i++) {
+                document.getElementById("feedbackTable").innerHTML +=
+                    `<tr>
+    <td>${data[i].persoon_nr}</td>
+    <td>${data[i].cv_nr}</td>
+    <td>${data[i].aangenomen}</td>
+    <td>${data[i].mening}</td>
+</tr>`
+
+                console.log("TEST: PersoonNr: " + data[i].persoon_nr + "| CvNr: " + data[i].cv_nr + "| Add to table aangenomen: " + data[i].aangenomen + "| Add to table mening: " + data[i].mening);
+            }
+
+        }-->
+<!-- Feedback Form (OLD)-->
+<!--<div class="container" id="formContainer">
+    <div class="title"><b>Feedback Form</b></div>
+    <form action="action_page.php" class="feedbackForm">
+        <div class="row">
+            <div class="col-25">
+                <label for="bedrijfInput">Bedrijf</label>
+            </div>
+            <div class="col-75">
+                <input type="text" id="bedrijfInput" name="firstname" placeholder="bedrijf">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="aangenomenInput">Aangenomen</label>
+            </div>
+            <div class="col-75">
+                <input type="text" id="aangenomenInput" name="lastname" placeholder="...">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="meningInput">Mening</label>
+            </div>
+            <div class="col-75">
+                <textarea id="meningInput" name="subject" placeholder="Feedback over de trainee..." style="height:200px"></textarea>
+            </div>
+        </div>
+        <div class="row">-->
+<!--<input type="submit" value="Submit" onclick="closePopup()">-->
+<!--<button onclick="closePopup()">Close Form</button>
+        </div>
+    </form>
+</div>-->
