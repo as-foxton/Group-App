@@ -29,10 +29,10 @@
                 if (this.readyState == 4) {
                     console.log(this.responseText);
                     var allAccounts = JSON.parse(this.responseText);
-                    var eindString = "<table class= table><thead><tr><td>Naam</td><td>Rol</td><td>Email</td><td>Wachtwoord</td><td>Bedrijf</td><td>Locatie</td><td>Edit</td><td>Delete</td></tr></thead>";
+                    var eindString = "<table class= 'table mt-5'><thead><tr><th>Naam</th><th>Rol</th><th>Email</th><th>Wachtwoord</th><th>Bedrijf</th><th>Locatie</th><th>Edit</th><th>Delete</th></tr></thead>";
 
                     for (var x = 0; x < allAccounts.length; x++) {
-                        eindString += "<tbody><tr><td>" + allAccounts[x].naam + "</td><td>" + allAccounts[x].rol + "</td><td>" + allAccounts[x].email + "</td><td>" + allAccounts[x].wachtwoord + "</td><td>" + allAccounts[x].bedrijf + "</td><td>" + allAccounts[x].locatie + "<td><button onclick=sendTo(" + allAccounts[x].persoons_nr + ")>Edit</button></td><td><button onclick=verwijderen(" + allAccounts[x].persoons_nr + ")>Delete</button></td></tr></tbody>";
+                        eindString += "<tbody><tr><td>" + allAccounts[x].naam + "</td><td>" + allAccounts[x].rol + "</td><td>" + allAccounts[x].email + "</td><td>" + allAccounts[x].wachtwoord + "</td><td>" + allAccounts[x].bedrijf + "</td><td>" + allAccounts[x].locatie + "<td><button class= 'btn btn-secondary' onclick=sendTo(" + allAccounts[x].persoons_nr + ")>Edit</button></td><td><button class= 'btn btn-danger' onclick=verwijderen(" + allAccounts[x].persoons_nr + ")>Delete</button></td></tr></tbody>";
 
                     }
                     eindString += "</table>"
@@ -95,7 +95,7 @@
                     document.getElementById("wachtwoordGebruiker").value = theAccount.wachtwoord;
                     document.getElementById("bedrijfGebruiker").value = theAccount.bedrijf;
                     document.getElementById("locatieGebruiker").value = theAccount.locatie;
-                    var buttonAanroep = "<div><button onclick=aanpassen(" + persoons_nr + ") >Update</button></div>";
+                    var buttonAanroep = "<div><button class= 'btn btn-secondary mt-5' onclick=aanpassen(" + persoons_nr + ") >Update</button></div>";
                     document.getElementById("updatebutton").innerHTML = buttonAanroep;
                 }
 
@@ -137,96 +137,88 @@
 
 
     </nav>
-    <div class="row">
-        <div class="col-lg-1"></div>
-        <div class="col-lg-3">
-            
-            <div class="form-group"> 
-                <label for="naamGebruiker">Naam:</label>
-                <input type="text" class="form-control" id="naamGebruiker">
-            </div>
-        </div>
+    <div class="container-fluid px-3">
+        <div class="row">
+            <div class="col-3">
 
-    </div>
-    <div class="row">
-        <div class="col-lg-1"></div>
-        <div class="col-lg-3">
-            <div class="form-group">
-                <label for="rolGebruiker">Rol: </label>
-                <input type="text" class="form-control" id="rolGebruiker">
+                <div class="form-group">
+                    <label for="naamGebruiker">Naam:</label>
+                    <input type="text" class="form-control" id="naamGebruiker">
+                </div>
             </div>
-            
+
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-1"></div>
-        <div class="col-lg-3">
-            <div class="form-group">
-                <label for="emailGebruiker">Emailadres: </label>
-                <input type="text" class="form-control" id="emailGebruiker">
+        <div class="row">
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="rolGebruiker">Rol: </label>
+                    <input type="text" class="form-control" id="rolGebruiker">
+                </div>
+
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-1"></div>
-        <div class="col-lg-3">
-            <div class="form-group">
-                <label for="wachtwoordGebruiker">Wachtwoord: </label>
-                <input type="password" class="form-control" id="wachtwoordGebruiker">
-            </div>
-            
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-1"></div>
-        <div class="col-lg-3">
-            
-            <div class="form-group">
-                <label for="bedrijfGebruiker">Bedrijf:  </label>
-                <input type="text" class="form-control" id="bedrijfGebruiker">
+        <div class="row">
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="emailGebruiker">Emailadres: </label>
+                    <input type="text" class="form-control" id="emailGebruiker">
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-1"></div>
-        <div class="col-lg-3">
-            <div class="form-group">
-                <label for="locatieGebruiker">Locatie:  </label>
-                <input type="text" class="form-control" id="locatieGebruiker">
+        <div class="row">
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="wachtwoordGebruiker">Wachtwoord: </label>
+                    <input type="password" class="form-control" id="wachtwoordGebruiker">
+                </div>
+
             </div>
-            
+        </div>
+        <div class="row">
+            <div class="col-3">
+
+                <div class="form-group">
+                    <label for="bedrijfGebruiker">Bedrijf: </label>
+                    <input type="text" class="form-control" id="bedrijfGebruiker">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="locatieGebruiker">Locatie: </label>
+                    <input type="text" class="form-control" id="locatieGebruiker">
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+
+                <div><button type="button" class="btn btn-secondary btn-block mt-5" onclick="toevoegen()">Voeg toe</button></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+
+                <div><button type="button" class="btn btn-secondary btn-block mt-5" onclick="letsgo()">Toon alle accounts</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <div id="updatebutton"></div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <div id="alleAccountsTabel"></div>
+
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-1"></div>
-        <div class="col-lg-3">
-            
-            <div><button type="button" class="btn btn-secondary" onclick="toevoegen()">Voeg toe</button></div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-1"></div>
-        <div class="col-lg-3">
-            
-                <div><button type="button" class="btn btn-secondary" onclick="letsgo()">Toon alle accounts</button></div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-1"></div>
-        <div class="col-lg-3">
-            <div id="updatebutton"></div>
-            
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-1"></div>
-        <div class="col-lg-3">
-            <div id="alleAccountsTabel"></div>
-            
-        </div>
-    </div>
-    
-  
+
 
 </body>
 
