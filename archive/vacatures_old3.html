@@ -30,40 +30,82 @@
     </nav> 
         
     <style>
-        .tb { border-collapse: collapse; }
-        .tb th, .tb td { padding: 5px; border: solid 1px #777; }
-        .tb th { background-color: lightblue; }
 
-       /* Styling for the popup */
+    /* Styling for the popup */
     .popup {
-      display: none;
+      display: none; /* Hide the pop-up by default */
       position: fixed;
-      top: 0;
+      z-index: 1;
       left: 0;
+      top: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 9999;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
     }
+
     .popup-content {
-      background-color: #fff;
-      width: 300px;
-      height: auto;
-      margin:  auto;
+      background-color: #fefefe;
+      margin: 15% auto;
       padding: 20px;
-      border: 1px solid #ccc;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 600px;
       border-radius: 5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      font-family: Arial, sans-serif;
     }
+
+    .popup-content h2 {
+      margin-top: 0;
+    }
+
     .close {
+      color: #aaa;
       float: right;
+      font-size: 24px;
+      font-weight: bold;
       cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    textarea{
+      width: 100%;
+      padding: 8px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+      height: 150px;
+      border: 1px solid black;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      border-radius: 2px;
+      border: 1px solid black;
+      margin-bottom: 10px;
+      height: 100%;
     }
 
       </style>
 
+<div class="container">
+  
     <h1>Vacatures:</h1>
 
-    <table id="vacature-table" class="tb">
+    <table id="vacature-table" class="table table-bordered">
             <tr>
                 <th> Person ID number:</th>
                 <th> Bedrijf </th>
@@ -76,47 +118,74 @@
 
             </tr>
     </table>
+</div>
+   
 
-    
-    <table class="tb">
-        <thead><h2>Voeg een nieuwe vacature toe</h2></th>
-        <tr>
-            <th> Person ID number:</th>
-            <th> Bedrijf </th>
-            <th> Locatie </th>
-            <th> Omschrijving </th>
-            <th> Uitstroomrichting </th>
-            <th> Functie</th> 
-        </tr>
-        <tr> 
-            <td><input type="number" id="vacature-personid"> </td>
-            <td><input type="text" id="vacature-bedrijf"></td>
-            <td><input type="text" id="vacature-locatie"></td>
-            <td><input type="text" id="vacature-omschrijving"></td>
-            <td><input type="text" id="vacature-uitstroomrichting"></td>
-            <td><input type="text" id="vacature-functie"></td>
-            <td><button type="button" onclick="createVacature()">Verzenden</button></td>
-        </tr>
-    </table>
+<!-- Modal Start -->
+<div class="container">
+  <!-- Button to Open the Modal -->
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+    Voeg een vacature toe
+  </button>
+
+  <!-- The Modal -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Nieuwe vacature:</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <label for="personid">Person ID number:</label>
+            <input type="number" id="vacature-personid" required><br><br>
+            <label for="bedrijf">Bedrijf:</label>
+            <input type="text" id="vacature-bedrijf"><br><br>
+            <label for="locatie">Locatie:</label>
+            <input type="text" id="vacature-locatie"><br><br>
+            <label for="omschrijving">Omschrijving:</label>
+            <textarea type="text" id="vacature-omschrijving"></textarea><br><br>
+            <label for="uitstroomrichting">Uitstroomrichting:</label>
+            <input id="vacature-uitstroomrichting"><br><br>
+            <label for="functie">Functie:</label>
+            <input type="text" id="vacature-functie"><br><br>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <input type="submit" value="Voeg toe" class="btn btn-primary" onclick="createVacature()">
+        </div>
+        
+      </div>
+    </div>
+</div>
+  
+  </div>
+
+          <!-- Modal End -->
 
     <div id="popup" class="popup">
         <div class="popup-content">
           <span class="close" onclick="closePopup()">&times;</span>
-          <h2>Edit Form</h2>
+          <h2>Edit Form</h2><br>
           <form id="editForm">
-            <label for="personid">Person ID number</label>
+            <label for="personid">Person ID number:</label>
             <input type="number" id="personid" required><br><br>
-            <label for="bedrijf">Bedrijf</label>
-            <input type="text" id="bedrijf"><br><br>
-            <label for="locatie">Locatie</label>
-            <input type="text" id="locatie"><br><br>
-            <label for="omschrijving">Omschrijving</label>
-            <input type="text" id="omschrijving"><br><br>
-            <label for="uitstroomrichting">Uitstroomrichting</label>
-            <input type="text" id="uitstroomrichting"><br><br>
-            <label for="functie">Functie</label>
-            <input type="text" id="functie"><br><br>
-            <input type="submit" value="Aanpassen2" onclick="aanpassen()">
+            <label for="bedrijf">Bedrijf:</label>
+            <input type="text" id="bedrijf" required><br><br>
+            <label for="locatie">Locatie:</label>
+            <input type="text" id="locatie" required><br><br>
+            <label for="omschrijving">Omschrijving:</label>
+            <textarea type="text" id="omschrijving" required></textarea><br><br>
+            <label for="uitstroomrichting">Uitstroomrichting:</label>
+            <input id="uitstroomrichting" required><br><br>
+            <label for="functie">Functie:</label>
+            <input type="text" id="functie" requir><br><br>
+            <input type="submit" value="Aanpassen" class="btn btn-primary" onclick="aanpassen()">
             <input type="text" id="abcd" hidden>
           </form>
         </div>
@@ -223,8 +292,8 @@ function openPopup(qqq) {
       var functie = document.getElementById('vacature-functie').value;
 
       closePopup();
-    });
-
+    })
+  
 
    
 
@@ -290,8 +359,8 @@ function loadVacature(){
                             <td>${vacature.omschrijving}</td>
                             <td>${vacature.uitstroomrichting}</td>
                             <td>${vacature.functie}</td>
-                            <td><button type="button" onclick="openPopup(${vacature.vacatureId})">Aanpassen</button></td>
-                            <td><button type="button" onclick="verwijderen(${vacature.vacatureId})">Delete</button></td>
+                            <td><button type="button" class="btn btn-primary" onclick="openPopup(${vacature.vacatureId})">Aanpassen</button></td>
+                            <td><button type="button" class="btn btn-dark" onclick="verwijderen(${vacature.vacatureId})">Delete</button></td>
                         </tr>
                         `
                     });
