@@ -9,17 +9,34 @@ function tekenmenu() {
 </button>
 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
   <div class="navbar-nav">
-    <a class="nav-item nav-link active" href="index.html">Home <span class="sr-only">(current)</span></a>
-    <a class="nav-item nav-link" href="vacatures.html">Vacatures</a>
-    <a class="nav-item nav-link" href="#">CVs</a>
-    <a class="nav-item nav-link" href="#">Accounts</a>
+    <a class="nav-item nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+    <a class="nav-item nav-link" href="vacature.html">Vacatures</a>
+    <a class="nav-item nav-link" href="CurriculumVitae.html">CVs</a>
+    <a class="nav-item nav-link" href="account.html">Accounts</a>
     <a class="nav-item nav-link" href="#">Profiel</a>
 
   </div>
+  <div class="navbar-nav ml-auto">
+      <div style="position: relative; top: -5px; margin-right: 20px;">
+        <span class="navbar-text">
+          Ingelogd als <span style="color: #38b1ad;">Jefta Mulder</span> 
+        </span>
+        <span class="navbar-text" style="display: block; margin-top:-17px; text-align:right; color:#38b1ad; text-decoration: underline; font-size:0.95em;">
+          Uitloggen
+        </span>
+        </div>
+  
 </div>
 
   
    `
+{/* <div class="navbar-nav ml-auto">
+  <span class="navbar-text" style="position: relative; top: -15px; margin-right: 20px;">    Ingelogd als <span style="color: #38b1ad;">Jefta Mulder</span>     </span>
+  <span class="navbar-text" style="position: relative; top: 20px; margin-right: 20px;">
+        Additional text below
+      </span>
+      </div> */}
+
 }
 
 {/* <li class="nav-item">
