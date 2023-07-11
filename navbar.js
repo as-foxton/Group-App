@@ -1,7 +1,9 @@
+
 function tekenmenu() {
   document.getElementById("menu").innerHTML = `
   <link rel="stylesheet" type="text/css" href="styles.css">
   <nav class="navbar navbar-expand-sm navbar-dark justify-content-center customnavbar" style="background-color: black !important;">
+
   
   <div class="order-1 order-md-0">
       <ul class="navbar-nav mr-auto">

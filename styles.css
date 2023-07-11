@@ -1,9 +1,18 @@
 .customnavbar {
     margin-bottom:100px;
 }
+
 .nav-link.active{
     color: rgb(56, 177, 173) !important;
 }
 .nav-link.disabled{
     color: azure !important;
 }
+
+
+/* 
+body {
+    background-color: gray !important;
+  }
+   */
+
