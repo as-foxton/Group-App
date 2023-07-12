@@ -18,7 +18,7 @@ function tekenmenu() {
         <a class="nav-link active" href="vacatures.html"> Vacatures </a>
       </li>
       <li class="nav-item">
-      <a class="nav-link active" href="curriculumvitae.html"> CVs </a>
+      <a class="nav-link active" href="showcvs.html"> CVs </a>
       </li>
       <li class="nav-item">
       <a class="nav-link active" href="account.html"> Accounts </a>
