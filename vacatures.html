@@ -154,16 +154,18 @@
         
         <!-- Modal body -->
         <div class="modal-body">
+            <!--<label for="personid">Person ID number:</label>
+            <input type="number" id="vacature-personid" required><br><br>-->
             <label for="bedrijf">Bedrijf:</label>
-            <input type="text" id="bedrijf"><br><br>
+            <input type="text" class="form-control" id="vacature-bedrijf"><br><br>
             <label for="locatie">Locatie:</label>
-            <input type="text" id="locatie"><br><br>
+            <input type="text" class="form-control" id="vacature-locatie"><br><br>
             <label for="omschrijving">Omschrijving:</label>
-            <textarea id="omschrijving"></textarea><br><br>
+            <textarea id="vacature-omschrijving"></textarea><br><br>
             <label for="uitstroomRichting">Uitstroomrichting:</label>
-            <input type="text" id="uitstroomRichting"><br><br>
+            <input type="text" class="form-control" id="vacature-uitstroomRichting"><br><br>
             <label for="functie">Functie:</label>
-            <input type="text" id="functie"><br><br>
+            <input type="text" class="form-control" id="vacature-functie"><br><br>
         </div>
         
         <!-- Modal footer -->
@@ -205,12 +207,12 @@
 // Create Function
 function createVacature() {
     // Formulier uitlezen
-    
-    let bedrijfInvoer = document.getElementById('bedrijf').value;
-    let locatieInvoer = document.getElementById('locatie').value;
-    let omschrijvingInvoer = document.getElementById('omschrijving').value;
-    let uitstroomRichtingInvoer = document.getElementById('uitstroomRichting').value;
-    let functieInvoer = document.getElementById('functie').value;
+
+    let bedrijfInvoer = document.getElementById('vacature-bedrijf').value;
+    let locatieInvoer = document.getElementById('vacature-locatie').value;
+    let omschrijvingInvoer = document.getElementById('vacature-omschrijving').value;
+    let uitstroomRichtingInvoer = document.getElementById('vacature-uitstroomRichting').value;
+    let functieInvoer = document.getElementById('vacature-functie').value;
 
     // Make a java script object
     let newVacature = {
@@ -220,6 +222,7 @@ function createVacature() {
         omschrijving: omschrijvingInvoer,
         uitstroomRichting: uitstroomRichtingInvoer,
         functie: functieInvoer,
+        account: { id: sessionStorage.userID }
     };
 
     fetch("http://localhost:8080/vacature/create", {
@@ -229,7 +232,7 @@ function createVacature() {
         },
         body: JSON.stringify(newVacature)
     })
-    refreshPage();
+    //refreshPage();
    }
 
 
@@ -334,7 +337,15 @@ function openPopup(qqq) {
   refreshPage();
 }
 
-
+    function checkLogin() {
+        if (sessionStorage.userID) {
+            fetch(`http://localhost:8080/account/${sessionStorage.userID}`, {
+                method: 'GET'
+            })
+                .then(response => response.json())
+                .then(data => setName(data));
+        }
+    }
 
 
 // Load data from data base to webpage
@@ -366,7 +377,7 @@ function loadVacature(){
                     })
         }
 
-        loadVacature();
+        //loadVacature();
 
         function refreshPage(){
     window.location.reload();

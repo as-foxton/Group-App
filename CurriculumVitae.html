@@ -45,7 +45,7 @@
         <input type="text" id="werkHistorie">
         <input type="text" id="uitstroomRichting">
         <input type="text" id="specialiteit">
-        <input type="number" id="personId">
+        <input type="number" id="persoonId">
         <button type="button" onclick="saveCV()">Save</button>
     </div>
 
@@ -68,7 +68,7 @@
                     <td><input type="text" id="werkHistorie${cv.id}" value=${cv.werkHistorie}></td>
                     <td><input type="text" id="uitstroomRichting${cv.id}" value=${cv.uitstroomRichting}></td>
                     <td><input type="text" id="specialiteit${cv.id}" value=${cv.specialiteit}></td>
-                    <td><input type="text" id="personId${cv.id}" value=${cv.personId}></td>
+                    <td><input type="text" id="persoonId${cv.id}" value=${cv.persoonId}></td>
                     <td><button type="button" onclick="update(${cv.id})">update</button></td>
                     <td><button type="button" onclick="delete_cv(${cv.id})">delete</button></td>
                 </tr>
@@ -82,7 +82,7 @@
                 werkHistorie:document.getElementById(`werkHistorie${id}`).value,
                 uitstroomRichting:document.getElementById(`uitstroomRichting${id}`).value,
                 specialiteit:document.getElementById(`specialiteit${id}`).value,
-                personId:document.getElementById(`personId${id}`).value
+                persoonId:document.getElementById(`persoonId${id}`).value
             };
             fetch(`http://localhost:8080/curriculum_vitae/update?id=${id}`, {
                 method: 'PUT',
@@ -104,8 +104,10 @@
                 werkHistorie:document.getElementById('werkHistorie').value,
                 uitstroomRichting:document.getElementById('uitstroomRichting').value,
                 specialiteit:document.getElementById('specialiteit').value,
-                personId:document.getElementById('personId').value
+                persoonId:document.getElementById('persoonId').value
             };
+
+            console.log("Value van persoonId --> " + document.getElementById('persoonId').value)
 
             fetch(`http://localhost:8080/curriculum_vitae/add`, {
                 method: 'POST',
