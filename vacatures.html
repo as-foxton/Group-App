@@ -116,7 +116,7 @@
   <div class="col-10">
     <table id="vacature-table" class="table table-bordered">
             <tr>
-                <th> Person ID number:</th>
+                <th> ID number:</th>
                 <th> Bedrijf </th>
                 <th> Locatie </th>
                 <th> Omschrijving </th>
@@ -154,16 +154,14 @@
         
         <!-- Modal body -->
         <div class="modal-body">
-            <label for="personid">Person ID number:</label>
-            <input type="number" id="personid" required><br><br>
             <label for="bedrijf">Bedrijf:</label>
             <input type="text" id="bedrijf"><br><br>
             <label for="locatie">Locatie:</label>
             <input type="text" id="locatie"><br><br>
             <label for="omschrijving">Omschrijving:</label>
             <textarea id="omschrijving"></textarea><br><br>
-            <label for="uitstroomrichting">Uitstroomrichting:</label>
-            <input type="text" id="uitstroomrichting"><br><br>
+            <label for="uitstroomRichting">Uitstroomrichting:</label>
+            <input type="text" id="uitstroomRichting"><br><br>
             <label for="functie">Functie:</label>
             <input type="text" id="functie"><br><br>
         </div>
@@ -186,19 +184,17 @@
           <span class="close" onclick="closePopup()">&times;</span>
           <h2>Edit Form</h2><br>
           <form id="editForm">
-            <label for="personid">Person ID number:</label>
-            <input type="number" id="personid" required><br><br>
             <label for="bedrijf">Bedrijf:</label>
-            <input type="text" id="bedrijf" required><br><br>
+            <input type="text" id="vacature-bedrijf" required><br><br>
             <label for="locatie">Locatie:</label>
-            <input type="text" id="locatie" required><br><br>
+            <input type="text" id="vacature-locatie" required><br><br>
             <label for="omschrijving">Omschrijving:</label>
-            <textarea type="text" id="omschrijving" required></textarea><br><br>
-            <label for="uitstroomrichting">Uitstroomrichting:</label>
-            <input id="uitstroomrichting" required><br><br>
+            <textarea type="text" id="vacature-omschrijving" required></textarea><br><br>
+            <label for="uitstroomRichting">Uitstroomrichting:</label>
+            <input id="vacature-uitstroomRichting" required><br><br>
             <label for="functie">Functie:</label>
-            <input type="text" id="functie" required><br><br>
-            <input type="submit" value="Aanpassen" class="btn btn-primary" onclick="aanpassen()">
+            <input type="text" id="vacature-functie" required><br><br>
+            <input type="submit" value="Submit" class="btn btn-primary" onclick="aanpassen()">
             <input type="text" id="abcd" hidden>
           </form>
         </div>
@@ -209,20 +205,20 @@
 // Create Function
 function createVacature() {
     // Formulier uitlezen
-    let personidInvoer = document.getElementById('vacature-personid').value;
-    let bedrijfInvoer = document.getElementById('vacature-bedrijf').value;
-    let locatieInvoer = document.getElementById('vacature-locatie').value;
-    let omschrijvingInvoer = document.getElementById('vacature-omschrijving').value;
-    let uitstroomrichtingInvoer = document.getElementById('vacature-uitstroomrichting').value;
-    let functieInvoer = document.getElementById('vacature-functie').value;
+    
+    let bedrijfInvoer = document.getElementById('bedrijf').value;
+    let locatieInvoer = document.getElementById('locatie').value;
+    let omschrijvingInvoer = document.getElementById('omschrijving').value;
+    let uitstroomRichtingInvoer = document.getElementById('uitstroomRichting').value;
+    let functieInvoer = document.getElementById('functie').value;
 
     // Make a java script object
     let newVacature = {
-        personid: personidInvoer,
+        
         bedrijf: bedrijfInvoer,
         locatie: locatieInvoer,
         omschrijving: omschrijvingInvoer,
-        uitstroomrichting: uitstroomrichtingInvoer,
+        uitstroomRichting: uitstroomRichtingInvoer,
         functie: functieInvoer,
     };
 
@@ -233,32 +229,34 @@ function createVacature() {
         },
         body: JSON.stringify(newVacature)
     })
-    refreshPage()
+    refreshPage();
    }
 
 
 // Delete Function
 
-function verwijderen(vacatureId){
+function verwijderen(id){
+
+  console.log(id)
   // Formulier uitlezen
-    let personidInvoer = document.getElementById('vacature-personid').value;
-    let bedrijfInvoer = document.getElementById('vacature-bedrijf').value;
-    let locatieInvoer = document.getElementById('vacature-locatie').value;
-    let omschrijvingInvoer = document.getElementById('vacature-omschrijving').value;
-    let uitstroomrichtingInvoer = document.getElementById('vacature-uitstroomrichting').value;
-    let functieInvoer = document.getElementById('vacature-functie').value;
+
+    let bedrijfInvoer = document.getElementById('bedrijf').value;
+    let locatieInvoer = document.getElementById('locatie').value;
+    let omschrijvingInvoer = document.getElementById('omschrijving').value;
+    let uitstroomRichtingInvoer = document.getElementById('uitstroomRichting').value;
+    let functieInvoer = document.getElementById('functie').value;
 
     // Make a java script object
     let removingVacature = {
-        personid: personidInvoer,
+       
         bedrijf: bedrijfInvoer,
         locatie: locatieInvoer,
         omschrijving: omschrijvingInvoer,
-        uitstroomrichting: uitstroomrichtingInvoer,
+        uitstroomRichting: uitstroomRichtingInvoer,
         functie: functieInvoer,
     };
 
-    fetch('http://localhost:8080/vacature/delete/' + vacatureId, {
+    fetch('http://localhost:8080/vacature/delete/' + id, {
 
         method: 'DELETE',
         headers: {
@@ -266,13 +264,16 @@ function verwijderen(vacatureId){
         },
         body: JSON.stringify(removingVacature)
     }) 
-    refreshPage()
+    
+    refreshPage();
+    
 }
 
 // Edit/update function
 // script for pop up
 
 function openPopup(qqq) {
+        
     document.getElementById('abcd').value = qqq;
     console.log(qqq)
       document.getElementById('popup').style.display = 'block';
@@ -287,14 +288,13 @@ function openPopup(qqq) {
       event.preventDefault();
 
       // Get the form values
-      // var vacatureId = document.getElementById(vacatureId).value;
-      var personid = document.getElementById('vacature-personid').value;
-      var bedrijf = document.getElementById('vacature-bedrijf').value;
-      var locatie = document.getElementById('vacature-locatie').value;
-      var omschrijving = document.getElementById('vacature-omschrijving').value;
-      var uitstroomrichting = document.getElementById('vacature-uitstroomrichting').value;
-      var omschrijving = document.getElementById('vacature-omschrijving').value;
-      var functie = document.getElementById('vacature-functie').value;
+      
+      var bedrijf = document.getElementById('bedrijf').value;
+      var locatie = document.getElementById('locatie').value;
+      var omschrijving = document.getElementById('omschrijving').value;
+      var uitstroomRichting = document.getElementById('uitstroomRichting').value;
+      var omschrijving = document.getElementById('omschrijving').value;
+      var functie = document.getElementById('functie').value;
 
       closePopup();
     })
@@ -303,34 +303,35 @@ function openPopup(qqq) {
    
 
     function aanpassen() {
-  let vacatureId = document.getElementById('abcd').value;
+  let id = document.getElementById('abcd').value;
 
+  console.log('abcd')
+  console.log(abcd)
   // Formulier uitlezen
-  let personidInvoer = document.getElementById('personid').value;
-  let bedrijfInvoer = document.getElementById('bedrijf').value;
-  let locatieInvoer = document.getElementById('locatie').value;
-  let omschrijvingInvoer = document.getElementById('omschrijving').value;
-  let uitstroomrichtingInvoer = document.getElementById('uitstroomrichting').value;
-  let functieInvoer = document.getElementById('functie').value;
+  let bedrijfInvoer = document.getElementById('vacature-bedrijf').value;
+  let locatieInvoer = document.getElementById('vacature-locatie').value;
+  let omschrijvingInvoer = document.getElementById('vacature-omschrijving').value;
+  let uitstroomRichtingInvoer = document.getElementById('vacature-uitstroomRichting').value;
+  let functieInvoer = document.getElementById('vacature-functie').value;
 
   // Make a JavaScript object
   let editVacature = {
-    personid: personidInvoer,
     bedrijf: bedrijfInvoer,
     locatie: locatieInvoer,
     omschrijving: omschrijvingInvoer,
-    uitstroomrichting: uitstroomrichtingInvoer,
+    uitstroomRichting: uitstroomRichtingInvoer,
     functie: functieInvoer,
   };
 
-  fetch('http://localhost:8080/vacature/update/' + vacatureId, {
+  fetch('http://localhost:8080/vacature/update/' + id, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(editVacature),
   })
-  refreshPage()
+  
+  refreshPage();
 }
 
 
@@ -348,15 +349,15 @@ function loadVacature(){
                     data.forEach(vacature => {
                         vacatureTableElement.innerHTML += `
                         <tr>
-                            <td>${vacature.personid}</td>
+                            <td>${vacature.id}</td>
                             <td>${vacature.bedrijf}</td>
                             <td>${vacature.locatie}</td>    
                             <td>${vacature.omschrijving}</td>
-                            <td>${vacature.uitstroomrichting}</td>
+                            <td>${vacature.uitstroomRichting}</td>
                             <td>${vacature.functie}</td>
-                            <td><input type="checkbox" id="defaultCheck" name="example2"></td>
-                            <td><button type="button" class="btn btn-primary" onclick="openPopup(${vacature.vacatureId})">Aanpassen</button></td>
-                            <td><button type="button" class="btn btn-dark" onclick="verwijderen(${vacature.vacatureId})">Delete</button></td>
+                            <td><input type="checkbox" id="favouriet" name="favouriet"></td>
+                            <td><button type="button" class="btn btn-primary" onclick="openPopup(${vacature.id})">Aanpassen</button></td>
+                            <td><button type="button" class="btn btn-dark" onclick="verwijderen(${vacature.id})">Delete</button></td>
                           </tr>
                         `
                     });
@@ -371,8 +372,7 @@ function loadVacature(){
     window.location.reload();
 } 
 
-
-    </script>
+</script>
 
 </body>
 </html>
