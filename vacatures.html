@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vacatures</title>
+
+    <!-- Nodig om FavIcon Error weg te werken -->
+    <link rel="shortcut icon" href="#">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 
     <!-- jQuery library -->
@@ -16,10 +20,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="navbar.js"></script>
     <script>
-        window.onload=tekenmenu;
+        window.onload = tekenmenu;
     </script>
     <link rel="stylesheet" type="text/css" href="styles.css">
-    
+
 </head>
 <body>
 
@@ -170,7 +174,8 @@
         
         <!-- Modal footer -->
         <div class="modal-footer">
-          <input type="submit" value="Voeg toe" class="btn btn-primary" onclick="createVacature()" onclick="window.location.reload();">
+            <!--<input type="submit" value="Voeg toe" class="btn btn-primary" onclick="createVacature()" onclick="window.location.reload()">-->
+            <input type="submit" value="Voeg toe" class="btn btn-primary" data-dismiss="modal" onclick="createVacature()">
         </div>
         
       </div>
@@ -207,7 +212,6 @@
 // Create Function
 function createVacature() {
     // Formulier uitlezen
-
     let bedrijfInvoer = document.getElementById('vacature-bedrijf').value;
     let locatieInvoer = document.getElementById('vacature-locatie').value;
     let omschrijvingInvoer = document.getElementById('vacature-omschrijving').value;
@@ -231,9 +235,10 @@ function createVacature() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(newVacature)
-    })
-    //refreshPage();
-   }
+    });
+
+    //refreshPage();   <----- Deze functie vind de page refresh niet leuk
+}
 
 
 // Delete Function
@@ -305,81 +310,81 @@ function openPopup(qqq) {
 // dit is een random comment
    
 
-    function aanpassen() {
-  let id = document.getElementById('abcd').value;
+function aanpassen() {
+    let id = document.getElementById('abcd').value;
 
-  console.log('abcd')
-  console.log(abcd)
-  // Formulier uitlezen
-  let bedrijfInvoer = document.getElementById('vacature-bedrijf').value;
-  let locatieInvoer = document.getElementById('vacature-locatie').value;
-  let omschrijvingInvoer = document.getElementById('vacature-omschrijving').value;
-  let uitstroomRichtingInvoer = document.getElementById('vacature-uitstroomRichting').value;
-  let functieInvoer = document.getElementById('vacature-functie').value;
+    console.log('abcd')
+    console.log(abcd)
+    // Formulier uitlezen
+    let bedrijfInvoer = document.getElementById('vacature-bedrijf').value;
+    let locatieInvoer = document.getElementById('vacature-locatie').value;
+    let omschrijvingInvoer = document.getElementById('vacature-omschrijving').value;
+    let uitstroomRichtingInvoer = document.getElementById('vacature-uitstroomRichting').value;
+    let functieInvoer = document.getElementById('vacature-functie').value;
 
-  // Make a JavaScript object
-  let editVacature = {
+    // Make a JavaScript object
+    let editVacature = {
     bedrijf: bedrijfInvoer,
     locatie: locatieInvoer,
     omschrijving: omschrijvingInvoer,
     uitstroomRichting: uitstroomRichtingInvoer,
     functie: functieInvoer,
-  };
+    };
 
-  fetch('http://localhost:8080/vacature/update/' + id, {
+    fetch('http://localhost:8080/vacature/update/' + id, {
     method: 'PUT',
     headers: {
-      'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
     },
     body: JSON.stringify(editVacature),
-  })
+    })
   
-  refreshPage();
+    refreshPage();
 }
 
-    function checkLogin() {
-        if (sessionStorage.userID) {
-            fetch(`http://localhost:8080/account/${sessionStorage.userID}`, {
-                method: 'GET'
-            })
-                .then(response => response.json())
-                .then(data => setName(data));
-        }
+function checkLogin() {
+    if (sessionStorage.userID) {
+        fetch(`http://localhost:8080/account/${sessionStorage.userID}`, {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(data => setName(data));
     }
+}
 
 
 // Load data from data base to webpage
 function loadVacature(){
-            fetch('http://localhost:8080/vacature/all')
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Data', data);
+    fetch('http://localhost:8080/vacature/all')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Data', data);
 
-                    let vacatureTableElement = document.getElementById('vacature-table');
+            let vacatureTableElement = document.getElementById('vacature-table');
                     
-                    data.forEach(vacature => {
-                        vacatureTableElement.innerHTML += `
-                        <tr>
-                            <td>${vacature.id}</td>
-                            <td>${vacature.bedrijf}</td>
-                            <td>${vacature.locatie}</td>    
-                            <td>${vacature.omschrijving}</td>
-                            <td>${vacature.uitstroomRichting}</td>
-                            <td>${vacature.functie}</td>
-                            <td><input type="checkbox" id="favouriet" name="favouriet"></td>
-                            <td><button type="button" class="btn btn-primary" onclick="openPopup(${vacature.id})">Aanpassen</button></td>
-                            <td><button type="button" class="btn btn-dark" onclick="verwijderen(${vacature.id})">Delete</button></td>
-                          </tr>
-                        `
-                    });
+            vacatureTableElement.innerHTML = ``;
 
+            data.forEach(vacature => {
+                vacatureTableElement.innerHTML += `
+                <tr>
+                    <td>${vacature.id}</td>
+                    <td>${vacature.bedrijf}</td>
+                    <td>${vacature.locatie}</td>    
+                    <td>${vacature.omschrijving}</td>
+                    <td>${vacature.uitstroomRichting}</td>
+                    <td>${vacature.functie}</td>
+                    <td><input type="checkbox" id="favouriet" name="favouriet"></td>
+                    <td><button type="button" class="btn btn-primary" onclick="openPopup(${vacature.id})">Aanpassen</button></td>
+                    <td><button type="button" class="btn btn-dark" onclick="verwijderen(${vacature.id})">Delete</button></td>
+                </tr>
+                `
+            });
+        })
+}
 
-                    })
-        }
+loadVacature();
 
-        //loadVacature();
-
-        function refreshPage(){
+function refreshPage(){
     window.location.reload();
 } 
 
