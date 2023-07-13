@@ -235,7 +235,9 @@ function createVacature() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(newVacature)
-    });
+    }).then(response => {
+      loadVacature();
+    })
 
     //refreshPage();   <----- Deze functie vind de page refresh niet leuk
 }
@@ -271,9 +273,10 @@ function verwijderen(id){
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(removingVacature)
-    }) 
-    
-    refreshPage();
+    }).then(response => {
+      // Code na uitvoeren
+      loadVacature();
+    })
     
 }
 
@@ -332,14 +335,19 @@ function aanpassen() {
     };
 
     fetch('http://localhost:8080/vacature/update/' + id, {
-    method: 'PUT',
-    headers: {
+      method: 'PUT',
+      headers: {
         'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(editVacature),
+      },
+      body: JSON.stringify(editVacature),
+    }).then(response => {
+      // Hier voer je code uit na de update
+      loadVacature();
     })
+
   
-    refreshPage();
+    // Na de fetch block geen code behalf als je meerdere calls parallel doen
+    // refreshPage();
 }
 
 function checkLogin() {
@@ -383,10 +391,6 @@ function loadVacature(){
 }
 
 loadVacature();
-
-function refreshPage(){
-    window.location.reload();
-} 
 
 </script>
 
