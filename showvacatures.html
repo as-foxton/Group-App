@@ -47,15 +47,17 @@
       fetch(`http://localhost:8080/vacatures/beknopt`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
         },
         body: JSON.stringify(filter)
       })
         .then(response => response.json())
-        .then(data => filTable(data));
+        .then(data => fillTable(data));
     }
 
-    function filTable(data) {
+    function fillTable(data) {
+      filterbutton.disabled = false;
       let vacaturetable = document.getElementById('vacature-table');
       vacaturetable.innerHTML = "";
 
@@ -71,6 +73,8 @@
     }
 
     function loadFiltered(){
+      filterbutton = document.getElementById("filterbutton")
+      filterbutton.disabled = true;
       place = document.getElementById("plaats").value
       distance = parseInt(document.getElementById("afstand").value)
       richting = document.getElementById("richting").value
@@ -107,7 +111,7 @@
             <option>Lowcode</option>
           </select>
         </div>
-        <button type="button" class="btn btn-secondary" onclick="loadFiltered()">Filter</button>
+        <button id="filterbutton" type="button" class="btn btn-secondary" onclick="loadFiltered()">Filter</button>
       </div>
       <div class="col-10">
         <h2>Alle vacatures</h2>
