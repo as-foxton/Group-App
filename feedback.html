@@ -11,21 +11,27 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
+    <title>Feedback</title>
+
+    <script src="navbar.js"></script>
+
     <script>
         window.onload = init;
 
         function init() {
+            tekenmenu();
             fetchFeedbacks();
         }
 
         function fetchFeedbacks() {
-            fetch("http://localhost:8080/feedback/all")
+            //fetch("http://localhost:8080/feedback/all")
+            fetch("http://localhost:8080/feedback/feedbacklist")
                 .then(r => r.json())
                 .then(d => {
                     console.log("fetchFeedbacks() - List of Feedbacks: ", d)
                     fillTable(d);
                 })
-                //.catch(e => console.log("fetchFeedbacks() - ", e))
+                .catch(e => console.log("fetchFeedbacks() - ", e))
         }
 
         function fetchAccount(id) {
@@ -52,7 +58,8 @@
 
                 //console.log("Naam Trainee: " + account.naam + "| persoon_nr: " + f[i].persoon_nr + "| bedrijf: " + f[i].bedrijf + "| aangenomen: " + f[i].aangenomen + "| mening: " + f[i].mening);
                 if (account) {
-                    document.getElementById("listItemFeedback").innerHTML += addRowFeedback(account.naam, account.bedrijf, f[i].aangenomen, f[i].mening);
+                    //document.getElementById("listItemFeedback").innerHTML += addRowFeedback(account.naam, account.bedrijf, f[i].aangenomen, f[i].mening);
+                    document.getElementById("listItemFeedback").innerHTML += addRowFeedback(f[i].accountName, f[i].bedrijf, true, f[i].mening);
                 }
             }
         }
@@ -65,18 +72,18 @@
                         <div class="row">
                             <div class="col-lg-3 row">
                                 <div>
-                                    <h5><b>Trainee</b></h5>
+                                    <label style="background-color: "><b>Trainee</b></label>
                                     <h5>${accNaam}</h5>
                                 </div>
                             </div>
                             <div class="col-lg-3 row">
                                 <div>
-                                    <h5><b>Reviewer Bedrijf</b></h5>    
+                                    <label><b>Reviewer Bedrijf</b></label>    
                                     <h5>${vacBedrijf}</h5>
                                 </div>
                             </div>
                             <div class="col-lg-2 row" style="background-color: ${aangenomen == true ? 'rgb(81, 210, 92)' : 'rgb(227, 58, 58)'}">
-                                <div style="text-align: center"><b>${aangenomen == 1 ? 'Aangenomen' : 'Niet Aangenomen'}</b></div>
+                                <div style="text-align: center"><b>${aangenomen == true ? 'Aangenomen' : 'Niet Aangenomen'}</b></div>
                             </div>
                             <div class="col-lg-4"></div>
                         </div>
@@ -152,6 +159,7 @@
 </head>
 
 <body>
+
     <h1>Feedback Pagina</h1>
 
     <div id="feedbackTable">...</div>
@@ -201,33 +209,39 @@
     </div>
 
 
-    <!-- Feedback List Body -->
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-3 row">
-                <h2>Feedbacks</h2>
-            </div>
-            <div class="col-lg-6 row"></div>
-            <div class="col-lg-3 row">
-                <!-- Button to Open the Modal -->
-                <button type="button" class="btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                    Mening Schrijven
-                </button>
-            </div>
+    <div class="row">
+        <div class="col-lg-2 row">
         </div>
+        <div class="col-lg-8 row">
+            <!-- Feedback List Body -->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-3 row">
+                        <h2>Feedbacks</h2>
+                    </div>
+                    <div class="col-lg-6 row"></div>
+                    <div class="col-lg-3 row">
+                        <!-- Button to Open the Modal -->
+                        <button type="button" class="btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                            Mening Schrijven
+                        </button>
+                    </div>
+                </div>
 
-        <!-- List of feedbacks -->
-        <ul class="list-group" id="listItemFeedback">
-            <li class="list-group-item">
-                <!-- Feedback Object -->
-                <div id="listItemFeedback"></div>
-            </li>
-            <li class="list-group-item">Second item</li>
-            <li class="list-group-item">Third item</li>
-        </ul>
-    </div>>
-
-
+                <!-- List of feedbacks -->
+                <ul class="list-group" id="listItemFeedback">
+                    <li class="list-group-item">
+                        <!-- Feedback Object -->
+                        <div id="listItemFeedback"></div>
+                    </li>
+                    <li class="list-group-item">Second item</li>
+                    <li class="list-group-item">Third item</li>
+                </ul>
+            </div>>
+        </div>
+        <div class="col-lg-2 row">
+        </div>
+    </div>
 
 
 </body>
