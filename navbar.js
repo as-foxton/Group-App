@@ -31,8 +31,8 @@ function tekenmenu() {
   <div class="order-3">
       <ul class="navbar-nav ml-auto text-right">
           <li class="nav-item">
-              <span class="nav-link disabled" href="#">Ingelogd als: Christel</span>
-              <span class="nav-link disabled" href="#">Rol: trainee</span>
+              <span class="nav-link disabled" href="#">Ingelogd als: ${sessionStorage.userNaam}</span>
+              <span class="nav-link disabled" href="#">Rol: ${sessionStorage.userRol}</span>
           </li>
           <li class="nav-item">
               
