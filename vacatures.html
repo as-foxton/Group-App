@@ -337,39 +337,49 @@
     })
   }
 
-
+function checkLogin() {
+    if (sessionStorage.userID) {
+        fetch(`http://localhost:8080/account/${sessionStorage.userID}`, {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(data => setName(data));
+    }
+}
 
 
 // Load data from data base to webpage
 function loadVacature(){
-            fetch('http://localhost:8080/vacature/all')
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Data', data);
+    fetch('http://localhost:8080/vacature/all')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Data', data);
 
-                    let vacatureTableElement = document.getElementById('vacature-table');
+            let vacatureTableElement = document.getElementById('vacature-table');
                     
-                    data.forEach(vacature => {
-                        vacatureTableElement.innerHTML += `
-                        <tr>
-                            <td>${vacature.id}</td>
-                            <td>${vacature.bedrijf}</td>
-                            <td>${vacature.locatie}</td>    
-                            <td>${vacature.omschrijving}</td>
-                            <td>${vacature.uitstroomRichting}</td>
-                            <td>${vacature.functie}</td>
-                            <td><input type="checkbox" id="favouriet" name="favouriet"></td>
-                            <td><button type="button" class="btn btn-primary" onclick="openPopup(${vacature.id})">Aanpassen</button></td>
-                            <td><button type="button" class="btn btn-dark" onclick="verwijderen(${vacature.id})">Delete</button></td>
-                          </tr>
-                        `
-                    });
+            vacatureTableElement.innerHTML = ``;
 
+            data.forEach(vacature => {
+                vacatureTableElement.innerHTML += `
+                <tr>
+                    <td>${vacature.id}</td>
+                    <td>${vacature.bedrijf}</td>
+                    <td>${vacature.locatie}</td>    
+                    <td>${vacature.omschrijving}</td>
+                    <td>${vacature.uitstroomRichting}</td>
+                    <td>${vacature.functie}</td>
+                    <td><input type="checkbox" id="favouriet" name="favouriet"></td>
+                    <td><button type="button" class="btn btn-primary" onclick="openPopup(${vacature.id})">Aanpassen</button></td>
+                    <td><button type="button" class="btn btn-dark" onclick="verwijderen(${vacature.id})">Delete</button></td>
+                </tr>
+                `
+            });
+        })
+}
 
-                    })
-        }
+         
 
-        // loadVacature();
+      loadVacature();
 
 </script>
 
