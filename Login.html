@@ -82,6 +82,8 @@
                 .then(data => {
                     if(data.id != -1){
                         sessionStorage.userID = data.id;
+                        sessionStorage.userNaam = data.naam;
+                        sessionStorage.userRol = data.rol;
                         location.href = "/index.html"
                     }
                 ;})

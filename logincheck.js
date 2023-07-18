@@ -14,3 +14,15 @@ async function loggedIn(){
         return true
     }
 }
+
+async function allowedToView(page){
+    if(!sessionStorage.AUTH_TOKEN)
+        return false;
+    response = await fetch(`http://localhost:8080/account/haspermission?page=${page}`, {
+        method: 'GET',
+        headers: {
+            'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+        }});
+    data = await response.json();
+    return data;
+}
