@@ -66,7 +66,7 @@
     }
 
     function fillModal(cv){
-      document.getElementById("m-title").innerHTML = `CV van ${cv.persoon.naam}`
+      document.getElementById("m-title").innerHTML = `CV van ${cv.naam}`
       document.getElementById("m-plaats").innerHTML = cv.locatie
       document.getElementById("m-uitstroomrichting").innerHTML = cv.uitstroomRichting
       document.getElementById("m-specialiteit").innerHTML = cv.specialiteit
@@ -89,7 +89,7 @@
 
       data.forEach(cv => {
         cvtable.innerHTML += `
-          <tr data-toggle="modal" data-target="#myModal" onclick="loadCV(${cv.id})">
+          <tr data-toggle="modal" data-target="#myModal" onclick="loadCV(${cv.cvId})">
             <td>${cv.naam}</td>
             <td>${cv.uitstroomRichting}</td>
             <td>${cv.locatie}</td>
@@ -110,7 +110,7 @@
 
       data.forEach(cv => {
         cvtable.innerHTML += `
-          <tr data-toggle="modal" data-target="#myModal" onclick="loadCV(${cv.id})">
+          <tr data-toggle="modal" data-target="#myModal" onclick="loadCV(${cv.cvId})">
             <td>${cv.naam}</td>
             <td>${cv.uitstroomRichting}</td>
             <td>${cv.locatie}</td>
