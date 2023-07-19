@@ -3,7 +3,9 @@ function tekenmenu() {
   document.getElementById("menu").innerHTML = `
   <link rel="stylesheet" type="text/css" href="styles.css">
   <nav class="navbar navbar-dark customnavbar" style="background-color: black !important;">
-  <a class="navbar-brand" href="index.html">Home</a>
+  <li class="nav-item">
+  <a class="nav-link active" href="index.html">Home</a>
+  </li>
   <li class="nav-item">
     <a class="nav-link active" href="Login.html">Log in</a>
   </li>
@@ -29,7 +31,7 @@ function tekenmenu() {
     </div>
   </li>
   <li class="nav-item">
-  <a class="nav-link active" href="">Aanbiedingen</a>
+  <a class="nav-link active" href="aanbieding.html">Aanbiedingen</a>
   </li>
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle active" href="#" id="navbardrop" data-toggle="dropdown">
@@ -43,6 +45,9 @@ function tekenmenu() {
   <li class="nav-item">
     <a class="nav-link active" href="account.html">Accounts</a>
   </li>
+  <li class="nav-item">
+  <a class="nav-link active" href="data.html">Data</a>
+</li>
       <ul class="navbar-nav ml-auto text-right">
           <li class="nav-item">
               <span class="nav-link disabled" href="#">Ingelogd als: ${sessionStorage.userNaam}</span>
