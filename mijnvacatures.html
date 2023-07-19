@@ -213,7 +213,8 @@
       fetch("http://localhost:8080/vacature/create", {
           method: 'POST',
           headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
           },
           body: JSON.stringify(newVacature)
       })
