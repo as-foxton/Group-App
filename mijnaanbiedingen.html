@@ -18,6 +18,14 @@
     <script>
         window.onload=tekenmenu;
     </script>
+    <script src="logincheck.js"></script>
+    <script>
+      allowedToView(window.location.pathname).then(response => {
+        if(!response) {
+          location.href = "/index.html?accessdenied"
+        }
+      })
+    </script>
     <link rel="stylesheet" type="text/css" href="styles.css">
     
 </head>
