@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV's</title>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <!-- jQuery library -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+  <!-- Popper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+  
+  <script src="navbar.js"></script>
+
+  <script src="logincheck.js"></script>
+  <script>
+    allowedToView(window.location.pathname).then(response => {
+      if(!response) {
+        location.href = "/index.html?accessdenied"
+      }
+    })
+  </script>
+
+  <script>
+    function loadPage() {
+      tekenmenu();
+      loadData();
+    }
+
+    function loadData() {
+      urlParams = new URLSearchParams(window.location.search);
+      fetch(`http://localhost:8080/aanbieding/nieuw/${urlParams.get('vacature')}`, {
+        method: 'GET',
+        headers: {
+          'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+        }
+      })
+        .then(response => response.json())
+        .then(data => fillNieuwTable(data));
+
+        fetch(`http://localhost:8080/aanbieding/uitgenodigd/${urlParams.get('vacature')}`, {
+        method: 'GET',
+        headers: {
+          'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+        }
+      })
+        .then(response => response.json())
+        .then(data => fillInvTable(data));
+    }
+
+    function loadCV(id){
+      fetch(`http://localhost:8080/curriculum_vitae/find?id=${id}`, {
+        method: 'GET',
+        headers: {
+          'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+        }
+      })
+        .then(response => response.json())
+        .then(data => fillModal(data));
+    }
+
+    function fillModal(cv){
+      document.getElementById("m-title").innerHTML = `CV van ${cv.naam}`
+      document.getElementById("m-plaats").innerHTML = cv.locatie
+      document.getElementById("m-uitstroomrichting").innerHTML = cv.uitstroomRichting
+      document.getElementById("m-specialiteit").innerHTML = cv.specialiteit
+      document.getElementById("m-omschrijving").innerHTML = cv.omschrijving
+      document.getElementById("m-werkhistorie").innerHTML = cv.werkHistorie
+    }
+
+    function clearModal(cv){
+      document.getElementById("m-title").innerHTML = ``
+      document.getElementById("m-plaats").innerHTML = ``
+      document.getElementById("m-uitstroomrichting").innerHTML = ``
+      document.getElementById("m-specialiteit").innerHTML = ``
+      document.getElementById("m-omschrijving").innerHTML = ``
+      document.getElementById("m-werkhistorie").innerHTML = ``
+    }
+
+    function fillNieuwTable(data) {
+      let cvtable = document.getElementById('cv-table-nieuw');
+      cvtable.innerHTML = "";
+
+      data.forEach(cv => {
+        cvtable.innerHTML += `
+          <tr data-toggle="modal" data-target="#myModal" onclick="loadCV(${cv.cvId})">
+            <td>${cv.naam}</td>
+            <td>${cv.uitstroomRichting}</td>
+            <td>${cv.locatie}</td>
+            <td>
+              <button type="button" class="btn btn-secondary">Uitnodigen</button>
+            </td>
+            <td>
+              <button type="button" class="btn btn-danger">Afwijzen</button>
+            </td>
+          </tr>
+        `
+      });
+    }
+
+    function fillInvTable(data) {
+      let cvtable = document.getElementById('cv-table-uitgenodigd');
+      cvtable.innerHTML = "";
+
+      data.forEach(cv => {
+        cvtable.innerHTML += `
+          <tr data-toggle="modal" data-target="#myModal" onclick="loadCV(${cv.cvId})">
+            <td>${cv.naam}</td>
+            <td>${cv.uitstroomRichting}</td>
+            <td>${cv.locatie}</td>
+            <td>
+              <button type="button" class="btn btn-danger">Afwijzen</button>
+            </td>
+          </tr>
+        `
+      });
+    }
+
+    window.onload = loadPage;
+  </script>
+</head>
+
+<body>
+  <div id="menu"></div>
+  <div class="container">
+    
+        <h2>Aangeboden kandidaten</h2>
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Naam</th>
+              <th>Uitstroomrichting</th>
+              <th>Locatie</th>
+              <th>Uitnodigen</th>
+              <th>Afwijzen</th>
+            </tr>
+          </thead>
+          <tbody id="cv-table-nieuw">
+          </tbody>
+        </table>
+
+        <h2>Uitgenodigde kandidaten</h2>
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Naam</th>
+              <th>Uitstroomrichting</th>
+              <th>Locatie</th>
+              <th>Afwijzen</th>
+            </tr>
+          </thead>
+          <tbody id="cv-table-uitgenodigd">
+          </tbody>
+        </table>
+  </div>
+
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="m-title">CV van Laurens</h4>
+          <button type="button" class="close" data-dismiss="modal" onclick="clearModal()">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <b>Plaats: </b><span id="m-plaats">test</span><br/>
+          <b>Uitstroomrichting: </b><span id="m-uitstroomrichting">test</span><br/>
+          <b>Specialiteit: </b><span id="m-specialiteit">test</span><br/>
+          <b>Omschrijving: </b>
+          <p id="m-omschrijving">test</p>
+          <b>Werkhistorie: </b>
+          <p id="m-werkhistorie">test</p>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="clearModal()">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</body>
+</html>
