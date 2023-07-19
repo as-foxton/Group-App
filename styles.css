@@ -13,6 +13,9 @@
     color: rgb(56, 177, 173) !important;
 }
 
+li{
+    list-style: none;
+}
 /* 
 body {
     background-color: gray !important;
