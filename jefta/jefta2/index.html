@@ -15,32 +15,14 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="navbar.js"></script>
-    <script src="logincheck.js"></script>
     <script>
-        loggedIn().then(response => {
-          if(!response) {
-            location.href = "/Login.html"
-          }
-        })
-        window.onload=loadPage;
-
-        function loadPage(){
-          tekenmenu();
-          urlParams = new URLSearchParams(window.location.search);
-          if(urlParams.has('accessdenied')){
-            document.getElementById("accesserror").hidden = false;
-          }
-        }
+        window.onload=tekenmenu;
     </script>
   
 </head>
 <body>
      <!-- A grey horizontal navbar that becomes vertical on small screens -->
 <div id="menu"></div> 
-<div id="accesserror" style="margin-top: -100px; margin-bottom: 100px;" class="alert alert-danger alert-dismissible" hidden>
-  <button type="button" class="close" data-dismiss="alert">&times;</button>
-  <strong>Error</strong> You do not have permission to view that page!
-</div>
   <div class="row">
     <div class="col-lg-4 text-center"><button type="button" class="btn btn-primary custombutton">Vacatures</button></div>
     <div class="col-lg-4 text-center"><button type="button" class="btn btn-primary custombutton">CVs</button></div>
