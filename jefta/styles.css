@@ -28,6 +28,11 @@ h1 {
   margin-left:20px;
 }
 
+
+.nav-link {
+  color:red !important;
+}
+
 /* #map { */
   /* position: relative; */
   /* top: 60px; */
@@ -36,7 +41,15 @@ h1 {
 /* #map {
   
 } */
+/* 
+color-me {
+  color:red !important;
+} */
 
+
+/* .nav-item {
+  color:red;
+} */
 
 /* .navbar-logo {
     height: 50px; 
