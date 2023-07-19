@@ -25,7 +25,7 @@ function tekenmenu() {
     <div class="dropdown-menu">
       <a class="dropdown-item" href="showvacatures.html">Vacatures zien</a>
       <a class="dropdown-item" href="">Detail vacature</a>
-      <a class="dropdown-item" href="">Mijn vacatures</a>
+      <a class="dropdown-item" href="mijnvacatures.html">Mijn vacatures</a>
     </div>
   </li>
   <li class="nav-item">
