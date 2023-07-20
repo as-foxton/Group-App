@@ -1,24 +1,23 @@
 .customnavbar {
-    margin-bottom:100px;
+    margin-bottom: 100px;
 }
 
-.nav-link.active{
+.nav-link.active {
     color: rgb(56, 177, 173) !important;
 }
-.nav-link.disabled{
+
+.nav-link.disabled {
     color: rgb(163, 224, 224) !important;
 }
 
-.navbar-brand{
+.navbar-brand {
     color: rgb(56, 177, 173) !important;
 }
 
-li{
+li {
     list-style: none;
 }
-/* 
-body {
-    background-color: gray !important;
-  }
-   */
 
+.nav-button {
+    cursor: pointer;
+}

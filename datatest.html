@@ -139,11 +139,11 @@
     
 
   <link rel="stylesheet" type="text/css" href="styles.css">
+
+
+
   <script>
-    $( '#country' ).select2( {
-    theme: 'bootstrap-5'
-} );
-        function letsgo() {
+      function letsgo() {
           var country = document.getElementById("country").value;
           var sex = document.getElementById("sex").value;
           // fetch("http://127.0.0.1:5000/jefta/" + countryCode)        
@@ -151,44 +151,61 @@
             .then(r => r.json())
             .then(d => verwerkgegevens(d));
         }
-      
-        function verwerkgegevens(data) {
-          var OBS_VALUES = [];
-          var TIME_PERIODS = [];
-      
-          for (var x = 0; x < data.length; x++) {
-            var OBS_VALUE = data[x].OBS_VALUE;
-            var TIME_PERIOD = data[x].TIME_PERIOD;
-      
-            OBS_VALUES.push(OBS_VALUE);
-            TIME_PERIODS.push(TIME_PERIOD);
-          }
-      
-          var trace = {
-            x: TIME_PERIODS,
-            y: OBS_VALUES,
-            type: 'scatter'
-          };
-      
-          var plotData = [trace];
-      
-          var layout = {
-            // title: 'OBS_VALUE vs TIME_PERIOD',
-            xaxis: {
-              title: 'Jaar'
-            },
-            yaxis: {
-              title: 'Arbeidsparticipatie'
-            },
-            width: 800,  // Specify the desired width of the graph in pixels
-      height: 500
-          };
-      
-          Plotly.newPlot('myChart', plotData, layout);
-      
-          console.log(OBS_VALUES);
-          console.log(TIME_PERIODS);
-        }
-      </script>
+    function verwerkgegevens(data) {
+      var OBS_VALUES = [];
+      var TIME_PERIODS = [];
+
+      for (var x = 0; x < data.length; x++) {
+        var OBS_VALUE = data[x].OBS_VALUE;
+        var TIME_PERIOD = data[x].TIME_PERIOD;
+
+        OBS_VALUES.push(OBS_VALUE);
+        TIME_PERIODS.push(TIME_PERIOD);
+      }
+
+      var smoothedTrace = {
+        x: TIME_PERIODS,
+        y: OBS_VALUES,
+        mode: 'lines+markers', // Show both lines and markers
+        line: {
+          shape: 'spline' // Apply smoothing to the line
+        },
+        showlegend: false,
+
+        name: 'Smoothed Data'
+      };
+
+      var originalTrace = {
+        x: TIME_PERIODS,
+        y: OBS_VALUES,
+        mode: 'markers',
+        // marker: {
+        //       opacity: 0.4 // Adjust the value to set the desired opacity (0.4 is just an example)
+        //     },
+            // line: {
+            //   color: 'rgba(0, 0, 0, 0.4)' // Adjust the opacity value here to set the transparency in the graph
+            // },
+            showlegend: false,
+        name: 'Original Data'
+      };
+
+      var plotData = [smoothedTrace, originalTrace];
+
+      var layout = {
+        xaxis: {
+          title: 'Jaar'
+        },
+        yaxis: {
+          title: 'Arbeidsparticipatie'
+        },
+        width: 800,  // Specify the desired width of the graph in pixels
+        height: 500
+      };
+
+      Plotly.newPlot('myChart', plotData, layout);
+    }
+
+  </script>
+  
 </body>
 </html>

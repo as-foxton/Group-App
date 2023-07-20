@@ -17,14 +17,15 @@
 
     <script>
         loggedIn().then(response => {
-          if(response) {
-            location.href = "/index.html"
-          }
+            if (response) {
+                location.href = "/index.html"
+            }
         })
-      </script>
+    </script>
 
     <style>
-        body,html {
+        body,
+        html {
             height: 100%;
         }
     </style>
@@ -34,21 +35,21 @@
     <div class="container-fluid h-100">
         <div class="row justify-content-center align-items-center h-100">
             <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3">
-        <form>
-            <div class="form-group">
-                <label for="email">Emailadres:</label>
-                <input type="email" class="form-control form-control-lg" placeholder="" id="email">
+                <form>
+                    <div class="form-group">
+                        <label for="email">Emailadres:</label>
+                        <input type="email" class="form-control form-control-lg" placeholder="" id="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Wachtwoord:</label>
+                        <input type="password" class="form-control form-control-lg" placeholder="" id="password">
+                    </div>
+                    <button type="button" class="btn btn-secondary" onclick="login()">Login</button>
+                    <p id="error" style="color:red" hidden>ongeldige gebruikersnaam of wachtwoord</p>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="password">Wachtwoord:</label>
-                <input type="password" class="form-control form-control-lg" placeholder="" id="password">
-            </div>
-            <button type="button" class="btn btn-secondary" onclick="login()">Login</button>
-            <p id="error" style="color:red" hidden>ongeldige gebruikersnaam of wachtwoord</p>
-        </form>
+        </div>
     </div>
-</div>
-</div>
     <script>
         function login() {
             let credentials = {
@@ -77,19 +78,38 @@
                     method: 'GET',
                     headers: {
                         'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
-                }})
-                .then(response => response.json())
-                .then(data => {
-                    if(data.id != -1){
-                        sessionStorage.userID = data.id;
-                        sessionStorage.userNaam = data.naam;
-                        sessionStorage.userRol = data.rol;
-                        location.href = "/index.html"
                     }
-                ;})
-                
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.id != -1) {
+                            sessionStorage.userID = data.id;
+                            sessionStorage.userNaam = data.naam;
+                            sessionStorage.userRol = data.rol;
+                            location.href = "/index.html"
+                        }
+                        ;
+                    })
+
             }
         }
+        // Event listener for the "Enter" key press
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+
+        emailInput.addEventListener("keyup", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                login();
+            }
+        });
+
+        passwordInput.addEventListener("keyup", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                login();
+            }
+        });
     </script>
 </body>
 
