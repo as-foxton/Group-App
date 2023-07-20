@@ -20,42 +20,50 @@
 </head>
 <body>
     <div id="menu"></div>
-    <h1>Alle CVs</h1>
 
-
-    <form>
-        <div class="form-group">
-            <label for="uitstroomRichting">Uitstroomrichting</label>
-            <input type="text" class="form-control" id="uitstroomRichting" placeholder="Enter uitstroomrichting">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mb-3">
+                <h1>Alle CVs</h1>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="uitstroomRichting">Uitstroomrichting</label>
+                    <input type="text" class="form-control" id="uitstroomRichting" placeholder="Enter uitstroomrichting">
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="specialiteit">Specialiteit</label>
+                    <input type="text" class="form-control" id="specialiteit" placeholder="Enter specialiteit">
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="omschrijving">Omschrijving</label>
+                    <textarea class="form-control" rows="5" placeholder="Voer hier uw omschrijving in..." id="omschrijving"></textarea>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="werkHistorie">Werkhistory</label>
+                    <textarea class="form-control" rows="5" placeholder="Voer hier uw werkhistory in..." id="werkHistorie"></textarea>
+                </div>
+            </div>
+            <div class="col-12 text-end">
+                <button type="button" class="btn btn-primary" onclick="saveCV()">Submit</button>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="specialiteit">Specialiteit</label>
-            <input type="text" class="form-control" id="specialiteit" placeholder="Enter specialiteit">
-        </div>
-        <div class="form-group">
-            <label for="omschrijving">Omschrijving</label>
-            <textarea class="form-control" rows="5" placeholder="Voer hier uw omschrijving in..." id="omschrijving"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="werkHistorie">Werkhistory</label>
-            <textarea class="form-control" rows="5" placeholder="Voer hier uw werkhistory in..." id="werkHistorie"></textarea>
-        </div>
-        <button type="button" class="btn btn-primary" onclick="saveCV()">Submit</button>
-    </form>
-
+    </div>
 
     <script>
         function saveCV() {
-            console.log("Begin SaveCV()");
-
             let newCV = {
                 omschrijving: document.getElementById('omschrijving').value,
                 werkHistorie: document.getElementById('werkHistorie').value,
                 uitstroomRichting: document.getElementById('uitstroomRichting').value,
                 specialiteit: document.getElementById('specialiteit').value
             };
-
-            console.log(newCV);
 
             fetch(`http://localhost:8080/curriculum_vitae/add`, {
                 method: 'POST',
@@ -65,7 +73,7 @@
                 },
                 body: JSON.stringify(newCV)
             })
-                .then(response => { });
+            .then(response => { });
         }
     </script>
 </body>
