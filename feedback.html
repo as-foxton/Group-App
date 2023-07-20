@@ -24,8 +24,14 @@
         }
 
         function fetchFeedbacks() {
-            //fetch("http://localhost:8080/feedback/all")
-            fetch("http://localhost:8080/feedback/feedbacklist")
+            let id = sessionStorage.getItem("userID");
+
+            if (sessionStorage.getItem("userID") == null) {
+                console.log("No user logged in");
+                return;
+            }
+
+            fetch(`http://localhost:8080/feedback/feedbacklist/${id}`)
                 .then(r => r.json())
                 .then(d => {
                     console.log("fetchFeedbacks() - List of Feedbacks: ", d)
@@ -53,42 +59,41 @@
             document.getElementById("listItemFeedback").innerHTML = "";
 
             for (var i = 0; i < f.length; i++) {
-                account = await fetchAccount(f[i].persoon_nr);
-                console.log("Test Account: ", account);
+                //account = await fetchAccount(f[i].persoon_nr);
+                //console.log("Test Account: ", account);
 
                 //console.log("Naam Trainee: " + account.naam + "| persoon_nr: " + f[i].persoon_nr + "| bedrijf: " + f[i].bedrijf + "| aangenomen: " + f[i].aangenomen + "| mening: " + f[i].mening);
-                if (account) {
+                if (f) {
                     //document.getElementById("listItemFeedback").innerHTML += addRowFeedback(account.naam, account.bedrijf, f[i].aangenomen, f[i].mening);
-                    document.getElementById("listItemFeedback").innerHTML += addRowFeedback(f[i].accountName, f[i].bedrijf, true, f[i].mening);
+                    document.getElementById("listItemFeedback").innerHTML += addRowFeedback(f[i].id, f[i].accountName, f[i].bedrijf, false, f[i].mening);
                 }
             }
         }
 
-        function addRowFeedback(accNaam, vacBedrijf, aangenomen, mening) {
+        function addRowFeedback(id, accNaam, vacBedrijf, aangenomen, mening) {
             return `
-                    <li class="list-group-item">
+                    <li class="list-group-item shadow-sm" id="feedbackitem${id}" style="margin-top: 10px; margin-bottom: 10px;">
                         <!-- Feedback Object -->
                         <div class="d-flex flex-column" style="margin-left: 50px; margin-right: 50px">
-                        <div class="row">
-                            <div class="col-lg-3 row">
+                        <div class="row container-fluid">
+                            <div class="col-lg-4 row">
                                 <div>
-                                    <label style="background-color: "><b>Trainee</b></label>
-                                    <h5>${accNaam}</h5>
+                                    <label class="font-weight-bold">TRAINEE</label>
+                                    <div style="font-size: 1.3em; font-family: Fantasy">${accNaam}</div>
                                 </div>
                             </div>
-                            <div class="col-lg-3 row">
+                            <div class="col-lg-4 row">
                                 <div>
-                                    <label><b>Reviewer Bedrijf</b></label>    
-                                    <h5>${vacBedrijf}</h5>
+                                    <label class="font-weight-bold">REVIEW BEDRIJF</label>    
+                                    <div style="font-size: 1.3em; font-family: Fantasy">${vacBedrijf}</div>
                                 </div>
                             </div>
-                            <div class="col-lg-2 row" style="background-color: ${aangenomen == true ? 'rgb(81, 210, 92)' : 'rgb(227, 58, 58)'}">
-                                <div style="text-align: center"><b>${aangenomen == true ? 'Aangenomen' : 'Niet Aangenomen'}</b></div>
+                            <div class="col-lg-4 row">
+                                <div class="p-3 badge badge-pill badge-${aangenomen == true ? 'success' : 'info'}" style="height: 50px; font-size: 1em"><b>${aangenomen == true ? 'Aangenomen' : 'Niet Aangenomen'}</b></div>
                             </div>
-                            <div class="col-lg-4"></div>
                         </div>
                         <div class="row">
-                            <div class="container-fluid" placeholder="Mening Placeholder" style="background: rgb(227, 227, 233)">
+                            <div class="container-fluid rounded-sm" placeholder="Mening Placeholder" style="background: rgb(227, 227, 233); margin-top: 10px; margin-bottom: 5px; padding-top: 10px; padding-bottom: 10px">
                                 <!-- Feedback.mening -->
                                 ${mening}
                             </div>
@@ -160,9 +165,8 @@
 
 <body>
     <div id="menu"></div>
-    <h1>Feedback Pagina</h1>
 
-    <div id="feedbackTable">...</div>
+    <h1>Feedback Pagina</h1>
 
     <!-- The Modal -->
     <div class="modal fade" id="myModal">
@@ -210,50 +214,39 @@
 
 
     <div class="row">
-        <div class="col-lg-2 row">
+        <div class="col-lg-2 row" style="background: rgb(235, 235, 235)">
         </div>
-        <div class="col-lg-8 row">
+        <div class="col-lg-8 row" style="background: rgb(235, 235, 235)">
             <!-- Feedback List Body -->
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-3 row">
+                <div class="row" style="margin-left: 0px; margin-right: 0px">
+                    <div class="mr-auto">
                         <h2>Feedbacks</h2>
                     </div>
-                    <div class="col-lg-6 row"></div>
-                    <div class="col-lg-3 row">
+                    <div class="ml-auto">
                         <!-- Button to Open the Modal -->
                         <button type="button" class="btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                            Mening Schrijven
+                            Schrijf Mening
                         </button>
                     </div>
                 </div>
 
                 <!-- List of feedbacks -->
-                <ul class="list-group" id="listItemFeedback">
+                <ul class="list-group list-group-flush" id="listItemFeedback" style="margin-top: 20px">
                     <li class="list-group-item">
                         <!-- Feedback Object -->
                         <div id="listItemFeedback"></div>
                     </li>
-                    <li class="list-group-item">Second item</li>
-                    <li class="list-group-item">Third item</li>
                 </ul>
-            </div>>
+            </div>
         </div>
-        <div class="col-lg-2 row">
+        <div class="col-lg-2 row" style="background: rgb(235, 235, 235)">
         </div>
     </div>
-
 
 </body>
 
 <style>
-    /* TABLE */
-    .feedbacktable, th, td {
-        border: 1px solid black;
-        border-collapse: collapse;
-        padding: 10px;
-    }
-
     /* Popup Container */
     .popup {
         position: relative;
@@ -313,88 +306,4 @@
     }
 </style>
 
-<script>
-
-
-</script>
-
 </html>
-
-<!--function openPopup() {
-            var p = document.getElementById("formContainer");
-            //p.style.display = "block";
-            p.style.visibility = "visible";
-        }
-
-        function closePopup() {
-            var p = document.getElementById("formContainer");
-            //p.style.display = "none";
-            p.style.visibility = "hidden";
-        }-->
-
-<!--<button class="button" onclick="openPopup()">Open Form</button>-->
-<!--<button onclick="letsgo()">Klik Hier</button>-->
-<!--//function letsgo() {
-        //    fetch("http://localhost:8080/feedback/all")
-        //        .then(r => r.json())
-        //        .then(d => verwerkgegevens(d))
-        //}-->
-<!--<button onclick="fetchTable()">Refresh Table</button>-->
-<!--function RefreshFeedbackTable(data) {
-            document.getElementById("feedbackTable").innerHTML =
-                `<tr>
-    <th><strong>Persoon ID</strong></th>
-    <th><strong>Cv ID</strong></th>
-    <th><strong>Aangenomen</strong></th>
-    <th><strong>Feedback</strong></th>
-</tr>`
-
-            //console.log("TEST: ---Data: " + data);
-
-            for (var i = 0; i < data.length; i++) {
-                document.getElementById("feedbackTable").innerHTML +=
-                    `<tr>
-    <td>${data[i].persoon_nr}</td>
-    <td>${data[i].cv_nr}</td>
-    <td>${data[i].aangenomen}</td>
-    <td>${data[i].mening}</td>
-</tr>`
-
-                console.log("TEST: PersoonNr: " + data[i].persoon_nr + "| CvNr: " + data[i].cv_nr + "| Add to table aangenomen: " + data[i].aangenomen + "| Add to table mening: " + data[i].mening);
-            }
-
-        }-->
-<!-- Feedback Form (OLD)-->
-<!--<div class="container" id="formContainer">
-    <div class="title"><b>Feedback Form</b></div>
-    <form action="action_page.php" class="feedbackForm">
-        <div class="row">
-            <div class="col-25">
-                <label for="bedrijfInput">Bedrijf</label>
-            </div>
-            <div class="col-75">
-                <input type="text" id="bedrijfInput" name="firstname" placeholder="bedrijf">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-25">
-                <label for="aangenomenInput">Aangenomen</label>
-            </div>
-            <div class="col-75">
-                <input type="text" id="aangenomenInput" name="lastname" placeholder="...">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-25">
-                <label for="meningInput">Mening</label>
-            </div>
-            <div class="col-75">
-                <textarea id="meningInput" name="subject" placeholder="Feedback over de trainee..." style="height:200px"></textarea>
-            </div>
-        </div>
-        <div class="row">-->
-<!--<input type="submit" value="Submit" onclick="closePopup()">-->
-<!--<button onclick="closePopup()">Close Form</button>
-        </div>
-    </form>
-</div>-->
