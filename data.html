@@ -24,20 +24,61 @@
 <body>
      <!-- A grey horizontal navbar that becomes vertical on small screens -->
 <div id="menu"></div> 
-<select id="country">
-        <option value="UK">United Kingdom</option>
-        <option value="DE">Germany</option>
-        <option value="FR">Frankrijk</option>
-        <option value="NL">Nederland</option>
-      </select>
-      <br>
-      <select id="sex">
-        <option value="F">Vrouw</option>
-        <option value="M">Man</option>
-       
-      </select>
 
-      <button onclick="letsgo()">Klik hier</button>
+  
+ <div class="form-group">
+  <label for="sel1">Select list (select one):</label>
+  <select class="form-control" id="country">
+    <option value="UK">United Kingdom</option>
+    <option value="DE">Duitsland</option>
+    <option value="FR">Frankrijk</option>
+    <option value="NL">Nederland</option>
+  </select>
+</div> 
+
+<!-- <div class="form-group">
+  <label for="sel1">Select list (select one):</label>
+  <select class="form-control" id="sex">
+    <option value="F">Vrouw</option>
+    <option value="M">Man</option>
+    
+  </select>
+</div>  -->
+
+<!-- <select id="country">
+  <option value="UK">United Kingdom</option>
+  <option value="DE">Germany</option>
+  <option value="FR">Frankrijk</option>
+  <option value="NL">Nederland</option>
+</select>
+<br> -->
+<select id="sex">
+  <option value="F">Vrouw</option>
+  <option value="M">Man</option>
+ 
+</select>
+
+
+<!-- <div class="container">
+  <h2>Form control: radio buttons</h2>
+  <p>The form below contains three radio buttons. The last option is disabled:</p>
+  <form>
+    <div class="radio">
+      <label><input type="radio" name="optradio" id="F" >Vrouw</label>
+    </div>
+    <div class="radio">
+      <label><input type="radio" name="optradio" id="M">Man</label>
+    </div>
+      </form>
+</div> -->
+
+
+
+      
+
+      <!-- <button onclick="letsgo()">Klik hier</button> -->
+      <button type="button" class="btn btn-primary" onclick="letsgo()">Update</button>
+
   
       <div id="myChart"></div>
 
