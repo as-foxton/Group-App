@@ -122,7 +122,7 @@
 
       <div class="row">
         <div class="col-2">
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+          <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#myModal">
             Voeg een vacature toe
           </button>
         </div>
@@ -157,7 +157,7 @@
 
           <!-- Modal footer -->
           <div class="modal-footer">
-            <input type="submit" value="Voeg toe" class="btn btn-primary" onclick="createVacature()" />
+            <input type="submit" value="Voeg toe" class="btn btn-secondary" onclick="createVacature()" />
           </div>
         </div>
       </div>
@@ -182,7 +182,7 @@
           <input id="vacature-uitstroomRichting" required /><br /><br />
           <label for="functie">Functie:</label>
           <input type="text" id="vacature-functie" required /><br /><br />
-          <input type="submit" value="Submit" class="btn btn-primary" onclick="aanpassen()" />
+          <input type="submit" value="Submit" class="btn btn-secondary" onclick="aanpassen()" />
           <input type="text" id="abcd" hidden />
         </form>
       </div>
@@ -217,8 +217,9 @@
           AUTH_TOKEN: sessionStorage.AUTH_TOKEN,
         },
         body: JSON.stringify(newVacature),
-      }).then((response) => {
-        loadMijnVacatures();
+      })
+      .then((response) => {
+        loadMijnVacatures(sessionStorage.AUTH_TOKEN);
       });
     }
 
@@ -249,8 +250,9 @@
           "Content-Type": "application/json",
         },
         body: JSON.stringify(removingVacature),
-      }).then((response) => {
-        loadMijnVacatures();
+      })
+      .then((response) => {
+        loadMijnVacatures(sessionStorage.AUTH_TOKEN);
       });
     }
 
@@ -313,8 +315,9 @@
           "Content-Type": "application/json",
         },
         body: JSON.stringify(editVacature),
-      }).then((response) => {
-        loadMijnVacatures();
+      })
+      .then((response) => {
+        loadMijnVacatures(sessionStorage.AUTH_TOKEN);
       });
     }
 
@@ -346,8 +349,8 @@
                             <td>${vacature.omschrijving}</td>
                             <td>${vacature.uitstroomRichting}</td>
                             <td>${vacature.functie}</td>
-                            <td><button type="button" class="btn btn-primary" onclick="openPopup(${vacature.id})">Aanpassen</button></td>
-                            <td><button type="button" class="btn btn-dark" onclick="verwijderen(${vacature.id})">Delete</button></td>
+                            <td><button type="button" class="btn btn-secondary" onclick="openPopup(${vacature.id})">Aanpassen</button></td>
+                            <td><button type="button" class="btn btn-danger" onclick="verwijderen(${vacature.id})">Delete</button></td>
                         </tr>
                         `;
           });
