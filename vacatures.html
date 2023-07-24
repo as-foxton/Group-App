@@ -137,7 +137,7 @@
 
   <div class="container">
     <!-- Button to Open the Modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#myModal">
       Voeg een vacature toe
     </button>
   </div>
@@ -168,7 +168,7 @@
           
           <!-- Modal footer -->
           <div class="modal-footer">
-            <input type="submit" value="Voeg toe" class="btn btn-primary" onclick="createVacature()">
+            <input type="submit" value="Voeg toe" class="btn btn-secondary" onclick="createVacature()">
           </div>
           
         </div>
@@ -194,7 +194,7 @@
               <input id="vacature-uitstroomRichting" required><br><br>
               <label for="functie">Functie:</label>
               <input type="text" id="vacature-functie" required><br><br>
-              <input type="submit" value="Submit" class="btn btn-primary" onclick="aanpassen()">
+              <input type="submit" value="Submit" class="btn btn-secondary" onclick="aanpassen()">
               <input type="text" id="abcd" hidden>
             </form>
           </div>
@@ -225,7 +225,8 @@
       fetch("http://localhost:8080/vacature/create", {
           method: 'POST',
           headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
           },
           body: JSON.stringify(newVacature)
       })
@@ -369,8 +370,8 @@ function loadVacature(){
                     <td>${vacature.uitstroomRichting}</td>
                     <td>${vacature.functie}</td>
                     <td><input type="checkbox" id="favouriet" name="favouriet"></td>
-                    <td><button type="button" class="btn btn-primary" onclick="openPopup(${vacature.id})">Aanpassen</button></td>
-                    <td><button type="button" class="btn btn-dark" onclick="verwijderen(${vacature.id})">Delete</button></td>
+                    <td><button type="button" class="btn btn-secondary" onclick="openPopup(${vacature.id})">Aanpassen</button></td>
+                    <td><button type="button" class="btn btn-danger" onclick="verwijderen(${vacature.id})">Delete</button></td>
                 </tr>
                 `
             });

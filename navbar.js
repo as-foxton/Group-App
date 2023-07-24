@@ -17,7 +17,7 @@ function tekenmenu() {
       <a class="dropdown-item" href="CreateCV.html">CV aanmaken</a>
       <a class="dropdown-item" href="showcvs.html">CVs zien</a>
       <a class="dropdown-item" href="">Detail CV</a>
-      <a class="dropdown-item" href="">Aangeboden CVs</a>
+      <a class="dropdown-item" href="mijnaanbiedingen.html">Aangeboden CVs</a>
     </div>
   </li>
   <li class="nav-item dropdown">

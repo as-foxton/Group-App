@@ -18,114 +18,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="navbar.js"></script>
-
-    <script>
-       function loadPage() {
-      tekenmenu();
-      loadData();
-      var slider = document.getElementById("afstand");
-      var output = document.getElementById("show-afstand");
-      output.innerHTML = slider.value + ' Km';
-      slider.oninput = function () {
-        output.innerHTML = this.value + ' Km';
-      }
-    }
-    </script>
-    <script>
-        function loadData(place = "", distance = 50, uitstroomrichting = "alle") {
-            filter = {
-                plaats: place,
-                maxAfstand: distance,
-                uitstroomRichting: uitstroomrichting
-            }
-            fetch(`http://localhost:8080/vacatures/beknopt`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
-                },
-                body: JSON.stringify(filter)
-            })
-                .then(response => response.json())
-                .then(data => fillTable(data, 'vacature-table'));
-
-            fetch(`http://localhost:8080/curriculum_vitae/beknopt`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
-                },
-                body: JSON.stringify(filter)
-            })
-                .then(response => response.json())
-                .then(data => fillTable(data, 'cv-table'));
-        }
-
-        function fillTable(data, table) {
-            filterbutton.disabled = false;
-            let vacaturetable = document.getElementById(table);
-            vacaturetable.innerHTML = "";
-            if (table == 'vacature-table') {
-
-                data.forEach(vacature => {
-                    vacaturetable.innerHTML += `
-            <tr id=cv${vacature.id}>
-                <td>${vacature.id}</td>
-              <td>${vacature.uitstroomRichting}</td>
-              <td>${vacature.bedrijf}</td>
-              <td>${vacature.locatie}</td>
-            </tr>
-          `
-                });
-            }
-            if (table == 'cv-table') {
-                let cvtable = document.getElementById(table);
-                cvtable.innerHTML = "";
-
-                data.forEach(cv => {
-                    cvtable.innerHTML += `
-          <tr id=cv${cv.id}>
-            <td>${cv.id}</td>
-            <td>${cv.naam}</td>
-            <td>${cv.uitstroomRichting}</td>
-            <td>${cv.locatie}</td>
-          </tr>
-        `
-                });
-            }
-        }
-
-        function loadFiltered() {
-            filterbutton = document.getElementById("filterbutton")
-            filterbutton.disabled = true;
-            place = document.getElementById("plaats").value
-            distance = parseInt(document.getElementById("afstand").value)
-            richting = document.getElementById("richting").value
-            loadData(place, distance, richting);
-        }
-        window.onload = loadPage;
-
-    </script>
-    <script>
-        function createAanbieding() {
-            let newAanbieding = {
-                vacatureID: document.getElementById('vacature').value,
-                cvID: document.getElementById('cv').value,
-            };
-
-            console.log(newAanbieding);
-
-            fetch(`http://localhost:8080/aanbieding/aanmaken`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
-                },
-                body: JSON.stringify(newAanbieding)
-            })
-                .then(response => { });
-        }
-    </script>
 </head>
 
 <body>
@@ -150,7 +42,7 @@
             </div>
             <div class="col-2">
                 <button id="aanbiedingbutton" type="button" class="btn btn-secondary" data-toggle="modal"
-                    data-target="#myModal">Nieuwe aanbieding</button>
+                    data-target="#myModal" onclick="prepareAanbiedingModal()">Nieuwe aanbieding</button>
             </div>
             <div class="col-5">
                 <h2>Alle vacatures</h2>
@@ -211,17 +103,23 @@
 
                 <!-- Modal body -->
                 <div class="modal-body">
-                    <!--<label for="personid">Person ID number:</label>
-            <input type="number" id="vacature-personid" required><br><br>-->
+                    <!--
+                        <label for="personid">Person ID number:</label>
+                        <input type="number" id="vacature-personid" required><br><br>
+                    -->
+
                     <label for="cv">Cv ID:</label>
-                    <input type="number" class="form-control" id="cv"><br><br>
+                    <!-- <input type="number" class="form-control" id="cv"> -->
+                    <select class="form-control" id="cv"></select>
+                    <br><br>
+
                     <label for="vacature">Vacature ID:</label>
-                    <input type="number" class="form-control" id="vacature"><br><br>
+                    <select class="form-control" id="vacature"></select>
                 </div>
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <input type="submit" value="Voeg toe" class="btn btn-primary" data-dismiss="modal"
+                    <input type="submit" value="Voeg toe" class="btn btn-secondary" data-dismiss="modal"
                         onclick="createAanbieding()">
                 </div>
 
@@ -232,6 +130,158 @@
     </div>
 
     <!-- Modal End -->
+
+    <script>
+        function prepareAanbiedingModal() {
+            let selectCvElement =  document.getElementById('cv');
+            selectCvElement.innerHTML = '';
+
+            fetch(`http://localhost:8080/curriculum_vitae/beknopt`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+                },
+                body: JSON.stringify({plaats: '', maxAfstand: 100, uitstroomRichting: 'alle'})
+            })
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(nextCv => {
+                    let newOption = new Option(nextCv.naam, nextCv.id);
+                    selectCvElement.add(newOption, undefined);
+                });
+            });
+
+            let selectVacatureElement =  document.getElementById('vacature');
+            selectVacatureElement.innerHTML = '';
+
+            fetch(`http://localhost:8080/vacatures/beknopt`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+                },
+                body: JSON.stringify({plaats: '', maxAfstand: 100, uitstroomRichting: 'alle'})
+            })
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(nextVacature => {
+                    let newOption = new Option(nextVacature.uitstroomRichting + ' : ' + nextVacature.bedrijf, nextVacature.id);
+                    selectVacatureElement.add(newOption, undefined);
+                });
+            });
+        }
+
+        function loadPage() {
+            tekenmenu();
+            loadData();
+
+            var slider = document.getElementById("afstand");
+            var output = document.getElementById("show-afstand");
+            output.innerHTML = slider.value + ' Km';
+
+            slider.oninput = function () {
+                output.innerHTML = this.value + ' Km';
+            }
+        }
+
+        function loadData(place = "", distance = 50, uitstroomrichting = "alle") {
+            filter = {
+                plaats: place,
+                maxAfstand: distance,
+                uitstroomRichting: uitstroomrichting
+            }
+
+            fetch(`http://localhost:8080/vacatures/beknopt`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+                },
+                body: JSON.stringify(filter)
+            })
+                .then(response => response.json())
+                .then(data => fillTable(data, 'vacature-table'));
+
+            fetch(`http://localhost:8080/curriculum_vitae/beknopt`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+                },
+                body: JSON.stringify(filter)
+            })
+                .then(response => response.json())
+                .then(data => fillTable(data, 'cv-table'));
+        }
+
+        function fillTable(data, table) {
+            filterbutton.disabled = false;
+            let vacaturetable = document.getElementById(table);
+            vacaturetable.innerHTML = "";
+
+            if (table == 'vacature-table') {
+                data.forEach(vacature => {
+                    vacaturetable.innerHTML += `
+                        <tr id="cv-${vacature.id}">
+                            <td>${vacature.id}</td>
+                            <td>${vacature.uitstroomRichting}</td>
+                            <td>${vacature.bedrijf}</td>
+                            <td>${vacature.locatie}</td>
+                        </tr>
+                      `
+                });
+            }
+            if (table == 'cv-table') {
+                let cvtable = document.getElementById(table);
+                cvtable.innerHTML = "";
+
+                data.forEach(cv => {
+                    cvtable.innerHTML += `
+                        <tr id="cv-${cv.id}">
+                            <td>${cv.id}</td>
+                            <td>${cv.naam}</td>
+                            <td>${cv.uitstroomRichting}</td>
+                            <td>${cv.locatie}</td>
+                        </tr>
+                    `
+                });
+            }
+        }
+
+        function loadFiltered() {
+            filterbutton = document.getElementById("filterbutton")
+            filterbutton.disabled = true;
+            place = document.getElementById("plaats").value
+            distance = parseInt(document.getElementById("afstand").value)
+            richting = document.getElementById("richting").value
+
+            loadData(place, distance, richting);
+        }
+
+        function createAanbieding() {
+            let newAanbieding = {
+                vacatureID: document.getElementById('vacature').value,
+                cvID: document.getElementById('cv').value,
+            };
+
+            console.log(newAanbieding);
+
+            fetch(`http://localhost:8080/aanbieding/aanmaken`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+                },
+                body: JSON.stringify(newAanbieding)
+            })
+                .then(response => { });
+        }
+
+        window.onload = loadPage;
+    </script>
+
+
 </body>
 
 </html>
