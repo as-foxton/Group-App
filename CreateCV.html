@@ -16,6 +16,14 @@
     <script>
         window.onload=tekenmenu;
     </script>
+    <script src="logincheck.js"></script>
+    <script>
+      allowedToView(window.location.pathname).then(response => {
+        if(!response) {
+          location.href = "/index.html?accessdenied"
+        }
+      })
+    </script>
     <title>Create CV</title>
 </head>
 <body>

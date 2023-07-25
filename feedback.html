@@ -15,6 +15,15 @@
 
     <script src="navbar.js"></script>
 
+    <script src="logincheck.js"></script>
+    <script>
+        allowedToView(window.location.pathname).then(response => {
+            if(!response) {
+            location.href = "/index.html?accessdenied"
+            }
+        })
+    </script>
+
     <script>
         window.onload = init;
 
@@ -31,7 +40,11 @@
                 return;
             }
 
-            fetch(`http://localhost:8080/feedback/feedbacklist/${id}`)
+            fetch(`http://localhost:8080/feedback/feedbacklist/${id}`,{
+                headers: {
+                    'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+                }
+            })
                 .then(r => r.json())
                 .then(d => {
                     console.log("fetchFeedbacks() - List of Feedbacks: ", d)
@@ -41,7 +54,11 @@
         }
 
         function fetchAccount(id) {
-            let data = fetch("http://localhost:8080/account/" + id)
+            let data = fetch("http://localhost:8080/account/" + id,{
+                headers: {
+                    'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+                }
+            })
                 .then(r => r.json())
                 .then(d => {
                     console.log("fetchAccount() - Account from id returned", d);

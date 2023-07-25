@@ -8,7 +8,7 @@ var pages = [
   {name:'Feedback' , link:'/feedback.html'},
   {name:'Mijn vacatures' , link:'/mijnvacatures.html'},
   {name:'Aanbiedingen' , link:'/aanbieding.html'},
-  {name:'Mijn aanbiedingen' , link:'/mijnaanbiedingen.html'},
+  {name:'Mijn aanbiedingen' , link:'/mijnaanbiedingenwerkgever.html'},
   {name:'Data' , link:'/data.html'}
 ];
 
