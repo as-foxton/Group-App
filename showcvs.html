@@ -20,27 +20,12 @@
 
   <script src="logincheck.js"></script>
   <script>
-    loggedIn().then(response => {
+    allowedToView(window.location.pathname).then(response => {
       if(!response) {
-        location.href = "/Login.html"
+        location.href = "/index.html?accessdenied"
       }
     })
   </script>
-
-  <!--<script>
-    if(!sessionStorage.AUTH_TOKEN)
-      location.href = "/Login.html"
-    fetch(`http://localhost:8080/account/current`, {
-        method: 'GET',
-        headers: {
-            'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
-        }})
-        .then(response => response.json())
-        .then(data => {
-            if(data.id == -1)
-              location.href = "/Login.html"  
-        ;})
-  </script>-->
 
   <script>
     function loadPage() {
@@ -63,15 +48,17 @@
       fetch(`http://localhost:8080/curriculum_vitae/beknopt`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
         },
         body: JSON.stringify(filter)
       })
         .then(response => response.json())
-        .then(data => filTable(data));
+        .then(data => fillTable(data));
     }
 
-    function filTable(data) {
+    function fillTable(data) {
+      filterbutton.disabled = false;
       let cvtable = document.getElementById('cv-table');
       cvtable.innerHTML = "";
 
@@ -85,12 +72,23 @@
         `
       });
     }
+
+    function loadFiltered(){
+      filterbutton = document.getElementById("filterbutton")
+      filterbutton.disabled = true;
+      place = document.getElementById("plaats").value
+      distance = parseInt(document.getElementById("afstand").value)
+      richting = document.getElementById("richting").value
+      loadData(place,distance,richting);
+    }
+
     window.onload = loadPage;
   </script>
 </head>
 
 <body>
   <div id="menu"></div>
+
   <div class="container">
     <div class="row">
       <div class="col-2">
@@ -107,16 +105,16 @@
         <div class="form-group">
           <label for="richting">Uitstroomrichting</label>
           <select id="richting" class="form-control">
-            <option>Alle</option>
+            <option>alle</option>
             <option>Java</option>
             <option>C#</option>
             <option>Devops</option>
-            <option>Data science</option>
-            <option>Informatie annalist</option>
+            <option>Big Data</option>
+            <option>Informatie Analist</option>
             <option>Lowcode</option>
           </select>
         </div>
-        <button type="button" class="btn btn-secondary">Filter</button>
+        <button id="filterbutton" type="button" class="btn btn-secondary" onclick="loadFiltered()">Filter</button>
       </div>
       <div class="col-10">
         <h2>Alle CVs</h2>
