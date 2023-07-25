@@ -99,7 +99,7 @@
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <h1>Mijn Vacatures (bedrijf)</h1>
+          <h1>Mijn Vacatures</h1>
         </div>
 
         <div class="col-12">
@@ -175,10 +175,9 @@
           <label for="locatie">Locatie:</label>
           <input type="text" id="vacature-locatie" required /><br /><br />
           <label for="omschrijving">Omschrijving:</label>
-          <textarea type="text" id="vacature-omschrijving" required></textarea
-          ><br /><br />
+          <textarea type="text" id="vacature-omschrijving" required></textarea><br /><br />
           <label for="uitstroomRichting">Uitstroomrichting:</label>
-          <input id="vacature-uitstroomRichting" required /><br /><br />
+          <input type="text" id="vacature-uitstroomRichting" required /><br /><br />
           <label for="functie">Functie:</label>
           <input type="text" id="vacature-functie" required /><br /><br />
           <input type="submit" value="Submit" class="btn btn-secondary" onclick="aanpassen()" />
@@ -342,6 +341,7 @@
             vacatureTableElement.innerHTML += `
                         <tr>
                             <td>${vacature.id}</td>
+                            <td>${sessionStorage.userID}</td>
                             <td>${vacature.bedrijf}</td>
                             <td>${vacature.locatie}</td>    
                             <td>${vacature.omschrijving}</td>
