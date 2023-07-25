@@ -24,10 +24,7 @@ async function tekenmenu() {
           <li class="nav-item">
               <span class="nav-link disabled" href="#">Ingelogd als: ${sessionStorage.userNaam}</span>
               <span class="nav-link disabled" href="#">Rol: ${sessionStorage.userRol}</span>
-              <span class="nav-link" onclick="uitloggen()">Uitloggen</span>
-          </li>
-          <li class="nav-item">
-              
+              <span class="nav-link nav-button" onclick="uitloggen()">Uitloggen</span>
           </li>
       </ul>
   </nav>
