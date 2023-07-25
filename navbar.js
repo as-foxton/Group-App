@@ -3,7 +3,7 @@ var pages = [
   {name:'Home' , link:'/index.html'},
   {name:'Account' , link:'/account.html'},
   {name:'CVs' , link:'/showcvs.html'},
-  {name:'Create CV' , link:'/CreateCV.html'},
+  {name:'Mijn CV' , link:'/CreateCV.html'},
   {name:'Vacatures' , link:'/showvacatures.html'},
   {name:'Feedback' , link:'/feedback.html'},
   {name:'Mijn vacatures' , link:'/mijnvacatures.html'},
