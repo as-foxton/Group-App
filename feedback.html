@@ -41,7 +41,7 @@
         }
 
         function fetchAccount(id) {
-            let data = fetch("http://localhost:8080/feedback/findaccount/" + id)
+            let data = fetch("http://localhost:8080/account/" + id)
                 .then(r => r.json())
                 .then(d => {
                     console.log("fetchAccount() - Account from id returned", d);
