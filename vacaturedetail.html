@@ -24,13 +24,9 @@
         }
 
         function loadVacature() {
-            let id = sessionStorage.getItem("userID");
+            urlParams = new URLSearchParams(window.location.search);
 
-            if (sessionStorage.getItem("userID") == null)
-            {
-                console.log("No user logged in");
-                return;
-            }
+            let id = urlParams.get('vacature');
 
             fetch(`http://localhost:8080/vacature/vacaturedetail/${id}`)
                 .then(response => response.json())
