@@ -21,6 +21,14 @@
     <script>
       window.onload = tekenmenu;
     </script>
+    <script src="logincheck.js"></script>
+    <script>
+      allowedToView(window.location.pathname).then(response => {
+        if(!response) {
+          location.href = "/index.html?accessdenied"
+        }
+      })
+    </script>
     <link rel="stylesheet" type="text/css" href="styles.css" />
 
     <style>
@@ -212,7 +220,7 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          AUTH_TOKEN: sessionStorage.AUTH_TOKEN,
+          'AUTH_TOKEN': sessionStorage.AUTH_TOKEN,
         },
         body: JSON.stringify(newVacature),
       })
@@ -246,6 +254,7 @@
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
+          'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
         },
         body: JSON.stringify(removingVacature),
       })
@@ -311,6 +320,7 @@
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
         },
         body: JSON.stringify(editVacature),
       })
