@@ -101,7 +101,7 @@
           'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
         },
         body: JSON.stringify(message)
-      })
+      }).then(response =>loadData())
     }
 
     window.onload = loadPage;
