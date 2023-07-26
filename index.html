@@ -26,10 +26,16 @@
 
         function loadPage(){
           tekenmenu();
+          welkom();
           urlParams = new URLSearchParams(window.location.search);
           if(urlParams.has('accessdenied')){
             document.getElementById("accesserror").hidden = false;
           }
+        }
+
+        function welkom() {
+          document.getElementById('welkom').innerHTML='Welkom ' + sessionStorage.userNaam + '!';
+          document.getElementById('rol').innerHTML='Jij hebt de rol: ' + sessionStorage.userRol;
         }
     </script>
   
@@ -42,21 +48,17 @@
   <strong>Error</strong> You do not have permission to view that page!
 </div>
   <div class="row">
-    <div class="col-lg-4 text-center"><button type="button" class="btn btn-secondary custombutton">Vacatures</button></div>
-    <div class="col-lg-4 text-center"><button type="button" class="btn btn-secondary custombutton">CVs</button></div>
-    <div class="col-lg-4 text-center"><button type="button" class="btn btn-secondary custombutton">Profiel</button></div>
-  </div>
-
-  <style>
-    .custombutton {
-        width:200px;
-        aspect-ratio: 1;
-    }
-
-   
-  </style>
-  
-    
+    <div class="col-lg-3 text-center">
+      <img src="ycnextlogo.png" class="rounded img-fluid" width=50% alt="YoungCapital NEXT Logo">
+    </div>
+    <div class="col-lg-6 text-center">
+      <h1 id="welkom"></h1>
+      <h3 id="rol"></h3>
+    </div>
+    <div class="col-lg-3 text-center">
+      <img src="rainbowlogo.png" class="rounded img-fluid" width="50%" alt="Rainbow IT Logo">
+    </div>
+  </div>   
     
 
   <link rel="stylesheet" type="text/css" href="styles.css">
