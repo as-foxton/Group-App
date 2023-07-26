@@ -28,6 +28,8 @@
   </script>
 
   <script>
+    var aanbiedingID = -1;
+
     function loadPage() {
       tekenmenu();
       loadData();
@@ -52,6 +54,15 @@
       })
         .then(response => response.json())
         .then(data => fillInvTable(data));
+
+      fetch(`http://localhost:8080/aanbieding/werkgever/onbeoordeeld/${urlParams.get('vacature')}`, {
+        method: 'GET',
+        headers: {
+          'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+        }
+      })
+        .then(response => response.json())
+        .then(data => fillFeedbackTable(data));
     }
 
     function loadCV(id){
@@ -64,7 +75,7 @@
         .then(response => response.json())
         .then(data => {
           fillModal(data);
-          $('#myModal').modal()
+          $('#cvModal').modal()
         });
     }
 
@@ -145,6 +156,32 @@
       });
     }
 
+    function fillFeedbackTable(data) {
+      let cvtable = document.getElementById('cv-table-feedback');
+      cvtable.innerHTML = "";
+
+      data.forEach(cv => {
+        cvtable.innerHTML += `
+          <tr>
+            <td onclick="loadCV(${cv.cvId})">${cv.naam}</td>
+            <td onclick="loadCV(${cv.cvId})">${cv.uitstroomRichting}</td>
+            <td onclick="loadCV(${cv.cvId})">${cv.locatie}</td>
+            <td>
+              <button type="button" class="btn btn-secondary" onclick="geefFeedback(${cv.id})">Schrijf feedback</button>
+            </td>
+          </tr>
+        `
+      });
+    }
+
+    function geefFeedback(id){
+      aanbiedingID = id;
+      $('#feedbackModal').modal()
+    }
+
+    function saveFeedback(){
+      //opslaan feedback
+    }
     window.onload = loadPage;
   </script>
 </head>
@@ -181,9 +218,23 @@
           <tbody id="cv-table-uitgenodigd">
           </tbody>
         </table>
+
+        <h2>Uitgenodigde kandidaten</h2>
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Naam</th>
+              <th>Uitstroomrichting</th>
+              <th>Locatie</th>
+              <th>Afwijzen</th>
+            </tr>
+          </thead>
+          <tbody id="cv-table-feedback">
+          </tbody>
+        </table>
   </div>
 
-  <div class="modal" id="myModal">
+  <div class="modal" id="cvModal">
     <div class="modal-dialog">
       <div class="modal-content">
       
@@ -209,6 +260,41 @@
           <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="clearModal()">Close</button>
         </div>
         
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="feedbackModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="m-title">Feedback</h4>
+          <button type="button" class="close" data-dismiss="modal" onclick="clearModal()">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="mening">Beoordeling</label>
+            <textarea class="form-control" rows="5" placeholder="Voer hier uw omschrijving in..." id="mening"></textarea>
+        </div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
+                </div>
+                <div class="col-6 text-right">
+                    <button type="button" data-dismiss="modal" onclick="saveFeedback()" class="btn btn-secondary">Opslaan</button>
+                </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
