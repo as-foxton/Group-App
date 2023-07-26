@@ -18,6 +18,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="navbar.js"></script>
+    <script src="logincheck.js"></script>
+    <script>
+        allowedToView(window.location.pathname).then(response => {
+        if(!response) {
+            location.href = "/index.html?accessdenied"
+        }
+        })
+    </script>
 </head>
 
 <body>
@@ -135,6 +143,11 @@
         function prepareAanbiedingModal() {
             let selectCvElement =  document.getElementById('cv');
             selectCvElement.innerHTML = '';
+            filter = {
+                plaats: document.getElementById("plaats").value,
+                maxAfstand: parseInt(document.getElementById("afstand").value),
+                uitstroomRichting: document.getElementById("richting").value
+            }
 
             fetch(`http://localhost:8080/curriculum_vitae/beknopt`, {
                 method: 'POST',
@@ -142,7 +155,7 @@
                     'Content-Type': 'application/json',
                     'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
                 },
-                body: JSON.stringify({plaats: '', maxAfstand: 100, uitstroomRichting: 'alle'})
+                body: JSON.stringify(filter)
             })
             .then(response => response.json())
             .then(data => {
@@ -161,7 +174,7 @@
                     'Content-Type': 'application/json',
                     'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
                 },
-                body: JSON.stringify({plaats: '', maxAfstand: 100, uitstroomRichting: 'alle'})
+                body: JSON.stringify(filter)
             })
             .then(response => response.json())
             .then(data => {

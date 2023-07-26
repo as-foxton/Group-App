@@ -3,12 +3,12 @@ var pages = [
   {name:'Home' , link:'/index.html'},
   {name:'Account' , link:'/account.html'},
   {name:'CVs' , link:'/showcvs.html'},
-  {name:'Create CV' , link:'/CreateCV.html'},
+  {name:'Mijn CV' , link:'/CreateCV.html'},
   {name:'Vacatures' , link:'/showvacatures.html'},
   {name:'Feedback' , link:'/feedback.html'},
   {name:'Mijn vacatures' , link:'/mijnvacatures.html'},
   {name:'Aanbiedingen' , link:'/aanbieding.html'},
-  {name:'Mijn aanbiedingen' , link:'/mijnaanbiedingen.html'},
+  {name:'Mijn aanbiedingen' , link:'/mijnaanbiedingenwerkgever.html'},
   {name:'Data' , link:'/data.html'}
 ];
 

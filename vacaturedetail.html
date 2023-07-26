@@ -14,6 +14,14 @@
     <title>Vacature</title>
 
     <script src="navbar.js"></script>
+    <script src="logincheck.js"></script>
+    <script>
+        allowedToView(window.location.pathname).then(response => {
+        if(!response) {
+            location.href = "/index.html?accessdenied"
+        }
+        })
+  </script>
 
     <script>
         window.onload = init;
@@ -28,7 +36,11 @@
 
             let id = urlParams.get('vacature');
 
-            fetch(`http://localhost:8080/vacature/vacaturedetail/${id}`)
+            fetch(`http://localhost:8080/vacature/vacaturedetail/${id}`,{
+                headers: {
+                    'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+                }
+            })
                 .then(response => response.json())
                 .then(data => {
                     console.log('Data', data);
