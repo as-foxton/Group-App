@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vacatures</title>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <!-- jQuery library -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+  <!-- Popper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="navbar.js"></script>
+
+  <script src="logincheck.js"></script>
+  <script>
+    allowedToView(window.location.pathname).then(response => {
+      if(!response) {
+        location.href = "/index.html?accessdenied"
+      }
+    })
+  </script>
+
+  <script>
+    var aanbiedingId=-1;
+
+    function loadPage() {
+      tekenmenu();
+      loadData();
+    }
+
+    function loadVacature(id){
+      location.href = `/vacaturedetail.html?vacature=${id}`
+    }
+
+    function loadData() {
+      fetch(`http://localhost:8080/aanbieding/kandidaat/uitnodiging`, {
+        method: 'Get',
+        headers: {
+          'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+        }})
+        .then(response => response.json())
+        .then(data => fillUitnodigingenTable(data));
+
+        fetch(`http://localhost:8080/aanbieding/kandidaat/nofeedback`, {
+        method: 'Get',
+        headers: {
+          'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+        }})
+        .then(response => response.json())
+        .then(data => fillFeedbackTable(data));
+    }
+
+    function fillUitnodigingenTable(data) {
+      let vacaturetable = document.getElementById('aanbieding-table');
+      vacaturetable.innerHTML = "";
+
+      data.forEach(aanbieding => {
+        vacaturetable.innerHTML += `
+          <tr id=cv${aanbieding.id} onclick=loadVacature(${aanbieding.vacatureId})>
+            <td>${aanbieding.bedrijf}</td>
+            <td>${aanbieding.locatie}</td>
+            <td>${aanbieding.functie}</td>
+          </tr>
+        `
+      });
+    }
+
+    function fillFeedbackTable(data) {
+      let vacaturetable = document.getElementById('feedback-table');
+      vacaturetable.innerHTML = "";
+
+      data.forEach(aanbieding => {
+        vacaturetable.innerHTML += `
+          <tr id=cv${aanbieding.id}>
+            <td>${aanbieding.bedrijf}</td>
+            <td>${aanbieding.locatie}</td>
+            <td>${aanbieding.functie}</td>
+            <td>
+              <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#myModal" onclick="aanbiedingId =${aanbieding.id}">Schrijf feedback</button>
+            </td>
+          </tr>
+        `
+      });
+    }
+
+    function saveFeedback(){
+      message ={
+        aanbiedingId: aanbiedingID,
+        mening: document.getElementById("mening").value
+      }
+      fetch(`http://localhost:8080/feedback/save`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+        },
+        body: JSON.stringify(message)
+      }).then(response =>loadData())
+    }
+
+    window.onload = loadPage;
+  </script>
+</head>
+
+<body>
+  <div id="menu"></div>
+  <div class="container">
+        <h2>Uitnodigingen</h2>
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Bedrijf</th>
+              <th>Locatie</th>
+              <th>Functie</th>
+            </tr>
+          </thead>
+          <tbody id="aanbieding-table">
+          </tbody>
+        </table>
+        <h2>Onbeoordeelde gesprekken</h2>
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Bedrijf</th>
+              <th>Locatie</th>
+              <th>Functie</th>
+              <th>beoordelen</th>
+            </tr>
+          </thead>
+          <tbody id="feedback-table">
+          </tbody>
+        </table>
+  </div>
+
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="m-title">Feedback</h4>
+          <button type="button" class="close" data-dismiss="modal" onclick="clearModal()">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="mening">Beoordeling</label>
+            <textarea class="form-control" rows="5" placeholder="Voer hier uw omschrijving in..." id="mening"></textarea>
+        </div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
+                </div>
+                <div class="col-6 text-right">
+                    <button type="button" data-dismiss="modal" onclick="saveFeedback()" class="btn btn-secondary">Opslaan</button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
