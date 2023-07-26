@@ -31,7 +31,12 @@
                 return;
             }
 
-            fetch(`http://localhost:8080/feedback/feedbacklist/${id}`)
+            fetch(`http://localhost:8080/feedback/feedbacklist/${id}`,{
+                method: 'POST',
+                headers: {
+                    'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+                }
+            })
                 .then(r => r.json())
                 .then(d => {
                     console.log("fetchFeedbacks() - List of Feedbacks: ", d)
