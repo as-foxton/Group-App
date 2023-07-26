@@ -3,12 +3,15 @@ var pages = [
   {name:'Home' , link:'/index.html'},
   {name:'Account' , link:'/account.html'},
   {name:'CVs' , link:'/showcvs.html'},
-  {name:'Create CV' , link:'/CreateCV.html'},
+  {name:'Mijn CV' , link:'/CreateCV.html'},
   {name:'Vacatures' , link:'/showvacatures.html'},
   {name:'Feedback' , link:'/feedback.html'},
   {name:'Mijn vacatures' , link:'/mijnvacatures.html'},
   {name:'Aanbiedingen' , link:'/aanbieding.html'},
-  {name:'Mijn aanbiedingen' , link:'/mijnaanbiedingen.html'},
+  {name:'Mijn aanbiedingen' , link:'/mijnaanbiedingenwerkgever.html'},
+  {name:'Mijn aanbiedingen' , link:'/mijnaanbiedingenkandidaat.html'},
+  {name:'Mijn feedback' , link:'/mijnfeedbackopdrachtgever.html'},
+  {name:'Mijn feedback' , link:'/mijnfeedbacktrainee.html'},
   {name:'Data' , link:'/data.html'}
 ];
 
@@ -24,10 +27,7 @@ async function tekenmenu() {
           <li class="nav-item">
               <span class="nav-link disabled" href="#">Ingelogd als: ${sessionStorage.userNaam}</span>
               <span class="nav-link disabled" href="#">Rol: ${sessionStorage.userRol}</span>
-              <span class="nav-link" onclick="uitloggen()">Uitloggen</span>
-          </li>
-          <li class="nav-item">
-              
+              <span class="nav-link nav-button" onclick="uitloggen()">Uitloggen</span>
           </li>
       </ul>
   </nav>

@@ -16,6 +16,10 @@
 li{
     list-style: none;
 }
+
+.nav-button{
+    cursor: pointer;
+}
 /* 
 body {
     background-color: gray !important;
