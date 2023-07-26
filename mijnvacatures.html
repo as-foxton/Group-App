@@ -21,6 +21,14 @@
     <script>
       window.onload = tekenmenu;
     </script>
+    <script src="logincheck.js"></script>
+    <script>
+      allowedToView(window.location.pathname).then(response => {
+        if(!response) {
+          location.href = "/index.html?accessdenied"
+        }
+      })
+    </script>
     <link rel="stylesheet" type="text/css" href="styles.css" />
 
     <style>
@@ -99,7 +107,7 @@
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <h1>Mijn Vacatures (bedrijf)</h1>
+          <h1>Mijn Vacatures</h1>
         </div>
 
         <div class="col-12">
@@ -107,7 +115,6 @@
             <thead>
               <tr>
                 <th>VacatureID:</th>
-                <th>AccountID:</th>
                 <th>Bedrijf</th>
                 <th>Locatie</th>
                 <th>Omschrijving</th>
@@ -176,10 +183,9 @@
           <label for="locatie">Locatie:</label>
           <input type="text" id="vacature-locatie" required /><br /><br />
           <label for="omschrijving">Omschrijving:</label>
-          <textarea type="text" id="vacature-omschrijving" required></textarea
-          ><br /><br />
+          <textarea type="text" id="vacature-omschrijving" required></textarea><br /><br />
           <label for="uitstroomRichting">Uitstroomrichting:</label>
-          <input id="vacature-uitstroomRichting" required /><br /><br />
+          <input type="text" id="vacature-uitstroomRichting" required /><br /><br />
           <label for="functie">Functie:</label>
           <input type="text" id="vacature-functie" required /><br /><br />
           <input type="submit" value="Submit" class="btn btn-secondary" onclick="aanpassen()" />
@@ -214,7 +220,7 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          AUTH_TOKEN: sessionStorage.AUTH_TOKEN,
+          'AUTH_TOKEN': sessionStorage.AUTH_TOKEN,
         },
         body: JSON.stringify(newVacature),
       })
@@ -248,6 +254,7 @@
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
+          'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
         },
         body: JSON.stringify(removingVacature),
       })
@@ -313,6 +320,7 @@
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
         },
         body: JSON.stringify(editVacature),
       })
@@ -343,7 +351,7 @@
             vacatureTableElement.innerHTML += `
                         <tr>
                             <td>${vacature.id}</td>
-                            <td>${vacature.account.id}</td>
+                            <td>${sessionStorage.userID}</td>
                             <td>${vacature.bedrijf}</td>
                             <td>${vacature.locatie}</td>    
                             <td>${vacature.omschrijving}</td>

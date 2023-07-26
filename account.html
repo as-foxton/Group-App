@@ -18,6 +18,14 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="navbar.js"></script>
+    <script src="logincheck.js"></script>
+    <script>
+        allowedToView(window.location.pathname).then(response => {
+        if(!response) {
+            location.href = "/index.html?accessdenied"
+        }
+        })
+    </script>
 </head>
 
 <body>
@@ -139,7 +147,6 @@
                                 <th>Naam</th>
                                 <th>Rol</th>
                                 <th>Email</th>
-                                <th>Wachtwoord</th>
                                 <th>Bedrijf</th>
                                 <th>Locatie</th>
                                 <th>Edit</th>
@@ -155,7 +162,6 @@
                                 <td>${allAccounts[x].naam}</td>
                                 <td>${allAccounts[x].rol}</td>
                                 <td>${allAccounts[x].email}</td>
-                                <td>${allAccounts[x].wachtwoord}</td>
                                 <td>${allAccounts[x].bedrijf}</td>
                                 <td>${allAccounts[x].locatie}</td>
                                 <td>
@@ -174,6 +180,7 @@
 
             }
             xhr.open("GET", "http://localhost:8080/account/all", true);
+            xhr.setRequestHeader("AUTH_TOKEN", sessionStorage.AUTH_TOKEN);
             xhr.send()
 
         }
@@ -195,6 +202,7 @@
             }
             xhr.open("POST", "http://localhost:8080/account/create", true);
             xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.setRequestHeader("AUTH_TOKEN", sessionStorage.AUTH_TOKEN);
             xhr.send(deJSON);
         }
 
@@ -208,6 +216,7 @@
                 }
             }
             xhr.open("GET", "http://localhost:8080/account/delete/" + persoons_nr, true);
+            xhr.setRequestHeader("AUTH_TOKEN", sessionStorage.AUTH_TOKEN);
             xhr.send()
         }
         
@@ -228,6 +237,7 @@
                 }
             }
             xhr.open("GET", "http://localhost:8080/account/" + persoons_nr, true);
+            xhr.setRequestHeader("AUTH_TOKEN", sessionStorage.AUTH_TOKEN);
             xhr.send()
         }
 
@@ -258,10 +268,12 @@
             if (!!persoons_nr) {
                 xhr.open("PUT", "http://localhost:8080/account/update/" + persoons_nr, true);
                 xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("AUTH_TOKEN", sessionStorage.AUTH_TOKEN);
                 xhr.send(deJSON);
             } else {
                 xhr.open("POST", "http://localhost:8080/account/create", true);
                 xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("AUTH_TOKEN", sessionStorage.AUTH_TOKEN);
                 xhr.send(deJSON);
             }
         }

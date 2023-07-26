@@ -1,65 +1,37 @@
 
-function tekenmenu() {
-  document.getElementById("menu").innerHTML = `
+var pages = [
+  {name:'Home' , link:'/index.html'},
+  {name:'Account' , link:'/account.html'},
+  {name:'CVs' , link:'/showcvs.html'},
+  {name:'Mijn CV' , link:'/CreateCV.html'},
+  {name:'Vacatures' , link:'/showvacatures.html'},
+  {name:'Feedback' , link:'/feedback.html'},
+  {name:'Mijn vacatures' , link:'/mijnvacatures.html'},
+  {name:'Aanbiedingen' , link:'/aanbieding.html'},
+  {name:'Mijn aanbiedingen' , link:'/mijnaanbiedingenwerkgever.html'},
+  {name:'Data' , link:'/data.html'}
+];
+
+async function tekenmenu() {
+  
+  start = `
   <link rel="stylesheet" type="text/css" href="styles.css">
   <nav class="navbar navbar-dark customnavbar" style="background-color: black !important;">
-  <li class="nav-item">
-  <a class="nav-link active" href="index.html">Home</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link active" href="Login.html">Log in</a>
-  </li>
-  <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle active" href="#" id="navbardrop" data-toggle="dropdown">
-      CV
-    </a>
-    <div class="dropdown-menu">
-      <a class="dropdown-item" href="CreateCV.html">CV aanmaken</a>
-      <a class="dropdown-item" href="showcvs.html">CVs zien</a>
-      <a class="dropdown-item" href="">Detail CV</a>
-      <a class="dropdown-item" href="mijnaanbiedingen.html">Aangeboden CVs</a>
-    </div>
-  </li>
-  <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle active" href="#" id="navbardrop" data-toggle="dropdown">
-      Vacature
-    </a>
-    <div class="dropdown-menu">
-      <a class="dropdown-item" href="showvacatures.html">Vacatures zien</a>
-      <a class="dropdown-item" href="">Detail vacature</a>
-      <a class="dropdown-item" href="mijnvacatures.html">Mijn vacatures</a>
-    </div>
-  </li>
-  <li class="nav-item">
-  <a class="nav-link active" href="aanbieding.html">Aanbiedingen</a>
-  </li>
-  <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle active" href="#" id="navbardrop" data-toggle="dropdown">
-      Feedback
-    </a>
-    <div class="dropdown-menu">
-      <a class="dropdown-item" href="">Feedback schrijven</a>
-      <a class="dropdown-item" href="feedback.html">Feedback lezen</a>
-    </div>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link active" href="account.html">Accounts</a>
-  </li>
-  <li class="nav-item">
-  <a class="nav-link active" href="data.html">Data</a>
-</li>
+  `
+  
+  end = `
       <ul class="navbar-nav ml-auto text-right">
           <li class="nav-item">
               <span class="nav-link disabled" href="#">Ingelogd als: ${sessionStorage.userNaam}</span>
               <span class="nav-link disabled" href="#">Rol: ${sessionStorage.userRol}</span>
-              <span class="nav-link" onclick="uitloggen()">Uitloggen</span>
-          </li>
-          <li class="nav-item">
-              
+              <span class="nav-link nav-button" onclick="uitloggen()">Uitloggen</span>
           </li>
       </ul>
   </nav>
     `
+  middle = await generateMenu();
+
+  document.getElementById("menu").innerHTML = start + middle + end;
 }
 
 function uitloggen(){
@@ -75,4 +47,25 @@ function uitloggen(){
           sessionStorage.removeItem("userRol");
           location.href = 'Login.html'
         });
+}
+
+async function generateMenu(){
+  
+
+  response = await fetch(`http://localhost:8080/pages`, {
+        method: 'GET',
+        headers: {
+            'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+        }});
+  data = await response.json();
+  
+  result = '';
+    for(page of pages){
+      if(data.includes(page.link))
+        result += `
+          <li class="nav-item">
+            <a class="nav-link active" href="${page.link}">${page.name}</a>
+          </li>`
+    }
+    return result;
 }
