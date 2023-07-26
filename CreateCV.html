@@ -13,8 +13,13 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="navbar.js"></script>
+    <script src="logincheck.js"></script>
     <script>
-        window.onload=tekenmenu;
+      allowedToView(window.location.pathname).then(response => {
+        if(!response) {
+          location.href = "/index.html?accessdenied"
+        }
+      })
     </script>
     <title>Create CV</title>
 </head>
@@ -24,7 +29,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12 mb-3">
-                <h1>Alle CVs</h1>
+                <h1>Mijn CV</h1>
             </div>
             <div class="col-12">
                 <div class="form-group">
@@ -75,6 +80,28 @@
             })
             .then(response => { });
         }
+
+        function loadCV(){
+            fetch(`http://localhost:8080/curriculum_vitae/mine`, {
+                method: 'GET',
+                headers: {
+                    'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+                }})
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('omschrijving').value = data.omschrijving
+                    document.getElementById('werkHistorie').value = data.werkHistorie
+                    document.getElementById('uitstroomRichting').value = data.uitstroomRichting
+                    document.getElementById('specialiteit').value = data.specialiteit
+                   
+                 });
+        }
+
+        function loadPage(){
+            tekenmenu();
+            loadCV();
+        }
+        window.onload=loadPage;
     </script>
 </body>
 </html>
