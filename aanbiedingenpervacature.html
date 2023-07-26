@@ -44,7 +44,7 @@
         .then(response => response.json())
         .then(data => fillNieuwTable(data));
 
-        fetch(`http://localhost:8080/aanbieding/werkgever/uitgenodigd/${urlParams.get('vacature')}`, {
+      fetch(`http://localhost:8080/aanbieding/werkgever/uitgenodigd/${urlParams.get('vacature')}`, {
         method: 'GET',
         headers: {
           'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
@@ -62,7 +62,30 @@
         }
       })
         .then(response => response.json())
-        .then(data => fillModal(data));
+        .then(data => {
+          fillModal(data);
+          $('#myModal').modal()
+        });
+    }
+
+    function afwijzen(id){
+      fetch(`http://localhost:8080/aanbieding/werkgever/afwijzen?aanbieding=${id}`, {
+        method: 'GET',
+        headers: {
+          'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+        }
+      })
+        .then(response => loadData())
+    }
+
+    function uitnodigen(id){
+      fetch(`http://localhost:8080/aanbieding/werkgever/uitnodigen?aanbieding=${id}`, {
+        method: 'GET',
+        headers: {
+          'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+        }
+      })
+        .then(response => loadData())
     }
 
     function fillModal(cv){
@@ -89,15 +112,15 @@
 
       data.forEach(cv => {
         cvtable.innerHTML += `
-          <tr data-toggle="modal" data-target="#myModal" onclick="loadCV(${cv.cvId})">
-            <td>${cv.naam}</td>
-            <td>${cv.uitstroomRichting}</td>
-            <td>${cv.locatie}</td>
+          <tr >
+            <td onclick="loadCV(${cv.cvId})">${cv.naam}</td>
+            <td onclick="loadCV(${cv.cvId})">${cv.uitstroomRichting}</td>
+            <td onclick="loadCV(${cv.cvId})">${cv.locatie}</td>
             <td>
-              <button type="button" class="btn btn-secondary">Uitnodigen</button>
+              <button type="button" class="btn btn-secondary" onclick="uitnodigen(${cv.id})">Uitnodigen</button>
             </td>
             <td>
-              <button type="button" class="btn btn-danger">Afwijzen</button>
+              <button type="button" class="btn btn-danger" onclick="afwijzen(${cv.id})">Afwijzen</button>
             </td>
           </tr>
         `
@@ -110,12 +133,12 @@
 
       data.forEach(cv => {
         cvtable.innerHTML += `
-          <tr data-toggle="modal" data-target="#myModal" onclick="loadCV(${cv.cvId})">
-            <td>${cv.naam}</td>
-            <td>${cv.uitstroomRichting}</td>
-            <td>${cv.locatie}</td>
+          <tr>
+            <td onclick="loadCV(${cv.cvId})">${cv.naam}</td>
+            <td onclick="loadCV(${cv.cvId})">${cv.uitstroomRichting}</td>
+            <td onclick="loadCV(${cv.cvId})">${cv.locatie}</td>
             <td>
-              <button type="button" class="btn btn-danger">Afwijzen</button>
+              <button type="button" class="btn btn-danger" onclick="afwijzen(${cv.id})">Afwijzen</button>
             </td>
           </tr>
         `
