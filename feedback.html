@@ -15,6 +15,15 @@
 
     <script src="navbar.js"></script>
 
+    <script src="logincheck.js"></script>
+    <script>
+        allowedToView(window.location.pathname).then(response => {
+            if(!response) {
+            location.href = "/index.html?accessdenied"
+            }
+        })
+    </script>
+
     <script>
         window.onload = init;
 
@@ -31,7 +40,11 @@
                 return;
             }
 
-            fetch(`http://localhost:8080/feedback/feedbacklist/${id}`)
+            fetch(`http://localhost:8080/feedback/feedbacklist/${id}`,{
+                headers: {
+                    'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+                }
+            })
                 .then(r => r.json())
                 .then(d => {
                     console.log("fetchFeedbacks() - List of Feedbacks: ", d)
@@ -41,7 +54,11 @@
         }
 
         function fetchAccount(id) {
-            let data = fetch("http://localhost:8080/feedback/findaccount/" + id)
+            let data = fetch("http://localhost:8080/account/" + id,{
+                headers: {
+                    'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+                }
+            })
                 .then(r => r.json())
                 .then(d => {
                     console.log("fetchAccount() - Account from id returned", d);
@@ -79,13 +96,13 @@
                             <div class="col-lg-4 row">
                                 <div>
                                     <label class="font-weight-bold">TRAINEE</label>
-                                    <div style="font-size: 1.3em; font-family: Fantasy">${accNaam}</div>
+                                    <div style="font-size: 1.3em">${accNaam}</div>
                                 </div>
                             </div>
                             <div class="col-lg-4 row">
                                 <div>
                                     <label class="font-weight-bold">REVIEW BEDRIJF</label>    
-                                    <div style="font-size: 1.3em; font-family: Fantasy">${vacBedrijf}</div>
+                                    <div style="font-size: 1.3em">${vacBedrijf}</div>
                                 </div>
                             </div>
                             <div class="col-lg-4 row">
@@ -140,7 +157,8 @@
             fetch("http://localhost:8080/feedback/save", {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
                 },
                 body: JSON.stringify(newFeedback)
                 })
@@ -166,7 +184,44 @@
 <body>
     <div id="menu"></div>
 
-    <h1>Feedback Pagina</h1>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12">
+                <h1>Feedback Pagina</h1>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-lg-2 row" style="background: rgb(235, 235, 235)">
+            </div>
+            <div class="col-lg-8 row" style="background: rgb(235, 235, 235)">
+                <!-- Feedback List Body -->
+                <div class="container-fluid">
+                    <div class="row" style="margin-left: 0px; margin-right: 0px">
+                        <div class="mr-auto">
+                            <h2>Feedbacks</h2>
+                        </div>
+                        <div class="ml-auto">
+                            <!-- Button to Open the Modal -->
+                            <button type="button" class="btn-secondary btn-lg" data-toggle="modal" data-target="#myModal">
+                                Schrijf Mening
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- List of feedbacks -->
+                    <ul class="list-group list-group-flush" id="listItemFeedback" style="margin-top: 20px">
+                        <li class="list-group-item">
+                            <!-- Feedback Object -->
+                            <div id="listItemFeedback"></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-2 row" style="background: rgb(235, 235, 235)">
+            </div>
+        </div>
+    </div>
 
     <!-- The Modal -->
     <div class="modal fade" id="myModal">
@@ -205,42 +260,10 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="saveFeedback(); fetchFeedbacks()">Versturen</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="saveFeedback(); fetchFeedbacks()">Versturen</button>
                 </div>
 
             </div>
-        </div>
-    </div>
-
-
-    <div class="row">
-        <div class="col-lg-2 row" style="background: rgb(235, 235, 235)">
-        </div>
-        <div class="col-lg-8 row" style="background: rgb(235, 235, 235)">
-            <!-- Feedback List Body -->
-            <div class="container-fluid">
-                <div class="row" style="margin-left: 0px; margin-right: 0px">
-                    <div class="mr-auto">
-                        <h2>Feedbacks</h2>
-                    </div>
-                    <div class="ml-auto">
-                        <!-- Button to Open the Modal -->
-                        <button type="button" class="btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                            Schrijf Mening
-                        </button>
-                    </div>
-                </div>
-
-                <!-- List of feedbacks -->
-                <ul class="list-group list-group-flush" id="listItemFeedback" style="margin-top: 20px">
-                    <li class="list-group-item">
-                        <!-- Feedback Object -->
-                        <div id="listItemFeedback"></div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-lg-2 row" style="background: rgb(235, 235, 235)">
         </div>
     </div>
 
@@ -254,32 +277,20 @@
         cursor: pointer;
     }
 
-        /* The actual popup (appears on top) */
-        .popup .popuptext {
-            visibility: hidden;
-            width: 160px;
-            background-color: #555;
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 8px 0;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -80px;
-        }
-
-    .container {
+    /* The actual popup (appears on top) */
+    .popup .popuptext {
         visibility: hidden;
-        display: block;
-        height: 350px;
-        width: 300px;
-        margin: auto;
-        padding: 20px;
-        border-radius: 8px;
-        z-index: 10000;
-        box-shadow: 0 4px 8px 0 #888888, 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        width: 160px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 8px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -80px;
     }
 
     .feedbackForm {

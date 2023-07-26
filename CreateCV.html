@@ -13,49 +13,62 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="navbar.js"></script>
+    <script src="logincheck.js"></script>
     <script>
-        window.onload=tekenmenu;
+      allowedToView(window.location.pathname).then(response => {
+        if(!response) {
+          location.href = "/index.html?accessdenied"
+        }
+      })
     </script>
     <title>Create CV</title>
 </head>
 <body>
     <div id="menu"></div>
-    <h1>Alle CVs</h1>
 
-
-    <form>
-        <div class="form-group">
-            <label for="uitstroomRichting">Uitstroomrichting</label>
-            <input type="text" class="form-control" id="uitstroomRichting" placeholder="Enter uitstroomrichting">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mb-3">
+                <h1>Mijn CV</h1>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="uitstroomRichting">Uitstroomrichting</label>
+                    <input type="text" class="form-control" id="uitstroomRichting" placeholder="Enter uitstroomrichting">
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="specialiteit">Specialiteit</label>
+                    <input type="text" class="form-control" id="specialiteit" placeholder="Enter specialiteit">
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="omschrijving">Omschrijving</label>
+                    <textarea class="form-control" rows="5" placeholder="Voer hier uw omschrijving in..." id="omschrijving"></textarea>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="werkHistorie">Werkhistory</label>
+                    <textarea class="form-control" rows="5" placeholder="Voer hier uw werkhistory in..." id="werkHistorie"></textarea>
+                </div>
+            </div>
+            <div class="col-12 text-end">
+                <button type="button" class="btn btn-secondary" onclick="saveCV()">Submit</button>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="specialiteit">Specialiteit</label>
-            <input type="text" class="form-control" id="specialiteit" placeholder="Enter specialiteit">
-        </div>
-        <div class="form-group">
-            <label for="omschrijving">Omschrijving</label>
-            <textarea class="form-control" rows="5" placeholder="Voer hier uw omschrijving in..." id="omschrijving"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="werkHistorie">Werkhistory</label>
-            <textarea class="form-control" rows="5" placeholder="Voer hier uw werkhistory in..." id="werkHistorie"></textarea>
-        </div>
-        <button type="button" class="btn btn-primary" onclick="saveCV()">Submit</button>
-    </form>
-
+    </div>
 
     <script>
         function saveCV() {
-            console.log("Begin SaveCV()");
-
             let newCV = {
                 omschrijving: document.getElementById('omschrijving').value,
                 werkHistorie: document.getElementById('werkHistorie').value,
                 uitstroomRichting: document.getElementById('uitstroomRichting').value,
                 specialiteit: document.getElementById('specialiteit').value
             };
-
-            console.log(newCV);
 
             fetch(`http://localhost:8080/curriculum_vitae/add`, {
                 method: 'POST',
@@ -65,8 +78,30 @@
                 },
                 body: JSON.stringify(newCV)
             })
-                .then(response => { });
+            .then(response => { });
         }
+
+        function loadCV(){
+            fetch(`http://localhost:8080/curriculum_vitae/mine`, {
+                method: 'GET',
+                headers: {
+                    'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+                }})
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('omschrijving').value = data.omschrijving
+                    document.getElementById('werkHistorie').value = data.werkHistorie
+                    document.getElementById('uitstroomRichting').value = data.uitstroomRichting
+                    document.getElementById('specialiteit').value = data.specialiteit
+                   
+                 });
+        }
+
+        function loadPage(){
+            tekenmenu();
+            loadCV();
+        }
+        window.onload=loadPage;
     </script>
 </body>
 </html>

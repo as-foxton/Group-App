@@ -38,6 +38,10 @@
       }
     }
 
+    function loadDetail(id){
+      location.href = `/vacaturedetail.html?vacature=${id}`
+    }
+
     function loadData(place = "", distance = 50, uitstroomrichting = "alle") {
       filter = {
         plaats: place,
@@ -63,7 +67,7 @@
 
       data.forEach(vacature => {
         vacaturetable.innerHTML += `
-          <tr id=cv${vacature.id}>
+          <tr id=cv${vacature.id} onclick=loadDetail(${vacature.id})>
             <td>${vacature.uitstroomRichting}</td>
             <td>${vacature.bedrijf}</td>
             <td>${vacature.locatie}</td>

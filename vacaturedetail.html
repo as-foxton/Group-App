@@ -10,10 +10,20 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap"
+        async defer></script>
 
     <title>Vacature</title>
 
     <script src="navbar.js"></script>
+    <script src="logincheck.js"></script>
+    <script>
+        allowedToView(window.location.pathname).then(response => {
+        if(!response) {
+            location.href = "/index.html?accessdenied"
+        }
+        })
+  </script>
 
     <script>
         window.onload = init;
@@ -24,22 +34,24 @@
         }
 
         function loadVacature() {
-            let id = sessionStorage.getItem("userID");
+            urlParams = new URLSearchParams(window.location.search);
 
-            if (sessionStorage.getItem("userID") == null)
-            {
-                console.log("No user logged in");
-                return;
-            }
+            let id = urlParams.get('vacature');
 
-            fetch(`http://localhost:8080/vacature/vacaturedetail/${id}`)
+            fetch(`http://localhost:8080/vacature/vacaturedetail/${id}`,{
+                headers: {
+                    'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+                }
+            })
                 .then(response => response.json())
                 .then(data => {
                     console.log('Data', data);
 
                     let vacatureTableElement = document.getElementById('vacatureGegevens');
+                    let mapContainer = document.getElementById('mapContainer');
 
                     vacatureTableElement.innerHTML = ``;
+                    mapContainer.innerHTML = '';
 
                     vacatureTableElement.innerHTML += `
                         <div class="mb-5 mt-3 container-fluid">
@@ -61,7 +73,7 @@
                                     <h5 class="font-weight-bold">UitstroomRichting</h5>
                                     <div>${data.uitstroomRichting}</div>
                                 </div>
-                                <div class="col-3"></div>
+                                <div class="col-3"></div></div>
                             </div>
                         </div>
 
@@ -70,9 +82,55 @@
                             <div>${data.omschrijving}</div>
                         </div>
                     `
+
+                    // Add Google Maps section
+                    let googleMapElement = document.createElement('div');
+                    googleMapElement.id = 'googleMap';
+                    googleMapElement.style.height = '400px'; // Set the height of the map
+                    googleMapElement.style.width = '400px';
+
+
+                    mapContainer.appendChild(googleMapElement);
+                    // Initialize the Google Map
+                    initMap(data.locatie);
                 })
         }
+
+        function initMap(cityName) {
+            let geocoder = new google.maps.Geocoder();
+
+            geocoder.geocode({ 'address': cityName }, function (results, status) {
+                if (status === 'OK') {
+                    let mapOptions = {
+                        center: results[0].geometry.location,
+                        zoom: 10,
+                        disableDefaultUI: true,
+                        // zoomControl: true, 
+                        // fullscreenControl: true 
+                    };
+
+                    let map = new google.maps.Map(document.getElementById('googleMap'), mapOptions);
+
+                    let marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location
+                    });
+                } else {
+                    console.log('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }
     </script>
+
+    <style>
+        /* Add any custom CSS styles here */
+        .map-container {
+            height: 300px;
+            /* Adjust the height as needed */
+            width: 100%;
+            /* You can adjust the width as needed */
+        }
+    </style>
 
 </head>
 
@@ -83,18 +141,23 @@
 
     <div class="row">
         <div class="col-lg-2 row" style="background: rgb(235, 235, 235)"></div>
-        <div class="col-lg-8 row">
+        <div class="col-lg-7 row">
             <div class="container">
                 <!-- Vacature Detail Body -->
                 <h2>Vacature Gegevens (Placeholder)</h2>
                 <div class="" id="vacatureGegevens"></div>
             </div>
         </div>
-        <div class="col-lg-2 row" style="background: rgb(235, 235, 235)"></div>
+        <!-- <div class="col-lg-2 row" style="background: rgb(235, 235, 235)"> -->
+        <div class="col-lg-2 row">
+            <div id="mapContainer"></div>
+        </div>
+        <div class="col-lg-1 row">
+        </div>
     </div>
-</body>
+    </div>
+    </div>
 
-<style>
-</style>
+</body>
 
 </html>

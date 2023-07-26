@@ -21,6 +21,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+    <script src="logincheck.js"></script>
+    <script>
+      allowedToView(window.location.pathname).then(response => {
+        if(!response) {
+          location.href = "/index.html?accessdenied"
+        }
+      })
+    </script>
 
     <script>
         window.onload=function(){
@@ -138,9 +146,9 @@
     </div>
 
   <!-- <div class="row">
-    <div class="col-lg-4 text-center"><button type="button" class="btn btn-primary custombutton">Vacatures</button></div>
-    <div class="col-lg-4 text-center"><button type="button" class="btn btn-primary custombutton">CVs</button></div>
-    <div class="col-lg-4 text-center"><button type="button" class="btn btn-primary custombutton">Profiel</button></div>
+    <div class="col-lg-4 text-center"><button type="button" class="btn btn-secondary custombutton">Vacatures</button></div>
+    <div class="col-lg-4 text-center"><button type="button" class="btn btn-secondary custombutton">CVs</button></div>
+    <div class="col-lg-4 text-center"><button type="button" class="btn btn-secondary custombutton">Profiel</button></div>
   </div> -->
 
   <style>
