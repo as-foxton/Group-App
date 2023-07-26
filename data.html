@@ -185,7 +185,9 @@ $(document).ready(function() {
           var country = document.getElementById("country").value;
           var sex = document.getElementById("sex").value;
           // fetch("http://127.0.0.1:5000/jefta/" + countryCode)        
-          fetch(`http://127.0.0.1:5000/filterdata?country=${country}&sex=${sex}`)
+          // fetch(`http://127.0.0.1:5000/filterdata?country=${country}&sex=${sex}`)
+          fetch(`http://20.76.64.179:5000//filterdata?country=${country}&sex=${sex}`)
+
             .then(r => r.json())
             .then(d => verwerkgegevens(d));
         }
