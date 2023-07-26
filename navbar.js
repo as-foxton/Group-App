@@ -9,6 +9,7 @@ var pages = [
   {name:'Mijn vacatures' , link:'/mijnvacatures.html'},
   {name:'Aanbiedingen' , link:'/aanbieding.html'},
   {name:'Mijn aanbiedingen' , link:'/mijnaanbiedingenwerkgever.html'},
+  {name:'Mijn aanbiedingen' , link:'/mijnaanbiedingenkandidaat.html'},
   {name:'Data' , link:'/data.html'}
 ];
 

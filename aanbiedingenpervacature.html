@@ -35,7 +35,7 @@
 
     function loadData() {
       urlParams = new URLSearchParams(window.location.search);
-      fetch(`http://localhost:8080/aanbieding/nieuw/${urlParams.get('vacature')}`, {
+      fetch(`http://localhost:8080/aanbieding/werkgever/nieuw/${urlParams.get('vacature')}`, {
         method: 'GET',
         headers: {
           'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
@@ -44,7 +44,7 @@
         .then(response => response.json())
         .then(data => fillNieuwTable(data));
 
-        fetch(`http://localhost:8080/aanbieding/uitgenodigd/${urlParams.get('vacature')}`, {
+        fetch(`http://localhost:8080/aanbieding/werkgever/uitgenodigd/${urlParams.get('vacature')}`, {
         method: 'GET',
         headers: {
           'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
@@ -74,7 +74,7 @@
       document.getElementById("m-werkhistorie").innerHTML = cv.werkHistorie
     }
 
-    function clearModal(cv){
+    function clearModal(){
       document.getElementById("m-title").innerHTML = ``
       document.getElementById("m-plaats").innerHTML = ``
       document.getElementById("m-uitstroomrichting").innerHTML = ``
