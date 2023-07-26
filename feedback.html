@@ -53,35 +53,12 @@
                 .catch(e => console.log("fetchFeedbacks() - ", e))
         }
 
-        function fetchAccount(id) {
-            let data = fetch("http://localhost:8080/account/" + id,{
-                headers: {
-                    'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
-                }
-            })
-                .then(r => r.json())
-                .then(d => {
-                    console.log("fetchAccount() - Account from id returned", d);
-                    return new Promise(resolve => {
-                        console.debug(d);
-                        resolve(d);
-                    })
-                })
-                .catch(e => console.log("fetchAccount() - ", e))
-            return data;
-        }
-
         async function fillTable(f) {
             // Clear table
             document.getElementById("listItemFeedback").innerHTML = "";
 
             for (var i = 0; i < f.length; i++) {
-                //account = await fetchAccount(f[i].persoon_nr);
-                //console.log("Test Account: ", account);
-
-                //console.log("Naam Trainee: " + account.naam + "| persoon_nr: " + f[i].persoon_nr + "| bedrijf: " + f[i].bedrijf + "| aangenomen: " + f[i].aangenomen + "| mening: " + f[i].mening);
                 if (f) {
-                    //document.getElementById("listItemFeedback").innerHTML += addRowFeedback(account.naam, account.bedrijf, f[i].aangenomen, f[i].mening);
                     document.getElementById("listItemFeedback").innerHTML += addRowFeedback(f[i].id, f[i].accountName, f[i].bedrijf, false, f[i].mening);
                 }
             }
@@ -134,10 +111,18 @@
         // Save entity to table
         function saveFeedback() {
             // Formulier uitlezen
-            let naamInput = document.getElementById('naamInput').value;
-            let bedrijfInput = document.getElementById('bedrijfInput').value;
+            //let naamInput = document.getElementById('naamInput').value;
+            //let bedrijfInput = document.getElementById('bedrijfInput').value;
+            //let feedbackInput = document.getElementById('feedbackInput').value;
+            let accountID = sessionStorage.getItem("userID");
+            let aanbiedingID = document.getElementById('bedrijfInput').value;
             let feedbackInput = document.getElementById('feedbackInput').value;
             let aangenomenInput;
+
+            if (accountID)
+            {
+
+            }
 
             if (document.getElementById('aangenomenInput').value == "on") {
                 aangenomenInput = 1;
