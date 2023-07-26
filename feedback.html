@@ -53,27 +53,6 @@
                 .catch(e => console.log("fetchFeedbacks() - ", e))
         }
 
-<<<<<<< HEAD
-=======
-        function fetchAccount(id) {
-            let data = fetch("http://localhost:8080/account/" + id,{
-                headers: {
-                    'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
-                }
-            })
-                .then(r => r.json())
-                .then(d => {
-                    console.log("fetchAccount() - Account from id returned", d);
-                    return new Promise(resolve => {
-                        console.debug(d);
-                        resolve(d);
-                    })
-                })
-                .catch(e => console.log("fetchAccount() - ", e))
-            return data;
-        }
-
->>>>>>> development
         async function fillTable(f) {
             // Clear table
             document.getElementById("listItemFeedback").innerHTML = "";
