@@ -180,7 +180,18 @@
     }
 
     function saveFeedback(){
-      //opslaan feedback
+      message ={
+        aanbiedingId: aanbiedingID,
+        mening: document.getElementById("mening").value
+      }
+      fetch(`http://localhost:8080/feedback/save`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+        },
+        body: JSON.stringify(message)
+      })
     }
     window.onload = loadPage;
   </script>
