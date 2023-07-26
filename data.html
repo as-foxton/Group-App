@@ -96,7 +96,8 @@
       <div class="container">
         <div class="row">
             <!-- First Column -->
-            <div class="col-md-3">
+            
+            <div class="col-md-2">
                 <!-- Content for the first column goes here -->
                 <br>
                 <br>
@@ -109,7 +110,6 @@
                 <div class="form-group">
                   <label for="sel1"><b>Land</b></label>
                   
-
                   <select class="form-control" id="country">
                     <option value="EU15">EU15</option>
                     <option value="EU27_2020">EU27_2020</option>
@@ -122,16 +122,14 @@
                     <option value="EA19">Euro Area 19</option>
                     <option value="EA20">Euro Area 20</option>
                     <option value="EE">Estland</option>
-                    <option value="EL">Griekenland</option>
-                    <option value="ES">Spanje</option>
                     <option value="FI">Finland</option>
                     <option value="FR">Frankrijk</option>
-                    <option value="FX">Frankrijk (Metropolitan)</option>
-                    <option value="HR">Kroatië</option>
+                    <option value="EL">Griekenland</option>
                     <option value="HU">Hongarije</option>
                     <option value="IE">Ierland</option>
                     <option value="IS">IJsland</option>
                     <option value="IT">Italië</option>
+                    <option value="HR">Kroatië</option>
                     <option value="LT">Litouwen</option>
                     <option value="LU">Luxemburg</option>
                     <option value="LV">Letland</option>
@@ -147,6 +145,7 @@
                     <option value="RS">Servië</option>
                     <option value="SI">Slovenië</option>
                     <option value="SK">Slowakije</option>
+                    <option value="ES">Spanje</option>
                     <option value="CZ">Tsjechië</option>
                     <option value="TR">Turkije</option>
                     <option value="UK">Verenigd Koninkrijk</option>
@@ -175,10 +174,10 @@
 
 
             </div>
-            <div class="col-md-1"></div>
+            <div class="col-md-2"></div>
     
             <!-- Second Column -->
-            <div class="col-md-8">
+            <div class="col-md-7">
                 <!-- Content for the second column goes here -->
                 <!-- <h2>Second Column</h2> -->
                 <!-- <p>This is the content of the second column.</p> -->
@@ -224,136 +223,123 @@ $(document).ready(function() {
     });
   });
         function letsgo() {
-          var country = document.getElementById("country").value;
+          var selectedCountries = Array.from(document.querySelectorAll('#country option:checked')).map(option => option.value);
           var sex = document.getElementById("sex").value;
+          // var selectedCountriesString = selectedCountries.join(',');
           // fetch("http://127.0.0.1:5000/jefta/" + countryCode)        
           // fetch(`http://127.0.0.1:5000/filterdata?country=${country}&sex=${sex}`)
-          fetch(`http://20.76.64.179:5000//filterdata?country=${country}&sex=${sex}`)
-
+          // fetch(`http://20.76.64.179:5000//filterdata?country=${country}&sex=${sex}`)
+          // fetch(`http://20.76.64.179:5000//filterdata?country=${selectedCountriesString}&sex=${sex}`)
+          // fetch(`http://127.0.0.1:5000//filterdata?country=${selectedCountriesString}&sex=${sex}`)
+          fetch(`http://127.0.0.1:5000//filterdata?countries=${JSON.stringify(selectedCountries)}&sex=${sex}`)
+            // fetch(`http://20.76.64.179:5000/filterdata?country=
             .then(r => r.json())
-            .then(d => verwerkgegevens(d));
+            .then(d => verwerkgegevens(d, selectedCountries));
         }
       
-        function verwerkgegevens(data) {
-          var OBS_VALUES = [];
-          var TIME_PERIODS = [];
-      
-          for (var x = 0; x < data.length; x++) {
-            var OBS_VALUE = data[x].OBS_VALUE;
-            var TIME_PERIOD = data[x].TIME_PERIOD;
-      
-            OBS_VALUES.push(OBS_VALUE);
-            TIME_PERIODS.push(TIME_PERIOD);
-          }
-      
-          // var trace = {
-          //   x: TIME_PERIODS,
-          //   y: OBS_VALUES,
-          //   type: 'scatter'
-          // };
+        function verwerkgegevens(data, selectedCountries) {
+          var traces = [];
+       
+          var countryNames = {
+    'AT': 'Oostenrijk',
+    'BE': 'België',
+    'BG': 'Bulgarije',
+    'CH': 'Zwitserland',
+    'CY': 'Cyprus',
+    'CZ': 'Tsjechië',
+    'DE': 'Duitsland',
+    'DK': 'Denemarken',
+    'EA19': 'Euro Area 19',
+    'EA20': 'Euro Area 20',
+    'EE': 'Estland',
+    'EL': 'Griekenland',
+    'ES': 'Spanje',
+    'EU15': 'EU15',
+    'EU27_2020': 'EU27_2020',
+    'EU28': 'EU28',
+    'FI': 'Finland',
+    'FR': 'Frankrijk',
+    'FX': 'Frankrijk (Metropolitan)',
+    'HR': 'Kroatië',
+    'HU': 'Hongarije',
+    'IE': 'Ierland',
+    'IS': 'IJsland',
+    'IT': 'Italië',
+    'LT': 'Litouwen',
+    'LU': 'Luxemburg',
+    'LV': 'Letland',
+    'ME': 'Montenegro',
+    'MK': 'Noord-Macedonië',
+    'MT': 'Malta',
+    'NL': 'Nederland',
+    'NO': 'Noorwegen',
+    'PL': 'Polen',
+    'PT': 'Portugal',
+    'RO': 'Roemenië',
+    'RS': 'Servië',
+    'SE': 'Zweden',
+    'SI': 'Slovenië',
+    'SK': 'Slowakije',
+    'TR': 'Turkije',
+    'UK': 'Verenigd Koninkrijk'
+};
 
-          var smoothedTrace = {
+
+for (var i = 0; i < selectedCountries.length; i++) {
+  var countryCode = selectedCountries[i];
+  var countryName = countryNames[countryCode] || countryCode; // Use the name from the mapping or the code if not found
+    var countryData = data.filter(d => d.geo === selectedCountries[i]);
+
+    var OBS_VALUES = countryData.map(d => d.OBS_VALUE);
+    var TIME_PERIODS = countryData.map(d => d.TIME_PERIOD);
+
+    var trace = {
         x: TIME_PERIODS,
         y: OBS_VALUES,
-        mode: 'lines+markers', // Show both lines and markers
+        mode: 'lines+markers',
         line: {
-          shape: 'spline' // Apply smoothing to the line
+            shape: 'spline'
         },
-        showlegend: false,
+        name: countryName // Use the country name as the trace name   
+       };
 
-        // name: 'Smoothed Data'
-      };
-      
-          var plotData = [smoothedTrace];
-      
-          var layout = {
-            // title: 'OBS_VALUE vs TIME_PERIOD',
-            xaxis: {
-              title: 'Jaar',
-              titlefont: {
-        size: 20, // Set the size to match the CSS styles
-      },
-            },
-            yaxis: {
-              title: 'Arbeidsparticipatie (%)',
-              titlefont: {
-        size: 20, // Set the size to match the CSS styles
-        // range: [0, 100], /
-      },
-    
-      
-            // },
-            },
-           
-            width: 800,  // Specify the desired width of the graph in pixels
-      height: 500
-          };
-      
-          Plotly.newPlot('myChart', plotData, layout);
-    //       Plotly.relayout('myChart', {
-    //   'yaxis.range': [30, 70],
-    // });
-
-        //   if (OBS_VALUES.length === 0) {
-        //     Plotly.newPlot('myChart', [], layout);
-        // } else {
-        //     Plotly.newPlot('myChart', plotData, layout);
-        // }
-      
-          console.log(OBS_VALUES);
-          console.log(TIME_PERIODS);
-        }
-      </script>
-      <style>
-        .customnavbar {
-    margin-bottom: 0px;
+    traces.push(trace);
 }
-      </style>
-      <!-- <style> -->
-<!--         
-        /* Increase the font size of the options */
-        /* #sex option {
-          font-size: 16px;
-        } */
-      
-        /* Increase the height of the dropdown */
-        /* #sex {
-          height: 60px;
-          font-size:18px; /* You can adjust the height as per your preference */
-        /* }  */
-        /* #country {
-          height: 60px;
-          font-size:18px;
-        } */
 
-        /* Increase height of the Select2 container */
-/* .select2-container--bootstrap-5 .select2-selection--single {
-  height: 60px; /* You can adjust the height as per your preference */
-/* } */
-/* .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
-  line-height: 50px; 
-}  */
-      /* </style> */
-      
-       /* <style>
-        input[type="checkbox"] {
-            width: 20px;
-            height: 60px;
-        }
-    </style>  */ -->
+var layout = {
+    xaxis: {
+        title: 'Jaar',
+        titlefont: {
+            size: 20,
+        },
+        autorange: false,
+        range: [1993, 2020],
+    },
+    yaxis: {
+        title: 'Arbeidsparticipatie (%)',
+        titlefont: {
+            size: 20,
+        },
+        autorange: false,
+        range: [10, 80],
+    },
+    width: 1000,
+    height: 700,
+    margin: {
+        t: 40,
+        r: 20,
+        b: 50,
+        l: 50
+    }
+};
 
-
-     <!-- <style>
-      /* Increase font size of the X-axis label */
-      /* .xtitle {
-        font-size: 30px; /* You can adjust the font size as per your preference */
-      /* } */
-    
-      /* Increase font size of the Y-axis label */
-      /* .ytitle {
-        font-size: 30px; /* You can adjust the font size as per your preference */
-      /* } -->
-    <!-- </style> --> 
-     
+Plotly.newPlot('myChart', traces, layout);
+}
+</script>
+<style>
+  .customnavbar {
+margin-bottom: 0px;
+}
+</style>
 </body>
 </html>
