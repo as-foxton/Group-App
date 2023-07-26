@@ -231,7 +231,10 @@ $(document).ready(function() {
           // fetch(`http://20.76.64.179:5000//filterdata?country=${country}&sex=${sex}`)
           // fetch(`http://20.76.64.179:5000//filterdata?country=${selectedCountriesString}&sex=${sex}`)
           // fetch(`http://127.0.0.1:5000//filterdata?country=${selectedCountriesString}&sex=${sex}`)
-          fetch(`http://127.0.0.1:5000//filterdata?countries=${JSON.stringify(selectedCountries)}&sex=${sex}`)
+          // fetch(`http://127.0.0.1:5000//filterdata?countries=${JSON.stringify(selectedCountries)}&sex=${sex}`)
+          
+          fetch(`https://flaskpythonazure.azurewebsites.net/filterdata?countries=${JSON.stringify(selectedCountries)}&sex=${sex}`)
+
             // fetch(`http://20.76.64.179:5000/filterdata?country=
             .then(r => r.json())
             .then(d => verwerkgegevens(d, selectedCountries));
