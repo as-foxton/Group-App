@@ -11,7 +11,7 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <title>Feedback</title>
+    <title>Mijn Feedbacks</title>
 
     <script src="navbar.js"></script>
 
@@ -46,12 +46,12 @@
 
             for (var i = 0; i < f.length; i++) {
                 if (f) {
-                    document.getElementById("listItemFeedback").innerHTML += addRowFeedback(f[i].id, f[i].accountName, f[i].bedrijf, false, f[i].mening);
+                    document.getElementById("listItemFeedback").innerHTML += addRowFeedback(i, f[i].accountName, f[i].locatie, f[i].aangenomen, f[i].mening);
                 }
             }
         }
 
-        function addRowFeedback(id, accNaam, vacBedrijf, aangenomen, mening) {
+        function addRowFeedback(id, accountName, locatie, aangenomen, mening) {
             return `
                     <li class="list-group-item shadow-sm" id="feedbackitem${id}" style="margin-top: 10px; margin-bottom: 10px;">
                         <!-- Feedback Object -->
@@ -60,13 +60,13 @@
                             <div class="col-lg-4 row">
                                 <div>
                                     <label class="font-weight-bold">TRAINEE</label>
-                                    <div style="font-size: 1.3em">${accNaam}</div>
+                                    <div style="font-size: 1.3em">${accountName}</div>
                                 </div>
                             </div>
                             <div class="col-lg-4 row">
                                 <div>
-                                    <label class="font-weight-bold">REVIEW BEDRIJF</label>    
-                                    <div style="font-size: 1.3em">${vacBedrijf}</div>
+                                    <label class="font-weight-bold">LOCATIE</label>
+                                    <div style="font-size: 1.3em">${locatie}</div>
                                 </div>
                             </div>
                             <div class="col-lg-4 row">
@@ -84,30 +84,16 @@
                     `
         }
 
-        function verwerkgegevens(data) {
-            console.log(data)
-            // For fetching an array of entities
-            for (var i = 0; i < data.length; i++) {
-                document.getElementById("dediv").innerHTML += `<h1>${data[i].mening}</h1>`
-            }
-
-            // For fetching a single entity
-            //document.getElementById("dediv").innerHTML += `<h1>${data.mening}</h1>)`
-        }
-
         // Save entity to table
         function saveFeedback() {
             // Formulier uitlezen
-            //let naamInput = document.getElementById('naamInput').value;
-            //let bedrijfInput = document.getElementById('bedrijfInput').value;
-            //let feedbackInput = document.getElementById('feedbackInput').value;
+
             let accountID = sessionStorage.getItem("userID");
             let aanbiedingID = document.getElementById('bedrijfInput').value;
             let feedbackInput = document.getElementById('feedbackInput').value;
             let aangenomenInput;
 
-            if (accountID)
-            {
+            if (accountID) {
 
             }
 
@@ -119,11 +105,9 @@
             }
 
             let newFeedback = {
-                cv_nr: 1, // <--- cv nummer ophalen van trainee voor wie de feedback is
                 persoon_nr: naamInput,
                 bedrijf: bedrijfInput,
                 mening: feedbackInput,
-                aangenomen: aangenomenInput
             }
 
             fetch("http://localhost:8080/feedback/save", {
@@ -133,36 +117,28 @@
                     'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
                 },
                 body: JSON.stringify(newFeedback)
-                })
-                .then(response => {
-                    alert('Saving Feedback: Is goedgegaan');
-                })
-                .catch(error => {
-                    alert('Saving Feedback: Er is iets fouts gegaan');
-                });
-        }
-
-        // Executed when modal is hidden
-        $(document).ready(function () {
-            $("#myModal").on('hidden.bs.modal', function () {
-                fetchFeedbacks();
+            })
+            .then(response => {
+                alert('Saving Feedback: Is goedgegaan');
+            })
+            .catch(error => {
+                alert('Saving Feedback: Er is iets fouts gegaan');
             });
-        });
-
+        }
     </script>
-
 </head>
 
 <body>
+
     <div id="menu"></div>
 
     <div class="container mt-5">
         <div class="row">
             <div class="col-12">
-                <h1>Feedback Pagina</h1>
+                <h1>Mijn Feedbacks Pagina</h1>
             </div>
         </div>
-    
+
         <div class="row">
             <div class="col-lg-2 row" style="background: rgb(235, 235, 235)">
             </div>
@@ -171,14 +147,14 @@
                 <div class="container-fluid">
                     <div class="row" style="margin-left: 0px; margin-right: 0px">
                         <div class="mr-auto">
-                            <h2>Feedbacks</h2>
+                            <h2>Feedbacks van Trainees</h2>
                         </div>
-                        <div class="ml-auto">
-                            <!-- Button to Open the Modal -->
-                            <button type="button" class="btn-secondary btn-lg" data-toggle="modal" data-target="#myModal">
+                        <!--<div class="ml-auto">-->
+                        <!-- Button to Open the Modal -->
+                        <!--<button type="button" class="btn-secondary btn-lg" data-toggle="modal" data-target="#myModal">
                                 Schrijf Mening
                             </button>
-                        </div>
+                        </div>-->
                     </div>
 
                     <!-- List of feedbacks -->
@@ -195,98 +171,6 @@
         </div>
     </div>
 
-    <!-- The Modal -->
-    <div class="modal fade" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Mening Schrijven</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <!-- Form body -->
-                    <form action="/action_page.php">
-                        <div class="form-group">
-                            <label for="email">ID van Trainee</label>
-                            <input type="text" class="form-control" placeholder="ID van trainee..." id="naamInput">
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Van welk bedrijf</label>
-                            <input type="text" class="form-control" placeholder="Voer hier uw bedrijf in..." id="bedrijfInput">
-                        </div>
-                        <div class="form-group">
-                            <label for="pwd">Mening</label>
-                            <textarea class="form-control" rows="5" placeholder="Voer hier uw mening in..." id="feedbackInput"></textarea>
-                        </div>
-                        <div class="form-group form-check">
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" id="aangenomenInput"> Aangenomen
-                            </label>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="saveFeedback(); fetchFeedbacks()">Versturen</button>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
 </body>
-
-<style>
-    /* Popup Container */
-    .popup {
-        position: relative;
-        display: inline-block;
-        cursor: pointer;
-    }
-
-    /* The actual popup (appears on top) */
-    .popup .popuptext {
-        visibility: hidden;
-        width: 160px;
-        background-color: #555;
-        color: #fff;
-        text-align: center;
-        border-radius: 6px;
-        padding: 8px 0;
-        position: absolute;
-        z-index: 1;
-        bottom: 125%;
-        left: 50%;
-        margin-left: -80px;
-    }
-
-    .feedbackForm {
-        background: rgb(255, 106, 0);
-        text-align: left;
-        position: absolute;
-        width: auto;
-        display: contents;
-    }
-
-    .button {
-        cursor: pointer;
-    }
-
-    .title {
-        text-align: center;
-        font-family: Calibri;
-        font-size: 25px;
-    }
-
-    /* Toggle this class when clicking on the popup container (hide and show the popup) */
-    .popup .show {
-        visibility: visible;
-    }
-</style>
 
 </html>
