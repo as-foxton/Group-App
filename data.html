@@ -197,7 +197,10 @@
         width:200px;
         aspect-ratio: 1;
     }
-    
+    #myChart {
+    /* height: 100%;  */
+    width: 100%; /* Set the width of the chart container to 100% of its parent's width */
+  } 
    
   </style>
   
@@ -326,12 +329,12 @@ var layout = {
         autorange: false,
         range: [10, 80],
     },
-    width: 1000,
-    height: 700,
+    // width: 1000,
+    height: 500,
     margin: {
-        t: 40,
+        t: 60,
         r: 20,
-        b: 50,
+        b: 40,
         l: 50
     }
 };
@@ -343,6 +346,14 @@ Plotly.newPlot('myChart', traces, layout);
   .customnavbar {
 margin-bottom: 0px;
 }
+
+.container {
+    margin-bottom: 0px; /* Adjust the value to decrease the white space */
+  }
+  .row {
+    margin-bottom: 0px; /* Adjust the value to decrease the white space */
+  }
+
 </style>
 </body>
 </html>
