@@ -32,7 +32,7 @@
                 return;
             }
 
-            fetch(`http://localhost:8080/feedback/feedbacklist/${id}`,{
+            fetch(backendurl + `/feedback/feedbacklist/${id}`,{
                 method: 'GET',
                 headers: {
                     'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
