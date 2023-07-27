@@ -99,6 +99,16 @@
         .then(response => loadData())
     }
 
+    function neemAan(id){
+      fetch(`http://localhost:8080/aanbieding/werkgever/aannemen?aanbieding=${id}`, {
+        method: 'GET',
+        headers: {
+          'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
+        }
+      })
+        .then(response => loadData())
+    }
+
     function fillModal(cv){
       document.getElementById("m-title").innerHTML = `CV van ${cv.naam}`
       document.getElementById("m-plaats").innerHTML = cv.locatie
@@ -150,6 +160,9 @@
             <td onclick="loadCV(${cv.cvId})">${cv.locatie}</td>
             <td>
               <button type="button" class="btn btn-danger" onclick="afwijzen(${cv.id})">Afwijzen</button>
+            </td>
+            <td>
+              <button type="button" class="btn btn-secondary" onclick="neemAan(${cv.id})">Aannemen</button>
             </td>
           </tr>
         `
@@ -224,6 +237,7 @@
               <th>Uitstroomrichting</th>
               <th>Locatie</th>
               <th>Afwijzen</th>
+              <th>Aannemen</th>
             </tr>
           </thead>
           <tbody id="cv-table-uitgenodigd">
