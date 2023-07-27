@@ -156,6 +156,7 @@
 
   <link rel="stylesheet" type="text/css" href="styles.css">
   <script>
+    
 
     $(document).ready(function () {
       $('#country').select2({
@@ -265,6 +266,7 @@
 
       var layout = {
         xaxis: {
+          gridcolor: '#38b1ad60', // Change the gridline color for the X-axis to red
           title: {
           text:'<b>Jaar</b>',
           y: -10,          
@@ -273,10 +275,15 @@
             // color:'#38b1ad'
           },
         },
+        tickfont: {
+      // color: '#38b1ad'
+      weight:'bold'
+    },
           autorange: false,
           range: [1992, 2021],
         },
         yaxis: {
+          gridcolor: '#38b1ad30' ,// Change the gridline color for the X-axis to red
           title: {
       text: '<b>Arbeidsparticipatie (%)</b>',
       standoff: 50,
@@ -286,6 +293,11 @@
 
           },
         },
+        tickfont: {
+          weight:'bold'
+
+      // color: '#38b1ad'
+    },
           autorange: false,
           range: [minY - 5, maxY + 5], // Add some buffer space above and below the min and max values
                 },
