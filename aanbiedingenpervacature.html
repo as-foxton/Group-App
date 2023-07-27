@@ -100,7 +100,7 @@
     }
 
     function neemAan(id){
-      fetch(`http://localhost:8080/aanbieding/werkgever/aannemen?aanbieding=${id}`, {
+      fetch(backendurl + `/aanbieding/werkgever/aannemen?aanbieding=${id}`, {
         method: 'GET',
         headers: {
           'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
