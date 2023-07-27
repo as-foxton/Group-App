@@ -173,8 +173,8 @@
       var sex = document.getElementById("sex").value;
       var age=document.getElementById("age").value;
 
-      // fetch(`https://flaskpythonazure.azurewebsites.net/filterdata?countries=${JSON.stringify(selectedCountries)}&sex=${sex}`)
-      fetch(`http://127.0.0.1:5000//filterdata?countries=${JSON.stringify(selectedCountries)}&sex=${sex}&age=${age}`)
+      fetch(`https://flaskpythonazure.azurewebsites.net/filterdata?countries=${JSON.stringify(selectedCountries)}&sex=${sex}&age=${age}`)
+      // fetch(`http://127.0.0.1:5000//filterdata?countries=${JSON.stringify(selectedCountries)}&sex=${sex}&age=${age}`)
 
 
         .then(r => r.json())
