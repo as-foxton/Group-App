@@ -213,7 +213,7 @@ function createVacature() {
         functie: functieInvoer,
     };
 
-    fetch("http://localhost:8080/vacature/create", {
+    fetch(backendurl + "/vacature/create", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -251,7 +251,7 @@ function verwijderen(vacatureId){
         functie: functieInvoer,
     };
 
-    fetch('http://localhost:8080/vacature/delete/' + vacatureId, {
+    fetch(backendurl + '/vacature/delete/' + vacatureId, {
 
         method: 'DELETE',
         headers: {
@@ -318,7 +318,7 @@ function openPopup(qqq) {
     functie: functieInvoer,
   };
 
-  fetch('http://localhost:8080/vacature/update/' + vacatureId, {
+  fetch(backendurl + '/vacature/update/' + vacatureId, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -343,7 +343,7 @@ function openPopup(qqq) {
 
 // Load data from data base to webpage
 function loadVacature(){
-            fetch('http://localhost:8080/vacature/all')
+            fetch(backendurl + '/vacature/all')
                 .then(response => response.json())
                 .then(data => {
                     console.log('Data', data);

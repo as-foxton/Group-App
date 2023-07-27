@@ -44,7 +44,7 @@
         maxAfstand: distance,
         uitstroomRichting: uitstroomrichting
       }
-      fetch(`http://localhost:8080/vacatures/beknopt`, {
+      fetch(backendurl + `/vacatures/beknopt`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
