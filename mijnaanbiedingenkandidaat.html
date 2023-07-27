@@ -39,7 +39,7 @@
     }
 
     function loadData() {
-      fetch(`http://localhost:8080/aanbieding/kandidaat/uitnodiging`, {
+      fetch(backendurl + `/aanbieding/kandidaat/uitnodiging`, {
         method: 'Get',
         headers: {
           'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
@@ -47,7 +47,7 @@
         .then(response => response.json())
         .then(data => fillUitnodigingenTable(data));
 
-        fetch(`http://localhost:8080/aanbieding/kandidaat/nofeedback`, {
+        fetch(backendurl + `/aanbieding/kandidaat/nofeedback`, {
         method: 'Get',
         headers: {
           'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
@@ -94,7 +94,7 @@
         aanbiedingId: aanbiedingID,
         mening: document.getElementById("mening").value
       }
-      fetch(`http://localhost:8080/feedback/save`, {
+      fetch(backendurl + `/feedback/save`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -132,7 +132,7 @@
         location.href = `/aanbiedingenpervacature.html?vacature=${id}`
     }
 function loadMijnVacatures(){
-            fetch(`http://localhost:8080/vacatures/myvacatures/${sessionStorage.AUTH_TOKEN}`)
+            fetch(backendurl + `/vacatures/myvacatures/${sessionStorage.AUTH_TOKEN}`)
                 .then(response => response.json())
                 .then(data => {
                     let vacatureTableElement = document.getElementById('vacature-table');

@@ -45,7 +45,7 @@
         maxAfstand: distance,
         uitstroomRichting: uitstroomrichting
       }
-      fetch(`http://localhost:8080/curriculum_vitae/beknopt`, {
+      fetch(backendurl + `/curriculum_vitae/beknopt`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -8,7 +8,7 @@
     <title>Account</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-
+    <script src="settings.js"></script>
     <!-- jQuery library -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
 
@@ -179,7 +179,7 @@
                 }
 
             }
-            xhr.open("GET", "http://localhost:8080/account/all", true);
+            xhr.open("GET", backendurl + "/account/all", true);
             xhr.setRequestHeader("AUTH_TOKEN", sessionStorage.AUTH_TOKEN);
             xhr.send()
 
@@ -200,7 +200,7 @@
                     letsgo();
                 }
             }
-            xhr.open("POST", "http://localhost:8080/account/create", true);
+            xhr.open("POST", backendurl + "/account/create", true);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.setRequestHeader("AUTH_TOKEN", sessionStorage.AUTH_TOKEN);
             xhr.send(deJSON);
@@ -215,7 +215,7 @@
                     letsgo();
                 }
             }
-            xhr.open("GET", "http://localhost:8080/account/delete/" + persoons_nr, true);
+            xhr.open("GET", backendurl + "/account/delete/" + persoons_nr, true);
             xhr.setRequestHeader("AUTH_TOKEN", sessionStorage.AUTH_TOKEN);
             xhr.send()
         }
@@ -236,7 +236,7 @@
                     document.getElementById("locatieGebruiker").value = theAccount.locatie;
                 }
             }
-            xhr.open("GET", "http://localhost:8080/account/" + persoons_nr, true);
+            xhr.open("GET", backendurl + "/account/" + persoons_nr, true);
             xhr.setRequestHeader("AUTH_TOKEN", sessionStorage.AUTH_TOKEN);
             xhr.send()
         }
@@ -266,12 +266,12 @@
             }
             // console.log('persoons_nr', persoons_nr);
             if (!!persoons_nr) {
-                xhr.open("PUT", "http://localhost:8080/account/update/" + persoons_nr, true);
+                xhr.open("PUT", backendurl + "/account/update/" + persoons_nr, true);
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.setRequestHeader("AUTH_TOKEN", sessionStorage.AUTH_TOKEN);
                 xhr.send(deJSON);
             } else {
-                xhr.open("POST", "http://localhost:8080/account/create", true);
+                xhr.open("POST", backendurl + "/account/create", true);
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.setRequestHeader("AUTH_TOKEN", sessionStorage.AUTH_TOKEN);
                 xhr.send(deJSON);

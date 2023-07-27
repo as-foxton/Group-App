@@ -38,7 +38,7 @@
 
             let id = urlParams.get('vacature');
 
-            fetch(`http://localhost:8080/vacature/vacaturedetail/${id}`,{
+            fetch(backendurl + `/vacature/vacaturedetail/${id}`,{
                 headers: {
                     'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
                 }
