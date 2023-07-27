@@ -58,7 +58,7 @@
 
             console.log(newCV);
 
-            fetch(`http://localhost:8080/curriculum_vitae/add`, {
+            fetch(backendurl + `/curriculum_vitae/add`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -70,7 +70,7 @@
 
         function checkLogin() {
             if (sessionStorage.userID) {
-                fetch(`http://localhost:8080/account/${sessionStorage.userID}`, {
+                fetch(backendurl + `/account/${sessionStorage.userID}`, {
                     method: 'GET'
                 })
                     .then(response => response.json())
