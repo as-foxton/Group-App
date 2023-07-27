@@ -59,30 +59,42 @@
 
             for (var i = 0; i < f.length; i++) {
                 if (f) {
-                    document.getElementById("listItemFeedback").innerHTML += addRowFeedback(f[i].id, f[i].accountName, f[i].bedrijf, false, f[i].mening);
+                    document.getElementById("listItemFeedback").innerHTML += addRowFeedback(f[i].id, f[i].accountName, f[i].bedrijf, f[i].aangenomen, f[i].mening, f[i].rol, f[i].functie, f[i].locatie);
                 }
             }
         }
 
-        function addRowFeedback(id, accNaam, vacBedrijf, aangenomen, mening) {
+        function addRowFeedback(id, accNaam, vacBedrijf, aangenomen, mening, rol, functie, locatie) {
             return `
                     <li class="list-group-item shadow-sm" id="feedbackitem${id}" style="margin-top: 10px; margin-bottom: 10px;">
                         <!-- Feedback Object -->
-                        <div class="d-flex flex-column" style="margin-left: 50px; margin-right: 50px">
+                        <div class="d-flex flex-column" >
                         <div class="row container-fluid">
-                            <div class="col-lg-4 row">
+                            <div class="col-lg-3 row">
                                 <div>
-                                    <label class="font-weight-bold">TRAINEE</label>
+                                    <label class="font-weight-bold" ${rol == 'trainee'?'style="color:red"':''}>TRAINEE</label>
                                     <div style="font-size: 1.3em">${accNaam}</div>
                                 </div>
                             </div>
-                            <div class="col-lg-4 row">
+                            <div class="col-lg-3 row">
                                 <div>
-                                    <label class="font-weight-bold">REVIEW BEDRIJF</label>    
+                                    <label class="font-weight-bold" ${rol == 'opdrachtgever'?'style="color:red"':''}>REVIEW BEDRIJF</label>    
                                     <div style="font-size: 1.3em">${vacBedrijf}</div>
                                 </div>
                             </div>
-                            <div class="col-lg-4 row">
+                            <div class="col-lg-2 row">
+                                <div>
+                                    <label class="font-weight-bold" >FUNCTIE</label>
+                                    <div style="font-size: 1.3em">${functie}</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 row">
+                                <div>
+                                    <label class="font-weight-bold"}>LOCATIE</label>
+                                    <div style="font-size: 1.3em">${locatie}</div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 row">
                                 <div class="p-3 badge badge-pill badge-${aangenomen == true ? 'success' : 'info'}" style="height: 50px; font-size: 1em"><b>${aangenomen == true ? 'Aangenomen' : 'Niet Aangenomen'}</b></div>
                             </div>
                         </div>
@@ -154,14 +166,6 @@
                     alert('Saving Feedback: Er is iets fouts gegaan');
                 });
         }
-
-        // Executed when modal is hidden
-        $(document).ready(function () {
-            $("#myModal").on('hidden.bs.modal', function () {
-                fetchFeedbacks();
-            });
-        });
-
     </script>
 
 </head>
@@ -177,23 +181,11 @@
         </div>
     
         <div class="row">
-            <div class="col-lg-2 row" style="background: rgb(235, 235, 235)">
+            <div class="col-lg-1 row" style="background: rgb(235, 235, 235)">
             </div>
-            <div class="col-lg-8 row" style="background: rgb(235, 235, 235)">
+            <div class="col-lg-10 row" style="background: rgb(235, 235, 235)">
                 <!-- Feedback List Body -->
                 <div class="container-fluid">
-                    <div class="row" style="margin-left: 0px; margin-right: 0px">
-                        <div class="mr-auto">
-                            <h2>Feedbacks</h2>
-                        </div>
-                        <div class="ml-auto">
-                            <!-- Button to Open the Modal -->
-                            <button type="button" class="btn-secondary btn-lg" data-toggle="modal" data-target="#myModal">
-                                Schrijf Mening
-                            </button>
-                        </div>
-                    </div>
-
                     <!-- List of feedbacks -->
                     <ul class="list-group list-group-flush" id="listItemFeedback" style="margin-top: 20px">
                         <li class="list-group-item">
@@ -203,55 +195,10 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-2 row" style="background: rgb(235, 235, 235)">
+            <div class="col-lg-1 row" style="background: rgb(235, 235, 235)">
             </div>
         </div>
     </div>
-
-    <!-- The Modal -->
-    <div class="modal fade" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Mening Schrijven</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <!-- Form body -->
-                    <form action="/action_page.php">
-                        <div class="form-group">
-                            <label for="email">ID van Trainee</label>
-                            <input type="text" class="form-control" placeholder="ID van trainee..." id="naamInput">
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Van welk bedrijf</label>
-                            <input type="text" class="form-control" placeholder="Voer hier uw bedrijf in..." id="bedrijfInput">
-                        </div>
-                        <div class="form-group">
-                            <label for="pwd">Mening</label>
-                            <textarea class="form-control" rows="5" placeholder="Voer hier uw mening in..." id="feedbackInput"></textarea>
-                        </div>
-                        <div class="form-group form-check">
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" id="aangenomenInput"> Aangenomen
-                            </label>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="saveFeedback(); fetchFeedbacks()">Versturen</button>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
 </body>
 
 <style>
