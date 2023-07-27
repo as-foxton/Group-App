@@ -116,7 +116,6 @@
           <table class="table table-striped table-hover">
             <thead>
               <tr>
-                <th>VacatureID:</th>
                 <th>Bedrijf</th>
                 <th>Locatie</th>
                 <th>Omschrijving</th>
@@ -166,7 +165,7 @@
 
           <!-- Modal footer -->
           <div class="modal-footer">
-            <input type="submit" value="Voeg toe" class="btn btn-secondary" onclick="createVacature()" />
+            <button type="button" class="btn btn-danger" onclick="createVacature()" data-dismiss="modal">Voeg Toe</button>
           </div>
         </div>
       </div>
@@ -198,6 +197,7 @@
   </body>
 
   <script>
+
     // from vacatures
 
     // Create Function
@@ -352,8 +352,6 @@
           data.forEach((vacature) => {
             vacatureTableElement.innerHTML += `
                         <tr>
-                            <td>${vacature.id}</td>
-                            <td>${sessionStorage.userID}</td>
                             <td>${vacature.bedrijf}</td>
                             <td>${vacature.locatie}</td>    
                             <td>${vacature.omschrijving}</td>
