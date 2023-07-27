@@ -21,6 +21,14 @@
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
   <script src="logincheck.js"></script>
+  <script src="settings.js"></script>
+  <script>
+    allowedToView(window.location.pathname).then(response => {
+      if (!response) {
+        location.href = "/index.html?accessdenied"
+      }
+    })
+  </script>
   
   <script>
         window.onload = function () {
