@@ -7,6 +7,8 @@
     <title>Login</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+
+    <script src="settings.js"></script>
     <!-- jQuery library -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
     <!-- Popper JS -->
@@ -15,6 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="logincheck.js"></script>
 
+    
     <script>
         loggedIn().then(response => {
           if(response) {
@@ -56,7 +59,7 @@
                 password: document.getElementById('password').value
             };
 
-            fetch(`http://localhost:8080/login`, {
+            fetch(backendurl + `/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -73,7 +76,7 @@
             }
             else {
                 sessionStorage.AUTH_TOKEN = response;
-                fetch(`http://localhost:8080/account/current`, {
+                fetch(backendurl + `/account/current`, {
                     method: 'GET',
                     headers: {
                         'AUTH_TOKEN': sessionStorage.AUTH_TOKEN

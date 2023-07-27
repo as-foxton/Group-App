@@ -19,7 +19,7 @@
         }
 
         function fetchFeedbacks() {
-            fetch("http://localhost:8080/feedback/all")
+            fetch(backendurl + "/feedback/all")
                 .then(r => r.json())
                 .then(d => {
                     console.log("fetchFeedbacks() - List of Feedbacks: ", d)
@@ -29,7 +29,7 @@
         }
 
         function fetchAccount(id) {
-            let data = fetch("http://localhost:8080/feedback/findaccount/" + id)
+            let data = fetch(backendurl + "/feedback/findaccount/" + id)
                 .then(r => r.json())
                 .then(d => {
                     console.log("fetchAccount() - Account from id returned", d);
@@ -125,7 +125,7 @@
                 aangenomen: aangenomenInput
             }
 
-            fetch("http://localhost:8080/feedback/save", {
+            fetch(backendurl + "/feedback/save", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -321,7 +321,7 @@
 <!--<button class="button" onclick="openPopup()">Open Form</button>-->
 <!--<button onclick="letsgo()">Klik Hier</button>-->
 <!--//function letsgo() {
-        //    fetch("http://localhost:8080/feedback/all")
+        //    fetch(backendurl + "/feedback/all")
         //        .then(r => r.json())
         //        .then(d => verwerkgegevens(d))
         //}-->

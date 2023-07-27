@@ -36,7 +36,7 @@
 
     <script>
         function getCVs(){
-            fetch('http://localhost:8080/curriculum_vitae/all')
+            fetch(backendurl + '/curriculum_vitae/all')
                 .then(response => response.json())
                 .then(data => reloadTable(data));
         }
@@ -69,7 +69,7 @@
                 specialiteit:document.getElementById(`specialiteit${id}`).value,
                 personId:document.getElementById(`personId${id}`).value
             };
-            fetch(`http://localhost:8080/curriculum_vitae/update?id=${id}`, {
+            fetch(backendurl + `/curriculum_vitae/update?id=${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -79,7 +79,7 @@
         }
 
         function delete_cv(id){
-            fetch(`http://localhost:8080/curriculum_vitae/remove?id=${id}`, {method: 'DELETE'})
+            fetch(backendurl + `/curriculum_vitae/remove?id=${id}`, {method: 'DELETE'})
             .then(response => getCVs());
         }
 
@@ -92,7 +92,7 @@
                 personId:document.getElementById('personId').value
             };
 
-            fetch(`http://localhost:8080/curriculum_vitae/add`, {
+            fetch(backendurl + `/curriculum_vitae/add`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -103,7 +103,7 @@
 
         function checkLogin(){
             if(sessionStorage.userID){
-                fetch(`http://localhost:8080/account/${sessionStorage.userID}`, {
+                fetch(backendurl + `/account/${sessionStorage.userID}`, {
                     method:'GET'
                 })
                 .then(response => response.json())

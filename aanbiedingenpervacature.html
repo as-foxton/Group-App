@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CV's</title>
-
+  <script src="settings.js"></script>
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
   <!-- jQuery library -->
@@ -37,7 +37,7 @@
 
     function loadData() {
       urlParams = new URLSearchParams(window.location.search);
-      fetch(`http://localhost:8080/aanbieding/werkgever/nieuw/${urlParams.get('vacature')}`, {
+      fetch(backendurl + `/aanbieding/werkgever/nieuw/${urlParams.get('vacature')}`, {
         method: 'GET',
         headers: {
           'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
@@ -46,7 +46,7 @@
         .then(response => response.json())
         .then(data => fillNieuwTable(data));
 
-      fetch(`http://localhost:8080/aanbieding/werkgever/uitgenodigd/${urlParams.get('vacature')}`, {
+      fetch(backendurl + `/aanbieding/werkgever/uitgenodigd/${urlParams.get('vacature')}`, {
         method: 'GET',
         headers: {
           'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
@@ -55,7 +55,7 @@
         .then(response => response.json())
         .then(data => fillInvTable(data));
 
-      fetch(`http://localhost:8080/aanbieding/werkgever/onbeoordeeld/${urlParams.get('vacature')}`, {
+      fetch(backendurl + `/aanbieding/werkgever/onbeoordeeld/${urlParams.get('vacature')}`, {
         method: 'GET',
         headers: {
           'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
@@ -66,7 +66,7 @@
     }
 
     function loadCV(id){
-      fetch(`http://localhost:8080/curriculum_vitae/find?id=${id}`, {
+      fetch(backendurl + `/curriculum_vitae/find?id=${id}`, {
         method: 'GET',
         headers: {
           'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
@@ -80,7 +80,7 @@
     }
 
     function afwijzen(id){
-      fetch(`http://localhost:8080/aanbieding/werkgever/afwijzen?aanbieding=${id}`, {
+      fetch(backendurl + `/aanbieding/werkgever/afwijzen?aanbieding=${id}`, {
         method: 'GET',
         headers: {
           'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
@@ -90,7 +90,7 @@
     }
 
     function uitnodigen(id){
-      fetch(`http://localhost:8080/aanbieding/werkgever/uitnodigen?aanbieding=${id}`, {
+      fetch(backendurl + `/aanbieding/werkgever/uitnodigen?aanbieding=${id}`, {
         method: 'GET',
         headers: {
           'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
@@ -184,7 +184,7 @@
         aanbiedingId: aanbiedingID,
         mening: document.getElementById("mening").value
       }
-      fetch(`http://localhost:8080/feedback/save`, {
+      fetch(backendurl + `/feedback/save`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
