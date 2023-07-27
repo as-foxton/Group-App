@@ -21,7 +21,7 @@
                 password:document.getElementById('password').value
             };
 
-            fetch(`http://localhost:8080/login`, {
+            fetch(backendurl + `/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

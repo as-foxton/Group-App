@@ -1,7 +1,7 @@
 async function loggedIn(){
     if(!sessionStorage.AUTH_TOKEN)
         return false;
-    response = await fetch(`http://localhost:8080/account/current`, {
+    response = await fetch(backendurl + `/account/current`, {
         method: 'GET',
         headers: {
             'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
@@ -18,7 +18,7 @@ async function loggedIn(){
 async function allowedToView(page){
     if(!sessionStorage.AUTH_TOKEN)
         return false;
-    response = await fetch(`http://localhost:8080/account/haspermission?page=${page}`, {
+    response = await fetch(backendurl + `/account/haspermission?page=${page}`, {
         method: 'GET',
         headers: {
             'AUTH_TOKEN': sessionStorage.AUTH_TOKEN

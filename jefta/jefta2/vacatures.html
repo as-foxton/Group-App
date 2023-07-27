@@ -229,7 +229,7 @@ function createVacature() {
         account: { id: sessionStorage.userID }
     };
 
-    fetch("http://localhost:8080/vacature/create", {
+    fetch(backendurl + "/vacature/create", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -266,7 +266,7 @@ function verwijderen(id){
         functie: functieInvoer,
     };
 
-    fetch('http://localhost:8080/vacature/delete/' + id, {
+    fetch(backendurl + '/vacature/delete/' + id, {
 
         method: 'DELETE',
         headers: {
@@ -334,7 +334,7 @@ function aanpassen() {
     functie: functieInvoer,
     };
 
-    fetch('http://localhost:8080/vacature/update/' + id, {
+    fetch(backendurl + '/vacature/update/' + id, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -352,7 +352,7 @@ function aanpassen() {
 
 function checkLogin() {
     if (sessionStorage.userID) {
-        fetch(`http://localhost:8080/account/${sessionStorage.userID}`, {
+        fetch(backendurl + `/account/${sessionStorage.userID}`, {
             method: 'GET'
         })
             .then(response => response.json())
@@ -363,7 +363,7 @@ function checkLogin() {
 
 // Load data from data base to webpage
 function loadVacature(){
-    fetch('http://localhost:8080/vacature/all')
+    fetch(backendurl + '/vacature/all')
         .then(response => response.json())
         .then(data => {
             console.log('Data', data);

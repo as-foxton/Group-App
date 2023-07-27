@@ -38,7 +38,7 @@ async function tekenmenu() {
 }
 
 function uitloggen(){
-  fetch(`http://localhost:8080/logout`, {
+  fetch(backendurl + `/logout`, {
         method: 'GET',
         headers: {
             'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
@@ -55,7 +55,7 @@ function uitloggen(){
 async function generateMenu(){
   
 
-  response = await fetch(`http://localhost:8080/pages`, {
+  response = await fetch(backendurl + `/pages`, {
         method: 'GET',
         headers: {
             'AUTH_TOKEN': sessionStorage.AUTH_TOKEN

@@ -30,7 +30,7 @@
   <!--<script>
     if(!sessionStorage.AUTH_TOKEN)
       location.href = "/Login.html"
-    fetch(`http://localhost:8080/account/current`, {
+    fetch(backendurl + `/account/current`, {
         method: 'GET',
         headers: {
             'AUTH_TOKEN': sessionStorage.AUTH_TOKEN
@@ -60,7 +60,7 @@
         maxAfstand: distance,
         uitstroomRichting: uitstroomrichting
       }
-      fetch(`http://localhost:8080/curriculum_vitae/beknopt`, {
+      fetch(backendurl + `/curriculum_vitae/beknopt`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

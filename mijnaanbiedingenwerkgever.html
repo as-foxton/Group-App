@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mijn Vacatures (bedrijf)</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="settings.js"></script>
 
     <!-- jQuery library -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
@@ -132,7 +133,7 @@
         location.href = `/aanbiedingenpervacature.html?vacature=${id}`
     }
 function loadMijnVacatures(){
-            fetch(`http://localhost:8080/vacatures/myvacatures/${sessionStorage.AUTH_TOKEN}`)
+            fetch(backendurl + `/vacatures/myvacatures/${sessionStorage.AUTH_TOKEN}`)
                 .then(response => response.json())
                 .then(data => {
                     let vacatureTableElement = document.getElementById('vacature-table');

@@ -40,7 +40,7 @@
                 }
 
             }
-            xhr.open("GET", "http://localhost:8080/account/all", true);
+            xhr.open("GET", backendurl + "/account/all", true);
             xhr.send()
 
         }
@@ -61,7 +61,7 @@
                 }
 
             }
-            xhr.open("POST", "http://localhost:8080/account/create", true);
+            xhr.open("POST", backendurl + "/account/create", true);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.send(deJSON);
 
@@ -77,7 +77,7 @@
                 }
 
             }
-            xhr.open("GET", "http://localhost:8080/account/delete/" + persoons_nr, true);
+            xhr.open("GET", backendurl + "/account/delete/" + persoons_nr, true);
             xhr.send()
 
 
@@ -100,7 +100,7 @@
                 }
 
             }
-            xhr.open("GET", "http://localhost:8080/account/" + persoons_nr, true);
+            xhr.open("GET", backendurl + "/account/" + persoons_nr, true);
             xhr.send()
 
         }
@@ -122,7 +122,7 @@
                 }
 
             }
-            xhr.open("PUT", "http://localhost:8080/account/update/" + persoons_nr, true);
+            xhr.open("PUT", backendurl + "/account/update/" + persoons_nr, true);
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.send(deJSON);
 
