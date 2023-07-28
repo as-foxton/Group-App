@@ -18,17 +18,20 @@
   <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 
-    <script src="settings.js"></script>
-    <!-- jQuery library -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-    
-
-    <!-- Popper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-
+  <script src="logincheck.js"></script>
+  <script src="settings.js"></script>
   <script>
-    window.onload = function () {
+    allowedToView(window.location.pathname).then(response => {
+      if (!response) {
+        location.href = "/index.html?accessdenied"
+      }
+    })
+  </script>
+  
+  <script>
+        window.onload = function () {
       tekenmenu();
       letsgo();
     }
@@ -43,27 +46,24 @@
   <div class="container-fluid" >
     <div class="row">
       <div class="col-md-1"></div>
-      <div class="col-md-2" style="background-color: #38b1ad69;margin-top:30px;border-radius:10px">
+      <!-- <div class="col-md-2" style="background-color: #38b1ad69;margin-top:30px;border-radius:10px"> -->
+              <div class="col-md-2" style="background: linear-gradient(to bottom, #1b706f49, #54c0bb3d);margin-top:30px;border-radius:10px;box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.288);">
+
         <br>
+        <!-- <br> -->
         <br>
-        <br>
-        <br>
-        <h2><b>Filter</b></h2>
+        <!-- <br> -->
+        <h1><b>Filter</b></h1>
         <br>
         <div class="form-group">
           <label for="sel1"><b>Land</b></label>
 
           <select class="form-control" id="country" multiple>
-            <option value="EU15">EU15</option>
-            <option value="EU27_2020">EU27_2020</option>
-            <option value="EU28">EU28</option>
             <option value="BE">België</option>
             <option value="BG">Bulgarije</option>
             <option value="CY">Cyprus</option>
             <option value="DE">Duitsland</option>
             <option value="DK">Denemarken</option>
-            <option value="EA19">Euro Area 19</option>
-            <option value="EA20">Euro Area 20</option>
             <option value="EE">Estland</option>
             <option value="FI">Finland</option>
             <option value="FR">Frankrijk</option>
@@ -125,17 +125,21 @@
        
         <button type="button" class="btn btn-secondary" onclick="letsgo()">Update</button>
         <button type="button" class="btn btn-danger" onclick="clearCountrySelection()">Clear</button>
-
+<br>
+<br>
 
       </div>
       <div class="col-md-1"></div>
 
       <!-- Second Column -->
-      <div class="col-md-8">
+      <!-- <div class="col-md-8" style="background: linear-gradient(to bottom, #006b68, #69c0bb);> -->
+        <div class="col-md-7" >
         <div id="myChart"></div>
       </div>
-      <!-- <div class="col-md-1"></div> -->
+      <div class="col-md-1"></div>
     </div>
+    <br>
+    <br>
   </div>
 
   <!-- <div id="myChart"></div> -->
@@ -148,7 +152,11 @@
 
     #myChart {
     width: 100%; 
-    height: 80vh; 
+    height: 70vh; 
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2); /* Add box shadow to the graph */
+    border-radius:10px;
+    margin-top:30px;
+    /* background-color: #38b1ad13; */
   }
   </style>
 
@@ -277,7 +285,7 @@
       // color: '#38b1ad'
       weight:'bold'
     },
-          autorange: false,
+          autorange: true,
           range: [1992, 2021],
         },
         yaxis: {
@@ -305,7 +313,7 @@
         x: 1,
         xanchor: 'right',
         y: 1,
-        bgcolor: 'rgba(255, 255, 255, 0.5)',
+        // bgcolor: 'rgba(255, 255, 255, 0.5)',
       },
         margin: {
           t: 60,
@@ -314,7 +322,7 @@
           // l: 20,
           
         },
-        plot_bgcolor: '#38b1ad08', // Background color of the plot area
+        // plot_bgcolor: '#38b1ad13', 
       };
 
 
